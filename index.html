@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cutz — Book your barber in seconds</title>
+<meta name="description" content="Book your barber in seconds. Find nearby barbers, walk in or book ahead.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='50' y='68' font-family='-apple-system,Helvetica,Arial,sans-serif' font-size='58' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --black: #000;
+    --white: #fff;
+    --gray-bg: #f8f8f8;
+    --gray-border: #e5e5e5;
+    --gray-text: #666;
+    --gray-faint: #999;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--black);
+    color: var(--white);
+    padding: 72px 24px 64px;
+    text-align: center;
+  }
+  .logo {
+    font-size: clamp(48px, 12vw, 88px);
+    font-weight: 900;
+    letter-spacing: 10px;
+    margin: 0;
+  }
+  .tagline-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0 32px;
+  }
+  .tagline-line {
+    height: 1px;
+    width: 40px;
+    background: rgba(255,255,255,0.25);
+  }
+  .tagline {
+    font-size: 11px;
+    letter-spacing: 4px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+  }
+  .description {
+    max-width: 480px;
+    margin: 0 auto 36px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+  }
+  .store-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--white);
+    color: var(--black);
+    border-radius: 14px;
+    padding: 16px 28px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    cursor: default;
+    user-select: none;
+  }
+  .store-btn .store-text-col { text-align: left; }
+  .store-btn .store-eyebrow { display: block; font-size: 10px; font-weight: 500; opacity: 0.55; letter-spacing: 0.5px; }
+  .store-btn .store-main { display: block; font-size: 15px; font-weight: 700; }
+
+  /* ---------- Content sections ---------- */
+  .content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 64px 24px 24px;
+  }
+  section.legal { margin-bottom: 56px; }
+  section.legal h2 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 0 0 6px;
+  }
+  .updated {
+    font-size: 12px;
+    color: var(--gray-faint);
+    margin-bottom: 28px;
+  }
+  .legal-block {
+    background: var(--gray-bg);
+    border: 1px solid var(--gray-border);
+    border-radius: 16px;
+    padding: 8px 24px;
+  }
+  .legal-item { padding: 20px 0; border-bottom: 1px solid var(--gray-border); }
+  .legal-item:last-child { border-bottom: none; }
+  .legal-item h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .legal-item p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-text);
+    margin: 0;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--gray-border);
+    padding: 28px 24px 40px;
+    text-align: center;
+  }
+  footer p {
+    font-size: 12px;
+    color: var(--gray-faint);
+    margin: 4px 0;
+  }
+  footer a { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .legal-block { padding: 4px 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <h1 class="logo">CUTZ</h1>
+    <div class="tagline-row">
+      <span class="tagline-line"></span>
+      <span class="tagline">BARBER BOOKING</span>
+      <span class="tagline-line"></span>
+    </div>
+    <p class="description">Book your barber in seconds. Find nearby barbers, walk in or book ahead.</p>
+    <a class="store-btn" href="#" aria-disabled="true" onclick="return false;">
+      <span class="store-text-col">
+        <span class="store-eyebrow">Coming soon to the</span>
+        <span class="store-main">App Store</span>
+      </span>
+    </a>
+  </header>
+
+  <main class="content">
+
+    <section class="legal" id="privacy">
+      <h2>Privacy Policy</h2>
+      <p class="updated">Last updated: 11 July 2026</p>
+      <div class="legal-block">
+        <div class="legal-item">
+          <h3>1. Who we are</h3>
+          <p>Cutz ("we", "us") operates a marketplace connecting customers with independent barbers. This policy explains what personal data we collect, why, and the rights you have under UK/EU GDPR.</p>
+        </div>
+        <div class="legal-item">
+          <h3>2. What we collect</h3>
+          <p>Customers: name, email, password, phone number (optional, not verified), profile photo (optional), booking history. Barbers: name, email, password, phone number (required), business address, services and pricing, and subscription/billing status.</p>
+        </div>
+        <div class="legal-item">
+          <h3>3. Why we collect it</h3>
+          <p>To create and secure your account (barbers must verify their email address before accessing the app), to let barbers and customers book and manage appointments, to let each side contact the other about a booking, to show barber availability and walk-in status on the map, and to bill barbers for their monthly platform subscription.</p>
+        </div>
+        <div class="legal-item">
+          <h3>4. Who we share it with</h3>
+          <p>A barber you book with can see your name and phone number (if you've added one) so they can contact you about your appointment, and you can see your barber's phone number on your booking confirmation. We use third-party processors (account/email verification, payment processing for barber subscriptions) strictly to provide the service — they don't get to use your data for anything else.</p>
+        </div>
+        <div class="legal-item">
+          <h3>5. How long we keep it</h3>
+          <p>We keep your account data for as long as your account is active. You can delete your account at any time from Settings, which erases your profile, bookings and reviews from our systems.</p>
+        </div>
+        <div class="legal-item">
+          <h3>6. Your rights</h3>
+          <p>You can request a copy of your data, ask us to correct it, or ask us to delete it, at any time by contacting us. You can also withdraw cookie/analytics consent at any time from Settings.</p>
+        </div>
+        <div class="legal-item">
+          <h3>7. Contact</h3>
+          <p>Questions about this policy? Email <a href="mailto:support@cutz.app">support@cutz.app</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="legal" id="terms">
+      <h2>Terms of Service</h2>
+      <p class="updated">Last updated: 4 July 2026</p>
+      <div class="legal-block">
+        <div class="legal-item">
+          <h3>1. The service</h3>
+          <p>Cutz is a free booking marketplace for customers. Customers never pay through the app — booking and using Cutz costs nothing. Barbers pay a monthly subscription to be listed on the platform.</p>
+        </div>
+        <div class="legal-item">
+          <h3>2. Barber subscription</h3>
+          <p>Barbers pay £12.99/month to be listed, billed via a secure web checkout (not an in-app purchase). Subscriptions can be cancelled at any time from the barber's profile; access continues until the end of the paid period.</p>
+        </div>
+        <div class="legal-item">
+          <h3>3. Bookings</h3>
+          <p>Booking a barber sends a request that the barber can accept or decline. Customers may cancel an upcoming booking free of charge up until 24 hours before the appointment. Cancelling within 24 hours of the appointment isn't possible in-app.</p>
+        </div>
+        <div class="legal-item">
+          <h3>4. Account standing</h3>
+          <p>To keep the platform reliable for barbers, an account that cancels 5 bookings in a row will be automatically closed.</p>
+        </div>
+        <div class="legal-item">
+          <h3>5. Reviews</h3>
+          <p>Customers may leave one star rating (1–5, no written comment) per barber, per completed booking relationship. Barbers cannot respond to ratings.</p>
+        </div>
+        <div class="legal-item">
+          <h3>6. Acceptable use</h3>
+          <p>Don't use Cutz to harass barbers or customers, submit false bookings, or attempt to circumvent the subscription or review system.</p>
+        </div>
+        <div class="legal-item">
+          <h3>7. Contact</h3>
+          <p>Questions about these terms? Email <a href="mailto:support@cutz.app">support@cutz.app</a>.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 Cutz. All rights reserved.</p>
+    <p><a href="mailto:support@cutz.app">support@cutz.app</a></p>
+  </footer>
+
+</body>
+</html>
