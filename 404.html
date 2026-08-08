@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cutz — Book a barber</title>
+<meta name="description" content="Book your barber online with Cutz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='50' y='68' font-family='-apple-system,Helvetica,Arial,sans-serif' font-size='58' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<!--
+  This file doubles as the site's 404 page AND every "/b/<barber-id>" profile
+  page — GitHub Pages has no server-side routing, so it serves this exact
+  file (content included, real path kept in the address bar, HTTP status
+  404) for any path that isn't a literal file in the repo. "/b/<id>" is
+  never a literal file (barbers are created dynamically, we can't
+  pre-generate one HTML file per id at deploy time), so it always lands
+  here — the script below reads the real path from location.pathname and
+  renders accordingly. This is the standard, well-documented GitHub Pages
+  SPA trick (see e.g. rafgraph/spa-github-pages); no redirect involved.
+-->
+<style>
+  :root {
+    --black: #000; --white: #fff; --gray-bg: #f8f8f8; --gray-border: #e5e5e5;
+    --gray-text: #666; --gray-faint: #999; --danger: #ff3b30;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  button { font-family: inherit; }
+  .wrap { max-width: 520px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ---------- Generic states (loading / not found) ---------- */
+  .center-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
+  .center-state h1 { font-size: 22px; font-weight: 800; margin: 16px 0 6px; }
+  .center-state p { color: var(--gray-text); font-size: 14px; line-height: 1.6; margin: 0 0 20px; }
+  .spinner { width: 28px; height: 28px; border-radius: 50%; border: 3px solid var(--gray-border); border-top-color: var(--black); animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .logo-mini { font-size: 22px; font-weight: 900; letter-spacing: 4px; margin-bottom: 18px; }
+
+  /* ---------- Profile header ---------- */
+  .profile-photo-wrap { width: 100%; aspect-ratio: 4/3; background: var(--gray-bg); position: relative; }
+  .profile-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .profile-photo-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 800; color: var(--gray-faint); }
+  .profile-body { padding: 20px; }
+  .profile-name { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; margin: 0; }
+  .profile-salon { font-size: 15px; color: var(--gray-text); margin: 2px 0 10px; }
+  .profile-meta { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray-text); margin-bottom: 16px; }
+  .profile-bio { font-size: 14px; line-height: 1.6; color: var(--black); margin: 0 0 22px; }
+  .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-faint); margin: 0 0 10px; }
+  .service-row {
+    display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--gray-border);
+  }
+  .service-row:last-child { border-bottom: none; }
+  .service-name { font-size: 15px; font-weight: 600; }
+  .service-duration { font-size: 12px; color: var(--gray-faint); margin-top: 2px; }
+  .service-price { font-size: 15px; font-weight: 700; }
+
+  .cta-col { padding: 4px 20px 28px; display: flex; flex-direction: column; gap: 10px; }
+  .btn {
+    display: block; width: 100%; text-align: center; border-radius: 14px; padding: 15px; font-size: 15px;
+    font-weight: 700; border: none; cursor: pointer; text-decoration: none;
+  }
+  .btn-primary { background: var(--black); color: var(--white); }
+  .btn-secondary { background: var(--white); color: var(--black); border: 1.5px solid var(--gray-border); }
+  .btn-disabled { background: var(--gray-bg); color: var(--gray-faint); cursor: default; }
+  .btn:disabled { opacity: 0.55; cursor: default; }
+  .link-row { text-align: center; font-size: 13px; color: var(--gray-text); }
+  .link-row a { font-weight: 700; text-decoration: underline; }
+
+  /* ---------- Auth / booking panel ---------- */
+  .panel { padding: 20px; border-top: 8px solid var(--gray-bg); }
+  .panel-title { font-size: 19px; font-weight: 800; margin: 0 0 4px; }
+  .panel-sub { font-size: 13px; color: var(--gray-text); margin: 0 0 20px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .tab-btn {
+    flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid var(--gray-border); background: var(--white);
+    font-size: 13px; font-weight: 700; color: var(--gray-text); cursor: pointer;
+  }
+  .tab-btn.active { background: var(--black); color: var(--white); border-color: var(--black); }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12px; font-weight: 700; color: var(--gray-text); margin-bottom: 6px; }
+  .field input {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--gray-border);
+    background: var(--gray-bg); font-size: 15px; color: var(--black);
+  }
+  .field input:focus { outline: 2px solid var(--black); outline-offset: 1px; }
+  .consent-row { display: flex; align-items: flex-start; gap: 10px; margin: 4px 0 18px; font-size: 12.5px; color: var(--gray-text); line-height: 1.5; }
+  .consent-row input { margin-top: 3px; }
+  .error-text { color: var(--danger); font-size: 13px; margin: -6px 0 14px; }
+  .otp-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .otp-row input {
+    width: 42px; height: 50px; text-align: center; font-size: 20px; font-weight: 800;
+    border-radius: 10px; border: 1.5px solid var(--gray-border); background: var(--gray-bg);
+  }
+  .back-link { display: inline-block; font-size: 13px; color: var(--gray-text); margin-bottom: 14px; cursor: pointer; text-decoration: underline; }
+
+  .date-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
+  .date-chip {
+    flex: 0 0 auto; width: 56px; padding: 10px 0; border-radius: 12px; border: 1.5px solid var(--gray-border);
+    background: var(--white); text-align: center; cursor: pointer;
+  }
+  .date-chip.active { background: var(--black); color: var(--white); border-color: var(--black); }
+  .date-chip .d-name { font-size: 10px; font-weight: 700; opacity: 0.6; }
+  .date-chip .d-num { font-size: 16px; font-weight: 800; margin-top: 2px; }
+  .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+  .slot-btn {
+    padding: 11px 0; border-radius: 10px; border: 1.5px solid var(--gray-border); background: var(--white);
+    font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+  .slot-btn.active { background: var(--black); color: var(--white); border-color: var(--black); }
+  .slot-btn:disabled { opacity: 0.3; cursor: default; text-decoration: line-through; }
+  .service-pick { border-radius: 12px; border: 1.5px solid var(--gray-border); padding: 14px; margin-bottom: 10px; cursor: pointer; }
+  .service-pick.active { border-color: var(--black); background: var(--gray-bg); }
+  .summary-card { background: var(--gray-bg); border-radius: 14px; padding: 16px; margin-bottom: 20px; }
+  .summary-row { display: flex; justify-content: space-between; font-size: 14px; padding: 6px 0; }
+  .summary-row span:first-child { color: var(--gray-text); }
+  .summary-row span:last-child { font-weight: 700; }
+
+  .success-icon { font-size: 44px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+  <div class="wrap" id="app">
+    <div class="center-state"><div class="spinner"></div></div>
+  </div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// Same project + anon key the Cutz app itself uses (src/config.js) — the
+// anon key is safe to embed client-side, same reasoning as the app: real
+// access control lives in Postgres RLS, not in keeping this secret.
+const SUPABASE_URL = 'https://ukoovhgmbqfocalykhyx.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true },
+});
+
+// Same fixed slot list BookingScreen.js uses in the app (src/data/mockData.js)
+// — this isn't a simplification introduced here, the app itself doesn't vary
+// slots by barber.hours, so matching it exactly keeps web/app behavior
+// identical rather than inventing a different (and inconsistent) scheme.
+const TIME_SLOTS = ['9:00','9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function upcomingDates(count = 21, startOffset = 1) {
+  const today = new Date();
+  const days = [];
+  for (let i = startOffset; i < startOffset + count; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    days.push({ dayName: DAY_NAMES[d.getDay()], dayNum: d.getDate(), month: MONTH_NAMES[d.getMonth()], key: d.toISOString().split('T')[0] });
+  }
+  return days;
+}
+function isDateBlocked(dateKey, timeOff) {
+  return (timeOff || []).some(t => dateKey >= t.startDate && dateKey <= t.endDate);
+}
+function combineDateKeyAndTime(dateKey, time) {
+  const [h, m] = time.split(':').map(Number);
+  const d = new Date(`${dateKey}T00:00:00`);
+  d.setHours(h, m, 0, 0);
+  return d;
+}
+// Best-effort currency guess from the browser's own locale — mirrors the
+// app's device-locale detection (src/utils/currency.js) as closely as a
+// browser can; barbers set prices in their own local currency, there's no
+// live conversion involved either way.
+function currencySymbol() {
+  const region = (navigator.language || 'en-GB').split('-')[1];
+  if (region === 'DK') return 'kr';
+  if (region === 'US') return '$';
+  if (region === 'GB') return '£';
+  const EUR = new Set(['AT','BE','CY','EE','FI','FR','DE','GR','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','HR']);
+  if (EUR.has(region)) return '€';
+  return '£';
+}
+function formatPrice(amount) {
+  const n = typeof amount === 'number' ? amount : parseFloat(amount) || 0;
+  const value = Number.isInteger(n) ? String(n) : n.toFixed(2);
+  const sym = currencySymbol();
+  return sym === 'kr' ? `${value} kr` : `${sym}${value}`;
+}
+function initials(name) {
+  return (name || '?').split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+}
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+const app = document.getElementById('app');
+
+function renderCenterState(html) {
+  app.innerHTML = `<div class="center-state">${html}</div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Routing: this file IS the site's 404 page (see the big comment above), so
+// it's responsible for telling a genuine broken link apart from "/b/<id>".
+// ---------------------------------------------------------------------------
+const match = location.pathname.match(/\/b\/([^/]+)\/?$/);
+if (!match) {
+  renderCenterState(`
+    <div class="logo-mini">CUTZ</div>
+    <h1>Page not found</h1>
+    <p>That link doesn't lead anywhere. Head back to the homepage.</p>
+    <a class="btn btn-primary" style="width:auto;padding:13px 28px;" href="/">Go home</a>
+  `);
+} else {
+  boot(match[1]);
+}
+
+async function boot(barberId) {
+  renderCenterState('<div class="spinner"></div>');
+
+  const { data: barber, error } = await supabase.from('barbers_public').select('*').eq('id', barberId).maybeSingle();
+  if (error || !barber) {
+    renderCenterState(`
+      <div class="logo-mini">CUTZ</div>
+      <h1>Barber not found</h1>
+      <p>This barber's profile isn't available right now — they may be offline or no longer listed.</p>
+      <a class="btn btn-primary" style="width:auto;padding:13px 28px;" href="/">Go home</a>
+    `);
+    return;
+  }
+
+  const state = { barber, barberId, service: null, dateKey: null, time: null };
+  renderProfile(state);
+}
+
+// ---------------------------------------------------------------------------
+// Screen 1: profile
+// ---------------------------------------------------------------------------
+function renderProfile(state) {
+  const b = state.barber;
+  const services = b.services || [];
+  const photoBlock = b.avatar_photo
+    ? `<img src="${escapeHtml(b.avatar_photo)}" alt="${escapeHtml(b.name)}">`
+    : `<div class="profile-photo-fallback">${initials(b.name)}</div>`;
+
+  app.innerHTML = `
+    <div class="profile-photo-wrap">${photoBlock}</div>
+    <div class="profile-body">
+      <h1 class="profile-name">${escapeHtml(b.name)}</h1>
+      <p class="profile-salon">${escapeHtml(b.salon || '')}</p>
+      <div class="profile-meta">
+        ${b.rating ? `<span>★ ${escapeHtml(b.rating)} (${b.review_count || 0} reviews)</span>` : '<span>New on Cutz</span>'}
+        ${b.address ? ` · <span>${escapeHtml(b.address)}</span>` : ''}
+      </div>
+      ${b.bio ? `<p class="profile-bio">${escapeHtml(b.bio)}</p>` : ''}
+      ${services.length ? `
+        <p class="section-title">Services</p>
+        ${services.map(s => `
+          <div class="service-row">
+            <div>
+              <div class="service-name">${escapeHtml(s.name)}</div>
+              ${s.duration ? `<div class="service-duration">${escapeHtml(s.duration)} min</div>` : ''}
+            </div>
+            <div class="service-price">${formatPrice(s.price)}</div>
+          </div>
+        `).join('')}
+      ` : ''}
+    </div>
+    <div class="cta-col">
+      <button class="btn btn-primary" id="book-btn">Book online</button>
+      <a class="btn btn-disabled" aria-disabled="true" onclick="return false;">Download Cutz app — coming soon</a>
+      <div class="link-row"><a href="cutz://barber/${encodeURIComponent(state.barberId)}">Already have the app? Open in Cutz</a></div>
+    </div>
+  `;
+  document.getElementById('book-btn').onclick = () => startBooking(state);
+}
+
+// ---------------------------------------------------------------------------
+// Screen 2: auth gate (only shown if there's no session yet)
+// ---------------------------------------------------------------------------
+async function startBooking(state) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.user) {
+    state.customerId = session.user.id;
+    renderServiceStep(state);
+    return;
+  }
+  renderAuth(state);
+}
+
+function renderAuth(state, mode = 'signup') {
+  app.innerHTML = `
+    <div class="panel">
+      <span class="back-link" id="back-btn">← Back to profile</span>
+      <h2 class="panel-title">Sign in to book</h2>
+      <p class="panel-sub">Same account as the Cutz app — sign in or create one to book with ${escapeHtml(state.barber.name)}.</p>
+      <div class="tabs">
+        <button class="tab-btn ${mode === 'signup' ? 'active' : ''}" data-mode="signup">Sign up</button>
+        <button class="tab-btn ${mode === 'signin' ? 'active' : ''}" data-mode="signin">Sign in</button>
+      </div>
+      <div id="auth-error" class="error-text" style="display:none;"></div>
+      ${mode === 'signup' ? `
+        <div class="field"><label>Full name</label><input id="f-name" type="text" autocomplete="name"></div>
+      ` : ''}
+      <div class="field"><label>Email</label><input id="f-email" type="email" autocomplete="email"></div>
+      <div class="field"><label>Password</label><input id="f-password" type="password" autocomplete="${mode === 'signup' ? 'new-password' : 'current-password'}"></div>
+      ${mode === 'signup' ? `
+        <div class="consent-row">
+          <input type="checkbox" id="f-consent">
+          <label for="f-consent">I agree to the <a href="/#terms" target="_blank">Terms of Service</a> and <a href="/#privacy" target="_blank">Privacy Policy</a></label>
+        </div>
+      ` : ''}
+      <button class="btn btn-primary" id="auth-submit">${mode === 'signup' ? 'Create account' : 'Sign in'}</button>
+    </div>
+  `;
+  document.getElementById('back-btn').onclick = () => renderProfile(state);
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.onclick = () => renderAuth(state, btn.dataset.mode);
+  });
+
+  const showError = (msg) => {
+    const el = document.getElementById('auth-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+  };
+
+  document.getElementById('auth-submit').onclick = async () => {
+    const email = document.getElementById('f-email').value.trim();
+    const password = document.getElementById('f-password').value;
+    const submitBtn = document.getElementById('auth-submit');
+    if (!email || !email.includes('@')) { showError('Please enter a valid email address.'); return; }
+    if (!password || password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+
+    if (mode === 'signup') {
+      const name = document.getElementById('f-name').value.trim();
+      if (!name) { showError('Please enter your full name.'); return; }
+      if (!document.getElementById('f-consent').checked) { showError('Please accept the Terms and Privacy Policy.'); return; }
+      submitBtn.disabled = true;
+      const { error } = await supabase.auth.signUp({ email, password, options: { data: { userType: 'customer' } } });
+      submitBtn.disabled = false;
+      if (error) { showError(error.message); return; }
+      // No session yet — Confirm email is on, same as the app (see
+      // authService.js) — the customers row is created after the code
+      // below is verified, once a real session exists.
+      renderOtp(state, { email, pendingProfile: { name, phone: '' } });
+    } else {
+      submitBtn.disabled = true;
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      submitBtn.disabled = false;
+      if (error) {
+        if (/email not confirmed/i.test(error.message)) {
+          await supabase.auth.resend({ type: 'signup', email }).catch(() => {});
+          renderOtp(state, { email });
+          return;
+        }
+        showError('That email and password combination doesn\'t match an account.');
+        return;
+      }
+      state.customerId = data.user.id;
+      await ensureCustomerRow(data.user.id, { email });
+      renderServiceStep(state);
+    }
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Screen 2b: 6-digit email code (mirrors VerifyOtpScreen.js in the app)
+// ---------------------------------------------------------------------------
+function renderOtp(state, { email, pendingProfile }) {
+  app.innerHTML = `
+    <div class="panel">
+      <span class="back-link" id="back-btn">← Back</span>
+      <h2 class="panel-title">Check your email</h2>
+      <p class="panel-sub">Enter the 6-digit code we sent to <strong>${escapeHtml(email)}</strong>.</p>
+      <div id="otp-error" class="error-text" style="display:none;"></div>
+      <div class="otp-row">
+        ${[0,1,2,3,4,5].map(i => `<input maxlength="1" inputmode="numeric" data-i="${i}">`).join('')}
+      </div>
+      <button class="btn btn-primary" id="verify-btn">Verify & continue</button>
+    </div>
+  `;
+  document.getElementById('back-btn').onclick = () => renderAuth(state, pendingProfile ? 'signup' : 'signin');
+
+  const inputs = Array.from(document.querySelectorAll('.otp-row input'));
+  inputs.forEach((inp, i) => {
+    inp.oninput = () => {
+      inp.value = inp.value.replace(/[^0-9]/g, '').slice(0, 1);
+      if (inp.value && inputs[i + 1]) inputs[i + 1].focus();
+    };
+    inp.onkeydown = (e) => {
+      if (e.key === 'Backspace' && !inp.value && inputs[i - 1]) inputs[i - 1].focus();
+    };
+  });
+
+  document.getElementById('verify-btn').onclick = async () => {
+    const code = inputs.map(i => i.value).join('');
+    const errEl = document.getElementById('otp-error');
+    if (code.length < 6) { errEl.textContent = 'Please enter the 6-digit code.'; errEl.style.display = 'block'; return; }
+    const btn = document.getElementById('verify-btn');
+    btn.disabled = true;
+    const { data, error } = await supabase.auth.verifyOtp({ email, token: code, type: 'signup' });
+    btn.disabled = false;
+    if (error) { errEl.textContent = 'That code is incorrect or has expired.'; errEl.style.display = 'block'; return; }
+
+    state.customerId = data.user.id;
+    if (pendingProfile) {
+      await supabase.from('customers').insert({
+        id: data.user.id, name: pendingProfile.name, email, phone: pendingProfile.phone || '',
+        gdpr_accepted_at: new Date().toISOString(),
+      });
+      await supabase.rpc('mark_customer_email_verified');
+    } else {
+      await ensureCustomerRow(data.user.id, { email });
+      await supabase.rpc('mark_customer_email_verified');
+    }
+    renderServiceStep(state);
+  };
+}
+
+// Mirrors AppContext.ensureCustomerProfile — used for the sign-in path,
+// where an existing row should already be there but this stays defensive
+// (a login that raced signup elsewhere and never got its row created).
+async function ensureCustomerRow(userId, { email }) {
+  const { data: existing } = await supabase.from('customers').select('id').eq('id', userId).maybeSingle();
+  if (existing) return;
+  await supabase.from('customers').insert({ id: userId, name: 'New customer', email, gdpr_accepted_at: new Date().toISOString() });
+}
+
+// ---------------------------------------------------------------------------
+// Screen 3: pick a service
+// ---------------------------------------------------------------------------
+function renderServiceStep(state) {
+  const services = state.barber.services || [];
+  app.innerHTML = `
+    <div class="panel">
+      <span class="back-link" id="back-btn">← Back to profile</span>
+      <h2 class="panel-title">Choose a service</h2>
+      <p class="panel-sub">Booking with ${escapeHtml(state.barber.name)}</p>
+      <div id="service-list"></div>
+      <button class="btn btn-primary" id="next-btn" disabled>Continue</button>
+    </div>
+  `;
+  document.getElementById('back-btn').onclick = () => renderProfile(state);
+  const list = document.getElementById('service-list');
+  const nextBtn = document.getElementById('next-btn');
+
+  if (!services.length) {
+    list.innerHTML = `<p class="panel-sub">This barber hasn't added any services yet.</p>`;
+    return;
+  }
+
+  services.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'service-pick';
+    row.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div class="service-name">${escapeHtml(s.name)}</div>
+          ${s.duration ? `<div class="service-duration">${escapeHtml(s.duration)} min</div>` : ''}
+        </div>
+        <div class="service-price">${formatPrice(s.price)}</div>
+      </div>
+    `;
+    row.onclick = () => {
+      document.querySelectorAll('.service-pick').forEach(el => el.classList.remove('active'));
+      row.classList.add('active');
+      state.service = s;
+      nextBtn.disabled = false;
+    };
+    list.appendChild(row);
+  });
+
+  nextBtn.onclick = () => renderDateTimeStep(state);
+}
+
+// ---------------------------------------------------------------------------
+// Screen 4: pick date + time
+// ---------------------------------------------------------------------------
+async function renderDateTimeStep(state) {
+  app.innerHTML = `
+    <div class="panel">
+      <span class="back-link" id="back-btn">← Back</span>
+      <h2 class="panel-title">Pick a date & time</h2>
+      <p class="panel-sub">${escapeHtml(state.service.name)} · ${formatPrice(state.service.price)}</p>
+      <div class="date-scroll" id="date-scroll"></div>
+      <div id="slot-area"></div>
+      <button class="btn btn-primary" id="next-btn" disabled>Continue</button>
+    </div>
+  `;
+  document.getElementById('back-btn').onclick = () => renderServiceStep(state);
+  const nextBtn = document.getElementById('next-btn');
+
+  // Same-user-only slot check as the app itself (BookingScreen.js) — RLS
+  // (bookings_select_own) only ever lets a customer read their OWN
+  // bookings, never another customer's, so "already booked" here means
+  // "already booked by ME with this barber", exactly like the native app.
+  const { data: myBookings } = await supabase
+    .from('bookings').select('date_key, time, status')
+    .eq('customer_id', state.customerId).eq('barber_id', state.barberId);
+  const taken = new Set((myBookings || [])
+    .filter(b => b.status === 'upcoming' || b.status === 'pending')
+    .map(b => `${b.date_key}_${b.time}`));
+
+  const dates = upcomingDates(21, 1).filter(d => !isDateBlocked(d.key, state.barber.time_off));
+  const dateScroll = document.getElementById('date-scroll');
+  const slotArea = document.getElementById('slot-area');
+
+  dates.forEach((d, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'date-chip';
+    chip.innerHTML = `<div class="d-name">${d.dayName}</div><div class="d-num">${d.dayNum}</div>`;
+    chip.onclick = () => {
+      document.querySelectorAll('.date-chip').forEach(el => el.classList.remove('active'));
+      chip.classList.add('active');
+      state.dateKey = d.key;
+      state.dateLabel = `${d.dayName} ${d.dayNum} ${d.month}`;
+      state.time = null;
+      nextBtn.disabled = true;
+      renderSlots();
+    };
+    dateScroll.appendChild(chip);
+  });
+
+  function renderSlots() {
+    slotArea.innerHTML = `<p class="section-title">Available times</p><div class="slot-grid" id="slot-grid"></div>`;
+    const grid = document.getElementById('slot-grid');
+    TIME_SLOTS.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'slot-btn';
+      btn.textContent = t;
+      btn.disabled = taken.has(`${state.dateKey}_${t}`);
+      btn.onclick = () => {
+        document.querySelectorAll('.slot-btn').forEach(el => el.classList.remove('active'));
+        btn.classList.add('active');
+        state.time = t;
+        nextBtn.disabled = false;
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  nextBtn.onclick = () => renderConfirmStep(state);
+}
+
+// ---------------------------------------------------------------------------
+// Screen 5: confirm + create the booking
+// ---------------------------------------------------------------------------
+function renderConfirmStep(state) {
+  app.innerHTML = `
+    <div class="panel">
+      <span class="back-link" id="back-btn">← Back</span>
+      <h2 class="panel-title">Confirm booking</h2>
+      <div class="summary-card">
+        <div class="summary-row"><span>Barber</span><span>${escapeHtml(state.barber.name)}</span></div>
+        <div class="summary-row"><span>Service</span><span>${escapeHtml(state.service.name)}</span></div>
+        <div class="summary-row"><span>Date</span><span>${escapeHtml(state.dateLabel)}</span></div>
+        <div class="summary-row"><span>Time</span><span>${escapeHtml(state.time)}</span></div>
+        <div class="summary-row"><span>Price</span><span>${formatPrice(state.service.price)}</span></div>
+      </div>
+      <div id="confirm-error" class="error-text" style="display:none;"></div>
+      <button class="btn btn-primary" id="confirm-btn">Confirm booking</button>
+    </div>
+  `;
+  document.getElementById('back-btn').onclick = () => renderDateTimeStep(state);
+
+  document.getElementById('confirm-btn').onclick = async () => {
+    const btn = document.getElementById('confirm-btn');
+    btn.disabled = true;
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: customerRow } = await supabase.from('customers').select('name, phone').eq('id', user.id).maybeSingle();
+    const dateTimeISO = combineDateKeyAndTime(state.dateKey, state.time).toISOString();
+
+    const { error } = await supabase.from('bookings').insert({
+      barber_id: state.barberId,
+      customer_id: user.id,
+      customer_name: customerRow?.name || '',
+      customer_phone: customerRow?.phone || '',
+      service: state.service,
+      date_key: state.dateKey,
+      date_label: state.dateLabel,
+      time: state.time,
+      date_time_iso: dateTimeISO,
+    });
+    btn.disabled = false;
+    if (error) {
+      const el = document.getElementById('confirm-error');
+      el.textContent = error.message || 'Something went wrong — please try again.';
+      el.style.display = 'block';
+      return;
+    }
+    renderSuccess(state);
+  };
+}
+
+function renderSuccess(state) {
+  app.innerHTML = `
+    <div class="center-state">
+      <div class="success-icon">✅</div>
+      <h1>Booking requested</h1>
+      <p>${escapeHtml(state.barber.name)} will confirm your ${escapeHtml(state.service.name)} on ${escapeHtml(state.dateLabel)} at ${escapeHtml(state.time)}. You'll see it in the Cutz app the moment they do.</p>
+      <a class="btn btn-primary" style="width:auto;padding:13px 28px;" href="/b/${encodeURIComponent(state.barberId)}">Back to profile</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
