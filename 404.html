@@ -7,8 +7,8 @@
 <meta name="description" content="Book your barber online with Cutz.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='50' y='68' font-family='-apple-system,Helvetica,Arial,sans-serif' font-size='58' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
 <!--
-  This file doubles as the site's 404 page AND every "/b/<barber-id>" profile
-  page — GitHub Pages has no server-side routing, so it serves this exact
+  This file doubles as the site's 404 page AND every "/b/<barber-id>" and
+  "/s/<salon-id>" profile page — GitHub Pages has no server-side routing, so it serves this exact
   file (content included, real path kept in the address bar, HTTP status
   404) for any path that isn't a literal file in the repo. "/b/<id>" is
   never a literal file (barbers are created dynamically, we can't
@@ -119,6 +119,21 @@
   .summary-row span:last-child { font-weight: 700; }
 
   .success-icon { font-size: 44px; margin-bottom: 12px; }
+
+  /* ---------- Salon page: team list ---------- */
+  .team-row {
+    display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--gray-border);
+    text-decoration: none; color: inherit;
+  }
+  .team-row:last-child { border-bottom: none; }
+  .team-avatar {
+    width: 48px; height: 48px; border-radius: 50%; background: var(--gray-bg); flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--gray-faint); overflow: hidden;
+  }
+  .team-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .team-name { font-size: 15px; font-weight: 700; }
+  .team-sub { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
+  .team-book { margin-left: auto; font-size: 13px; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -152,9 +167,17 @@ function upcomingDates(count = 21, startOffset = 1) {
   for (let i = startOffset; i < startOffset + count; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
-    days.push({ dayName: DAY_NAMES[d.getDay()], dayNum: d.getDate(), month: MONTH_NAMES[d.getMonth()], key: d.toISOString().split('T')[0] });
+    days.push({ dayName: DAY_NAMES[d.getDay()], dayNum: d.getDate(), month: MONTH_NAMES[d.getMonth()], key: localDateKey(d) });
   }
   return days;
+}
+// 'YYYY-MM-DD' in the visitor's own timezone. Not toISOString() — that's UTC,
+// which in Denmark is still "yesterday" for the first hour or two after
+// midnight, so the booking would be saved under a different day than the one
+// picked. Matches localDateKey in the app (src/utils/dateUtils.js).
+function localDateKey(d) {
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 function isDateBlocked(dateKey, timeOff) {
   return (timeOff || []).some(t => dateKey >= t.startDate && dateKey <= t.endDate);
@@ -199,18 +222,74 @@ function renderCenterState(html) {
 
 // ---------------------------------------------------------------------------
 // Routing: this file IS the site's 404 page (see the big comment above), so
-// it's responsible for telling a genuine broken link apart from "/b/<id>".
+// it's responsible for telling a genuine broken link apart from "/b/<id>" and
+// "/s/<id>". On an iPhone with Cutz installed these links open the app
+// instead (universal links — /.well-known/apple-app-site-association), so
+// this page is what everyone else sees.
 // ---------------------------------------------------------------------------
-const match = location.pathname.match(/\/b\/([^/]+)\/?$/);
-if (!match) {
+const barberMatch = location.pathname.match(/\/b\/([^/]+)\/?$/);
+const salonMatch = location.pathname.match(/\/s\/([^/]+)\/?$/);
+if (barberMatch) {
+  boot(decodeURIComponent(barberMatch[1]));
+} else if (salonMatch) {
+  bootSalon(decodeURIComponent(salonMatch[1]));
+} else {
   renderCenterState(`
     <div class="logo-mini">CUTZ</div>
     <h1>Page not found</h1>
     <p>That link doesn't lead anywhere. Head back to the homepage.</p>
     <a class="btn btn-primary" style="width:auto;padding:13px 28px;" href="/">Go home</a>
   `);
-} else {
-  boot(match[1]);
+}
+
+// ---------------------------------------------------------------------------
+// Salon page: the salon, and its bookable team. Booking goes through each
+// barber's own page (/b/<id>) — an employee IS a barber — exactly like the
+// app's salon screen hands off to the single-barber booking flow.
+// ---------------------------------------------------------------------------
+async function bootSalon(salonId) {
+  renderCenterState('<div class="spinner"></div>');
+  const [{ data: salon, error }, { data: team }] = await Promise.all([
+    supabase.from('salons_public').select('*').eq('id', salonId).maybeSingle(),
+    supabase.from('barbers_public').select('*').eq('salon_id', salonId).eq('is_discoverable', true),
+  ]);
+  if (error || !salon) {
+    renderCenterState(`
+      <div class="logo-mini">CUTZ</div>
+      <h1>Salon not found</h1>
+      <p>This salon's page isn't available right now — it may no longer be listed.</p>
+      <a class="btn btn-primary" style="width:auto;padding:13px 28px;" href="/">Go home</a>
+    `);
+    return;
+  }
+  document.title = `${salon.name} — Book on Cutz`;
+  const cover = (salon.photos || [])[0];
+  const staff = team || [];
+  app.innerHTML = `
+    <div class="profile-photo-wrap">${cover
+      ? `<img src="${escapeHtml(cover)}" alt="${escapeHtml(salon.name)}">`
+      : `<div class="profile-photo-fallback">${initials(salon.name)}</div>`}</div>
+    <div class="profile-body">
+      <h1 class="profile-name">${escapeHtml(salon.name)}</h1>
+      ${salon.address ? `<p class="profile-salon">${escapeHtml(salon.address)}</p>` : ''}
+      ${salon.bio ? `<p class="profile-bio">${escapeHtml(salon.bio)}</p>` : ''}
+      <p class="section-title">Our team</p>
+      ${staff.length ? staff.map(b => `
+        <a class="team-row" href="/b/${encodeURIComponent(b.id)}">
+          <div class="team-avatar">${b.avatar_photo ? `<img src="${escapeHtml(b.avatar_photo)}" alt="">` : initials(b.name)}</div>
+          <div>
+            <div class="team-name">${escapeHtml(b.name)}</div>
+            <div class="team-sub">${b.rating ? `★ ${escapeHtml(b.rating)} · ` : ''}${(b.services || []).length} services</div>
+          </div>
+          <span class="team-book">Book ›</span>
+        </a>
+      `).join('') : '<p class="profile-bio">No one is taking bookings here right now — check back soon.</p>'}
+    </div>
+    <div class="cta-col">
+      <a class="btn btn-disabled" aria-disabled="true" onclick="return false;">Download Cutz app — coming soon</a>
+      <div class="link-row"><a href="cutz://salon/${encodeURIComponent(salonId)}">Already have the app? Open in Cutz</a></div>
+    </div>
+  `;
 }
 
 async function boot(barberId) {

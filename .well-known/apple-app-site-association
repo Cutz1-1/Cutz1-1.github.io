@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["FZ95U8A4N7.com.cutz.app"],
+        "components": [
+          { "/": "/b/*", "comment": "Barber profiles" },
+          { "/": "/s/*", "comment": "Salon profiles" }
+        ]
+      },
+      {
+        "appID": "FZ95U8A4N7.com.cutz.app",
+        "paths": ["/b/*", "/s/*"]
+      }
+    ]
+  }
+}
