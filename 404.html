@@ -188,18 +188,11 @@ function combineDateKeyAndTime(dateKey, time) {
   d.setHours(h, m, 0, 0);
   return d;
 }
-// Best-effort currency guess from the browser's own locale — mirrors the
-// app's device-locale detection (src/utils/currency.js) as closely as a
-// browser can; barbers set prices in their own local currency, there's no
-// live conversion involved either way.
+// Prices are in Danish kroner, the same as the app — not converted, and not
+// guessed from the visitor's locale (which showed the same 200 kr as "£200"
+// in the UK).
 function currencySymbol() {
-  const region = (navigator.language || 'en-GB').split('-')[1];
-  if (region === 'DK') return 'kr';
-  if (region === 'US') return '$';
-  if (region === 'GB') return '£';
-  const EUR = new Set(['AT','BE','CY','EE','FI','FR','DE','GR','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES','HR']);
-  if (EUR.has(region)) return '€';
-  return '£';
+  return 'kr';
 }
 function formatPrice(amount) {
   const n = typeof amount === 'number' ? amount : parseFloat(amount) || 0;
