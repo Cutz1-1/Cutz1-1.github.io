@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms of Service — Cutz</title>
+<meta name="description" content="The terms that apply to customers, barbers and salons using Cutz.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://cutzapp.one/terms.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);
+  --mute:rgba(255,255,255,.68);--dim:rgba(255,255,255,.42);
+  --line:rgba(255,255,255,.1);--card:#0a0a0a;
+  --max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--green);width:0;z-index:60}
+
+/* Nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
+.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
+.nav-links a:not(.btn):hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;white-space:nowrap;transition:background .2s}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#1bff82}
+.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
+.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
+.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:820px){
+  .menu-btn{display:block}
+  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
+  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
+  .nav-links .btn{margin-top:20px;justify-content:center}
+  .nav.open{background:#000}
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+}
+
+/* Header */
+.doc-head{padding:clamp(130px,16vw,180px) 0 clamp(48px,6vw,72px);border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.doc-head h1{font-size:clamp(44px,8vw,96px);line-height:.95;letter-spacing:-.045em;font-weight:900;margin:20px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.meta span{font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+.summary{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.summary div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;font-size:15px;color:var(--mute);line-height:1.55}
+.summary b{display:block;color:var(--fg);font-size:16px;margin-bottom:6px}
+@media (max-width:760px){.summary{grid-template-columns:1fr}}
+
+/* Layout */
+.doc{display:grid;grid-template-columns:260px 1fr;gap:clamp(40px,6vw,96px);padding:clamp(48px,6vw,80px) 0 120px}
+.toc{position:sticky;top:100px;align-self:start;max-height:calc(100vh - 120px);overflow:auto;font-size:14px}
+.toc h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 16px;font-weight:600}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.toc a{display:block;padding:7px 0 7px 16px;margin-left:-1px;border-left:2px solid transparent;color:var(--dim);transition:color .2s,border-color .2s;line-height:1.4}
+.toc a:hover{color:var(--fg)}
+.toc a.on{color:var(--fg);border-left-color:var(--green)}
+@media (max-width:900px){.doc{grid-template-columns:1fr}.toc{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}}
+
+article{max-width:720px;min-width:0}
+article section{padding-bottom:48px;margin-bottom:48px;border-bottom:1px solid var(--line)}
+article section:last-child{border-bottom:0}
+article h2{font-size:clamp(24px,3vw,30px);letter-spacing:-.025em;line-height:1.2;margin:0 0 20px;font-weight:700;display:flex;gap:14px;align-items:baseline}
+article h2 .n{font-size:14px;color:var(--green);font-weight:700;font-variant-numeric:tabular-nums;flex:none}
+article h3{font-size:17px;margin:28px 0 8px;font-weight:700}
+article p,article li{color:var(--mute)}
+article p{margin:0 0 16px}
+article ul{padding-left:20px;margin:0 0 16px}
+article li{margin-bottom:8px}
+article li::marker{color:var(--green)}
+article strong{color:var(--fg);font-weight:600}
+article a{color:var(--green);text-decoration:underline;text-underline-offset:3px}
+.table{overflow-x:auto;margin:8px 0 20px;border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.5;min-width:540px}
+th,td{text-align:left;vertical-align:top;padding:14px 16px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;background:#070707}
+td{color:var(--mute)}
+td:first-child{color:var(--fg);font-weight:500}
+tr:last-child td{border-bottom:0}
+.callout{background:rgba(0,220,100,.06);border:1px solid rgba(0,220,100,.3);border-radius:16px;padding:18px 20px;margin:8px 0 20px}
+.callout p:last-child{margin:0}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
+.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f-grid a{color:var(--mute);transition:color .2s}
+.f-grid a:hover{color:var(--fg)}
+.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+@media (max-width:760px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="barbers.html">For barbers</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://apps.apple.com/app/cutz/id6811618000" class="btn btn-green" target="_blank" rel="noopener">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="doc-head">
+    <div class="wrap">
+      <div class="eyebrow">Legal</div>
+      <h1>Terms of Service</h1>
+      <div class="meta"><span>Effective 29 September 2026</span><span>Governed by Danish law</span><span>Applies to the Cutz app and cutzapp.one</span></div>
+      <div class="summary">
+        <div><b>Free for customers.</b>Booking with Cutz costs nothing. You pay your barber directly for your cut.</div>
+        <div><b>Flat price for barbers.</b>300 kr/month with no commission. Cancel any time.</div>
+        <div><b>Show up or cancel early.</b>Free cancellation up to 24 hours before a booking. Repeated no-shows lead to a booking ban.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap doc">
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#about">About these terms</a></li>
+        <li><a href="#service">The Service</a></li>
+        <li><a href="#accounts">Accounts and eligibility</a></li>
+        <li><a href="#customers">Booking as a customer</a></li>
+        <li><a href="#conduct">No-shows and cancellations</a></li>
+        <li><a href="#barbers">Barbers and salons</a></li>
+        <li><a href="#billing">Subscriptions and billing</a></li>
+        <li><a href="#referral">Referral codes and LAUNCH</a></li>
+        <li><a href="#reviews">Ratings and reports</a></li>
+        <li><a href="#content">Your content</a></li>
+        <li><a href="#use">Acceptable use</a></li>
+        <li><a href="#ip">Our intellectual property</a></li>
+        <li><a href="#termination">Suspension and termination</a></li>
+        <li><a href="#disclaimer">Disclaimers</a></li>
+        <li><a href="#liability">Limitation of liability</a></li>
+        <li><a href="#law">Governing law and disputes</a></li>
+        <li><a href="#changes">Changes to these terms</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <section id="about">
+        <h2><span class="n">01</span>About these terms</h2>
+        <p>These Terms of Service ("Terms") are an agreement between you and Cutz ("Cutz", "we", "us") covering your use of the Cutz mobile app and the website at cutzapp.one (together, the "Service"). By creating an account or using the Service, you agree to these Terms and to our <a href="privacy.html">Privacy Policy</a>. If you don't agree, please don't use the Service.</p>
+        <p>If you use Cutz for a business (as a barber or salon), you accept these Terms on behalf of that business.</p>
+      </section>
+
+      <section id="service">
+        <h2><span class="n">02</span>The Service</h2>
+        <p>Cutz is a marketplace. We give customers a way to find barbers, see availability and prices, book appointments and join walk-in queues, and we give barbers and salons the tools to manage them.</p>
+        <p><strong>Cutz does not provide haircuts or grooming services.</strong> Each appointment is an agreement directly between the customer and the barber or salon. The barber is solely responsible for the services they provide, their quality and safety, their prices and any payment for them. Cutz is not a party to that agreement and doesn't take payment for services.</p>
+      </section>
+
+      <section id="accounts">
+        <h2><span class="n">03</span>Accounts and eligibility</h2>
+        <ul>
+          <li>You must be at least <strong>13</strong> to create a customer account. If you're under 18, a parent or guardian must agree to these Terms on your behalf.</li>
+          <li>You must be at least <strong>18</strong> and legally able to run a business to register as a barber or salon.</li>
+          <li>Give accurate information, keep it up to date and keep your password private. You're responsible for everything that happens under your account.</li>
+          <li>One person, one account. Don't create accounts for others or impersonate anyone.</li>
+          <li>You can delete your account at any time in the app's settings.</li>
+        </ul>
+      </section>
+
+      <section id="customers">
+        <h2><span class="n">04</span>Booking as a customer</h2>
+        <ul>
+          <li><strong>Cutz is free for customers.</strong> There are no booking fees and no payments in the app.</li>
+          <li>When you book an available slot you get a confirmation right away. Prices and durations are set by the barber and shown before you book. The final price is agreed with the barber at the appointment.</li>
+          <li>You pay the barber directly, using whatever payment methods they accept.</li>
+          <li>When you join a walk-in queue, your position and estimated wait are estimates only. Stay reachable and arrive when you're called.</li>
+        </ul>
+      </section>
+
+      <section id="conduct">
+        <h2><span class="n">05</span>No-shows and cancellations</h2>
+        <p>Barbers reserve time for you, so we have simple, automatic rules to keep bookings reliable:</p>
+        <ul>
+          <li><strong>Cancellation:</strong> you can cancel an upcoming booking for free up to <strong>24 hours</strong> before it starts. Bookings can't be cancelled in the app inside that window. Contact the barber directly instead.</li>
+          <li><strong>Cancellation streak:</strong> an account that cancels <strong>5 bookings in a row</strong> is closed automatically.</li>
+          <li><strong>No-shows:</strong> a barber can mark you as a no-show if you don't turn up. Each strike expires after <strong>2 months</strong>. With <strong>3 active strikes</strong> you can't make new bookings anywhere on Cutz for <strong>6 months</strong>.</li>
+          <li><strong>Reports:</strong> barbers can report customers for serious problems. A customer with <strong>5 active reports</strong> (each report lasts 3 months) is removed from Cutz.</li>
+        </ul>
+        <p>If you think a strike, report or restriction was applied by mistake, email <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a> and a person will review it.</p>
+      </section>
+
+      <section id="barbers">
+        <h2><span class="n">06</span>Barbers and salons</h2>
+        <p>If you list yourself or your business on Cutz, you agree that:</p>
+        <ul>
+          <li>you hold every licence, registration, insurance and tax registration needed to offer your services, and you follow all laws that apply, including consumer protection, hygiene and employment law;</li>
+          <li>your profile, photos, services, prices, address and opening hours are accurate and kept up to date, and the photos are your own work or you have the right to use them;</li>
+          <li>you honour bookings you've accepted, and charge the prices shown unless you and the customer agree otherwise before the service;</li>
+          <li>you use customer details you get through Cutz only to provide and manage their appointments, and not for unrelated marketing, and you handle them in line with data protection law;</li>
+          <li>you mark no-shows and file reports honestly, and never to punish a customer for leaving a fair rating;</li>
+          <li><strong>salon owners</strong> are responsible for the staff they add, and for making sure staff agree to these Terms.</li>
+        </ul>
+      </section>
+
+      <section id="billing">
+        <h2><span class="n">07</span>Subscriptions and billing</h2>
+        <ul>
+          <li><strong>Barber plan:</strong> 300 DKK per month.</li>
+          <li><strong>Salon plan:</strong> 300 DKK per month plus 50 DKK per month for each active staff member. The amount changes when you add or remove staff.</li>
+          <li>Prices include any applicable VAT unless stated otherwise. Cutz takes <strong>no commission</strong> on the services you provide.</li>
+          <li>Subscriptions are billed in advance each month through our payment provider, Stripe, and <strong>renew automatically</strong> until cancelled. By subscribing you authorise us to charge your payment method each billing period.</li>
+          <li>Your profile is only visible to customers while your subscription is active (or in a free period).</li>
+          <li><strong>Cancelling:</strong> you can cancel any time from your profile in the app. You keep access until the end of the current billing period and won't be charged again. We don't give refunds for partial months unless the law requires it.</li>
+          <li>If a payment fails, we may pause your listing until it's settled.</li>
+          <li>We may change prices with at least <strong>30 days' notice</strong>. The new price applies from your next billing period after the notice ends, and you can cancel before then.</li>
+        </ul>
+      </section>
+
+      <section id="referral">
+        <h2><span class="n">08</span>Referral codes and LAUNCH</h2>
+        <ul>
+          <li>Referral and promotional codes give the benefit shown when you enter them, for example free months or a discount.</li>
+          <li><strong>LAUNCH</strong> gives <strong>3 months free</strong> on the Barber subscription. It's limited to the <strong>first 10 barbers</strong> who redeem it and can be used once per account. When all 10 have been claimed, the code stops working.</li>
+          <li>During free months you won't be charged. When they end, your subscription continues at the normal price unless you cancel first.</li>
+          <li>Codes have no cash value, can't be transferred or combined unless we say so, and may be withdrawn if they're abused (for example, by creating extra accounts).</li>
+        </ul>
+      </section>
+
+      <section id="reviews">
+        <h2><span class="n">09</span>Ratings and reports</h2>
+        <ul>
+          <li>Customers can leave a star rating for barbers they've booked. Ratings must reflect a genuine experience.</li>
+          <li>Barbers can't pay for, swap, or pressure anyone into giving ratings, and can't rate themselves.</li>
+          <li>Barbers can report a rating they believe breaks these Terms. We may remove ratings that are fake, abusive or unrelated to a real booking, but we don't remove honest ratings just because they're negative.</li>
+        </ul>
+      </section>
+
+      <section id="content">
+        <h2><span class="n">10</span>Your content</h2>
+        <p>You keep ownership of the photos, text and other content you upload ("Your Content"). You give Cutz a worldwide, non-exclusive, royalty-free licence to host, store, display, reproduce and adapt Your Content (for example, resizing images) only to operate and promote the Service. This licence ends when you delete the content or your account, except where it has already been shared in promotional material or must be kept by law.</p>
+        <p>You're responsible for Your Content and confirm you have the rights to it. We may remove content that breaks these Terms or the law.</p>
+      </section>
+
+      <section id="use">
+        <h2><span class="n">11</span>Acceptable use</h2>
+        <p>When using Cutz you must not:</p>
+        <ul>
+          <li>make fake bookings, ratings, reports or accounts, or hold slots you don't plan to use;</li>
+          <li>harass, threaten, discriminate against or abuse anyone;</li>
+          <li>post content that is illegal, misleading, sexually explicit, hateful or that infringes someone else's rights;</li>
+          <li>get around subscriptions, referral limits, strikes or any other platform rule;</li>
+          <li>scrape, copy or collect data from the Service, or use it to send spam;</li>
+          <li>interfere with, reverse engineer or attempt to gain unauthorised access to the Service or other accounts.</li>
+        </ul>
+      </section>
+
+      <section id="ip">
+        <h2><span class="n">12</span>Our intellectual property</h2>
+        <p>The Service, including the Cutz name, logo, design and software, belongs to Cutz and is protected by law. We give you a personal, revocable, non-transferable licence to use the app for its intended purpose. Nothing in these Terms gives you any right to our trademarks.</p>
+      </section>
+
+      <section id="termination">
+        <h2><span class="n">13</span>Suspension and termination</h2>
+        <p>You can stop using Cutz and delete your account at any time. We may suspend or close an account, or remove a listing, if you break these Terms, if we have to by law, or to protect other users or the Service. Where reasonable we'll tell you why and give you a chance to respond. Sections that by their nature should survive termination (including 10, 12, 14, 15 and 16) will continue to apply.</p>
+      </section>
+
+      <section id="disclaimer">
+        <h2><span class="n">14</span>Disclaimers</h2>
+        <p>We work hard to keep Cutz available and accurate, but the Service is provided "as is" and "as available". We don't guarantee that it will be uninterrupted or error-free, or that barber availability, wait times, distances, prices or ratings will always be accurate. We don't check, endorse or guarantee any barber, salon or customer, or the quality of any service. Nothing in these Terms limits your statutory rights as a consumer.</p>
+      </section>
+
+      <section id="liability">
+        <h2><span class="n">15</span>Limitation of liability</h2>
+        <p>To the extent the law allows, Cutz is not liable for indirect or consequential losses, lost profits, lost business or lost data, or for anything that happens between customers and barbers, including the services provided, injuries, disputes or payments. For barbers and salons, our total liability for any claim relating to the Service is limited to the subscription fees you paid in the 12 months before the claim.</p>
+        <p>Nothing in these Terms excludes or limits liability that can't legally be excluded, including liability for gross negligence, intent, or death or personal injury caused by our negligence.</p>
+      </section>
+
+      <section id="law">
+        <h2><span class="n">16</span>Governing law and disputes</h2>
+        <p>These Terms are governed by Danish law. Disputes are settled by the Danish courts. If you're a consumer, you also keep the protection of the mandatory consumer laws of the country you live in, and you can bring a claim in your local courts.</p>
+        <p>Please contact us first. Most problems can be sorted out quickly. EU consumers may also use the Danish Consumer Complaints Board (Nævnenes Hus) or the EU's online dispute resolution resources.</p>
+      </section>
+
+      <section id="changes">
+        <h2><span class="n">17</span>Changes to these terms</h2>
+        <p>We may update these Terms as Cutz changes. For material changes we'll give you notice in the app or by email at least 30 days before they take effect. If you keep using Cutz after that, you accept the updated Terms. If you don't agree, you can delete your account before the changes apply.</p>
+      </section>
+
+      <section id="contact">
+        <h2><span class="n">18</span>Contact</h2>
+        <p>Questions about these Terms? Email <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>.</p>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="index.html" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index.html#how">How it works</a></li>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Download</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Barbers</h4>
+        <ul>
+          <li><a href="barbers.html">Join Cutz</a></li>
+          <li><a href="barbers.html#pricing">Pricing</a></li>
+          <li><a href="barbers.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="mailto:cutz.support@gmail.com">Support</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html" aria-current="page">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>© <span data-year>2026</span> Cutz. All rights reserved.</span>
+      <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'),btn=document.getElementById('menuBtn'),bar=document.getElementById('progress');
+  btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o);btn.setAttribute('aria-label',o?'Close menu':'Open menu')});
+  document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false')})});
+  addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+'%'},{passive:true});
+  var links={};document.querySelectorAll('.toc a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){for(var k in links)links[k].classList.toggle('on',k===e.target.id)}})},{rootMargin:'-20% 0px -70% 0px'});
+    document.querySelectorAll('article section').forEach(function(s){io.observe(s)});
+  }
+  document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()});
+})();
+</script>
+</body>
+</html>

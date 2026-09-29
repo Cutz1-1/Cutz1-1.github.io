@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy Policy — Cutz</title>
+<meta name="description" content="How Cutz collects, uses and protects your personal data, and the rights you have under the GDPR.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://cutzapp.one/privacy.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);
+  --mute:rgba(255,255,255,.68);--dim:rgba(255,255,255,.42);
+  --line:rgba(255,255,255,.1);--card:#0a0a0a;
+  --max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--green);width:0;z-index:60}
+
+/* Nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
+.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
+.nav-links a:not(.btn):hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;white-space:nowrap;transition:background .2s}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#1bff82}
+.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
+.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
+.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:820px){
+  .menu-btn{display:block}
+  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
+  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
+  .nav-links .btn{margin-top:20px;justify-content:center}
+  .nav.open{background:#000}
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+}
+
+/* Header */
+.doc-head{padding:clamp(130px,16vw,180px) 0 clamp(48px,6vw,72px);border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.doc-head h1{font-size:clamp(44px,8vw,96px);line-height:.95;letter-spacing:-.045em;font-weight:900;margin:20px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.meta span{font-size:13px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+.summary{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.summary div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;font-size:15px;color:var(--mute);line-height:1.55}
+.summary b{display:block;color:var(--fg);font-size:16px;margin-bottom:6px}
+@media (max-width:760px){.summary{grid-template-columns:1fr}}
+
+/* Layout */
+.doc{display:grid;grid-template-columns:260px 1fr;gap:clamp(40px,6vw,96px);padding:clamp(48px,6vw,80px) 0 120px}
+.toc{position:sticky;top:100px;align-self:start;max-height:calc(100vh - 120px);overflow:auto;font-size:14px}
+.toc h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 16px;font-weight:600}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.toc a{display:block;padding:7px 0 7px 16px;margin-left:-1px;border-left:2px solid transparent;color:var(--dim);transition:color .2s,border-color .2s;line-height:1.4}
+.toc a:hover{color:var(--fg)}
+.toc a.on{color:var(--fg);border-left-color:var(--green)}
+@media (max-width:900px){.doc{grid-template-columns:1fr}.toc{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}}
+
+article{max-width:720px;min-width:0}
+article section{padding-bottom:48px;margin-bottom:48px;border-bottom:1px solid var(--line)}
+article section:last-child{border-bottom:0}
+article h2{font-size:clamp(24px,3vw,30px);letter-spacing:-.025em;line-height:1.2;margin:0 0 20px;font-weight:700;display:flex;gap:14px;align-items:baseline}
+article h2 .n{font-size:14px;color:var(--green);font-weight:700;font-variant-numeric:tabular-nums;flex:none}
+article h3{font-size:17px;margin:28px 0 8px;font-weight:700}
+article p,article li{color:var(--mute)}
+article p{margin:0 0 16px}
+article ul{padding-left:20px;margin:0 0 16px}
+article li{margin-bottom:8px}
+article li::marker{color:var(--green)}
+article strong{color:var(--fg);font-weight:600}
+article a{color:var(--green);text-decoration:underline;text-underline-offset:3px}
+.table{overflow-x:auto;margin:8px 0 20px;border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.5;min-width:540px}
+th,td{text-align:left;vertical-align:top;padding:14px 16px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;background:#070707}
+td{color:var(--mute)}
+td:first-child{color:var(--fg);font-weight:500}
+tr:last-child td{border-bottom:0}
+.callout{background:rgba(0,220,100,.06);border:1px solid rgba(0,220,100,.3);border-radius:16px;padding:18px 20px;margin:8px 0 20px}
+.callout p:last-child{margin:0}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
+.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f-grid a{color:var(--mute);transition:color .2s}
+.f-grid a:hover{color:var(--fg)}
+.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+@media (max-width:760px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="barbers.html">For barbers</a>
+      <a href="terms.html">Terms</a>
+      <a href="https://apps.apple.com/app/cutz/id6811618000" class="btn btn-green" target="_blank" rel="noopener">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="doc-head">
+    <div class="wrap">
+      <div class="eyebrow">Legal</div>
+      <h1>Privacy Policy</h1>
+      <div class="meta"><span>Effective 29 September 2026</span><span>GDPR</span><span>Applies to the Cutz app and cutzapp.one</span></div>
+      <div class="summary">
+        <div><b>We don't sell your data.</b>We don't sell it or rent it out, and nobody pays us to target you with ads.</div>
+        <div><b>You're in control.</b>You can delete your account in the app at any time, and ask us for a copy of your data.</div>
+        <div><b>Only what we need.</b>We collect what's needed to run bookings, the queue and barber subscriptions.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap doc">
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#who">Who we are</a></li>
+        <li><a href="#collect">Data we collect</a></li>
+        <li><a href="#use">How and why we use it</a></li>
+        <li><a href="#visible">What others can see</a></li>
+        <li><a href="#share">Who we share it with</a></li>
+        <li><a href="#transfers">International transfers</a></li>
+        <li><a href="#retention">How long we keep it</a></li>
+        <li><a href="#automated">Automated decisions</a></li>
+        <li><a href="#rights">Your rights</a></li>
+        <li><a href="#permissions">Device permissions</a></li>
+        <li><a href="#website">This website and cookies</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#children">Children</a></li>
+        <li><a href="#changes">Changes</a></li>
+        <li><a href="#contact">Contact and complaints</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <section id="who">
+        <h2><span class="n">01</span>Who we are</h2>
+        <p>Cutz ("Cutz", "we", "us") runs the Cutz mobile app and the website at cutzapp.one (together, the "Service"). Cutz is a marketplace that connects customers with barbers and barbershops ("salons") so they can find each other, book appointments and join walk-in queues.</p>
+        <!-- TODO: add the legal entity name, CVR number and registered address before launch (GDPR Art. 13(1)(a)). -->
+        <p>Cutz is the <strong>data controller</strong> for the personal data described in this policy under the EU General Data Protection Regulation (GDPR) and the Danish Data Protection Act (databeskyttelsesloven). For anything about your data, contact us at <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>.</p>
+        <p>This policy covers everyone who uses Cutz: <strong>customers</strong> who book cuts, <strong>barbers</strong> who offer them, <strong>salon owners</strong> and <strong>salon staff</strong>.</p>
+      </section>
+
+      <section id="collect">
+        <h2><span class="n">02</span>Data we collect</h2>
+        <h3>Data you give us</h3>
+        <ul>
+          <li><strong>Account details:</strong> name, email address, password (stored only as a secure hash, never readable by us) and phone number.</li>
+          <li><strong>Profile content:</strong> profile photo and, for barbers and salons, business name, bio, address and postcode, map location, website, gallery photos, services, prices, durations, opening hours and time off.</li>
+          <li><strong>Bookings and queue activity:</strong> which barber you booked, service, date and time, status (confirmed, completed, cancelled, no-show) and walk-in queue entries.</li>
+          <li><strong>Ratings and reports:</strong> star ratings you leave, reviews you report, and reports barbers make about customers (for example, no-shows).</li>
+          <li><strong>Support messages:</strong> what you send us through the in-app contact form or by email.</li>
+          <li><strong>Referral codes:</strong> any code you redeem (such as LAUNCH) and the benefit applied.</li>
+          <li><strong>Marketing preference:</strong> whether you have opted in to receive news and offers from Cutz.</li>
+        </ul>
+        <h3>Data collected automatically</h3>
+        <ul>
+          <li><strong>Location:</strong> your device's location, but only if you allow it, used to show barbers near you. We do not track your location in the background.</li>
+          <li><strong>Push notification token:</strong> a device identifier that lets us send you notifications you've enabled.</li>
+          <li><strong>Technical data:</strong> app version, device type, operating system, language/region settings, IP address and error logs, used to keep the Service secure and working.</li>
+        </ul>
+        <h3>Payment data (barbers and salons)</h3>
+        <p>Barber and salon subscriptions are processed by <strong>Stripe</strong>. Your full card details go directly to Stripe and are never stored on Cutz servers. We receive and keep your subscription status, plan, billing period, a Stripe customer identifier and payment outcomes.</p>
+        <p><strong>Customers never pay through Cutz</strong>, and we don't collect customer payment details.</p>
+      </section>
+
+      <section id="use">
+        <h2><span class="n">03</span>How and why we use it</h2>
+        <p>We only process your data when we have a lawful basis under Article 6 GDPR:</p>
+        <div class="table"><table>
+          <thead><tr><th>Purpose</th><th>Data</th><th>Legal basis</th></tr></thead>
+          <tbody>
+            <tr><td>Create and secure your account, verify your email</td><td>Account details, technical data</td><td>Contract (Art. 6(1)(b))</td></tr>
+            <tr><td>Show barbers on the map and let customers find them</td><td>Barber profile content, location (if allowed)</td><td>Contract (Art. 6(1)(b))</td></tr>
+            <tr><td>Make, manage and remind you about bookings and queue places</td><td>Bookings, contact details, push token</td><td>Contract (Art. 6(1)(b))</td></tr>
+            <tr><td>Bill barber and salon subscriptions, apply referral codes</td><td>Payment and subscription data, referral codes</td><td>Contract (Art. 6(1)(b))</td></tr>
+            <tr><td>Keep financial records</td><td>Invoices, payment records</td><td>Legal obligation (Art. 6(1)(c)), Danish Bookkeeping Act</td></tr>
+            <tr><td>Enforce no-show, cancellation and reporting rules; prevent fraud and abuse</td><td>Bookings, strikes, reports, technical data</td><td>Legitimate interests (Art. 6(1)(f)): a reliable platform for barbers and customers</td></tr>
+            <tr><td>Show ratings and moderate reported reviews</td><td>Ratings, reports</td><td>Legitimate interests (Art. 6(1)(f))</td></tr>
+            <tr><td>Answer support requests</td><td>Support messages, account details</td><td>Contract / legitimate interests</td></tr>
+            <tr><td>Fix bugs and improve the Service</td><td>Technical data, error logs</td><td>Legitimate interests (Art. 6(1)(f))</td></tr>
+            <tr><td>Send news and offers</td><td>Email, name, marketing preference</td><td>Consent (Art. 6(1)(a)), which you can withdraw at any time</td></tr>
+          </tbody>
+        </table></div>
+        <p>We don't use your data for third-party advertising and we don't sell it.</p>
+      </section>
+
+      <section id="visible">
+        <h2><span class="n">04</span>What others can see</h2>
+        <ul>
+          <li><strong>Barber and salon profiles are public.</strong> Anyone using Cutz can see a listed barber's business name, photos, bio, address and map location, services, prices, opening hours, rating and phone number. Don't add anything to your public profile that you don't want to be public.</li>
+          <li><strong>When you book or join a queue</strong>, that barber (and, for a salon, the salon owner) can see your name, phone number and profile photo, plus your booking history with them, so they can prepare for and contact you about your appointment.</li>
+          <li><strong>Ratings</strong> are shown on the barber's profile as part of their overall rating.</li>
+          <li><strong>Salon staff</strong> have their name, photo and calendar availability shown on the salon's profile, and the salon owner can see their bookings.</li>
+        </ul>
+      </section>
+
+      <section id="share">
+        <h2><span class="n">05</span>Who we share it with</h2>
+        <p>We use trusted service providers ("processors") who handle data only on our instructions and under a data processing agreement:</p>
+        <div class="table"><table>
+          <thead><tr><th>Provider</th><th>What they do</th></tr></thead>
+          <tbody>
+            <tr><td>Supabase</td><td>Database, authentication, file storage (photos) and server functions that host the Service</td></tr>
+            <tr><td>Stripe</td><td>Processes barber and salon subscription payments</td></tr>
+            <tr><td>Apple</td><td>App distribution, push notification delivery (APNs), maps and Apple Pay</td></tr>
+            <tr><td>Expo</td><td>Delivers push notifications to your device</td></tr>
+            <tr><td>Email delivery providers</td><td>Send verification, password reset and account emails</td></tr>
+            <tr><td>Google</td><td>Serves the web font on cutzapp.one; opens Google Maps directions if you choose to on a non-Apple device</td></tr>
+          </tbody>
+        </table></div>
+        <p>We may also share data when the law requires it (for example, a valid request from a public authority), to protect the rights and safety of our users or of Cutz, or as part of a merger or acquisition, in which case this policy continues to apply to your data.</p>
+      </section>
+
+      <section id="transfers">
+        <h2><span class="n">06</span>International transfers</h2>
+        <p>Some of our providers are based in, or access data from, countries outside the European Economic Area, including the United States. When that happens we make sure the transfer is protected by an adequacy decision (such as the EU–US Data Privacy Framework, where the provider is certified) or by the European Commission's Standard Contractual Clauses along with extra safeguards where needed. You can ask us for a copy of these safeguards.</p>
+      </section>
+
+      <section id="retention">
+        <h2><span class="n">07</span>How long we keep it</h2>
+        <ul>
+          <li><strong>Account and profile data:</strong> until you delete your account. Deleting it in the app permanently removes your profile, bookings, photos and ratings.</li>
+          <li><strong>No-show strikes:</strong> expire automatically 2 months after they're issued.</li>
+          <li><strong>Customer reports from barbers:</strong> expire automatically after 3 months.</li>
+          <li><strong>Billing and accounting records:</strong> 5 years from the end of the financial year, as required by the Danish Bookkeeping Act. This applies even if you delete your account.</li>
+          <li><strong>Support messages:</strong> up to 24 months after the conversation ends.</li>
+          <li><strong>Technical logs:</strong> kept for a short period, normally no longer than 90 days.</li>
+          <li><strong>Backups:</strong> deleted data can stay in encrypted backups for a limited time until they're overwritten on a rolling basis.</li>
+        </ul>
+      </section>
+
+      <section id="automated">
+        <h2><span class="n">08</span>Automated decisions</h2>
+        <p>To keep bookings reliable, some account restrictions are applied automatically:</p>
+        <ul>
+          <li>A customer with <strong>3 active no-show strikes</strong> can't make new bookings for 6 months.</li>
+          <li>An account that <strong>cancels 5 bookings in a row</strong> is closed automatically.</li>
+          <li>A customer who receives <strong>5 active reports</strong> from barbers within the 3-month report period is removed.</li>
+        </ul>
+        <p>These rules are applied the same way to everyone and are explained in our <a href="terms.html">Terms of Service</a>. If you think a restriction was applied to you by mistake, you have the right to have a person review it, to explain your side and to challenge the decision. Email <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>.</p>
+      </section>
+
+      <section id="rights">
+        <h2><span class="n">09</span>Your rights</h2>
+        <p>Under the GDPR you have the right to:</p>
+        <ul>
+          <li><strong>Access</strong> the personal data we hold about you and get a copy of it.</li>
+          <li><strong>Rectification</strong>: correct inaccurate data. You can edit most of it yourself in the app.</li>
+          <li><strong>Erasure</strong>: delete your account at any time in the app's settings, or ask us to do it.</li>
+          <li><strong>Restriction</strong>: ask us to limit how we use your data.</li>
+          <li><strong>Portability</strong>: receive your data in a structured, machine-readable format.</li>
+          <li><strong>Object</strong> to processing based on legitimate interests, including profiling.</li>
+          <li><strong>Withdraw consent</strong> at any time, for example to marketing, without affecting earlier processing.</li>
+        </ul>
+        <div class="callout"><p>To use any of these rights, email <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a> from the address on your account. We reply within one month. We may need to confirm your identity first.</p></div>
+      </section>
+
+      <section id="permissions">
+        <h2><span class="n">10</span>Device permissions</h2>
+        <p>Cutz only asks for a permission when a feature needs it. You can change these at any time in your iPhone's Settings.</p>
+        <ul>
+          <li><strong>Location</strong>: to show barbers near you and, for barbers, to place your shop on the map.</li>
+          <li><strong>Photos</strong>: to choose a profile picture or gallery images. We only get the photos you pick.</li>
+          <li><strong>Notifications</strong>: for booking confirmations, reminders and queue updates.</li>
+        </ul>
+      </section>
+
+      <section id="website">
+        <h2><span class="n">11</span>This website and cookies</h2>
+        <p>cutzapp.one does not set cookies and does not use analytics or advertising trackers. Loading the site fetches its font from Google Fonts and requests public, aggregate information from our servers (such as whether the LAUNCH code is still available). Both requests send your IP address to the provider, as happens whenever you load any web page.</p>
+      </section>
+
+      <section id="security">
+        <h2><span class="n">12</span>Security</h2>
+        <p>Data is encrypted in transit (TLS) and at rest. Access is controlled with row-level security, so each user can only reach the data they're allowed to see. Passwords are hashed, and card details are handled only by Stripe. No system is 100% secure, but if a breach affects your data we'll notify you and the relevant authority as the law requires.</p>
+      </section>
+
+      <section id="children">
+        <h2><span class="n">13</span>Children</h2>
+        <p>You must be at least 13 to create a Cutz account, and at least 18 to register as a barber or salon. If you're under 18, a parent or guardian should agree to your use of Cutz. If you think a child under 13 has given us personal data, contact us and we'll delete it.</p>
+      </section>
+
+      <section id="changes">
+        <h2><span class="n">14</span>Changes to this policy</h2>
+        <p>We may update this policy as the Service changes. The "Effective" date at the top shows when it was last updated. If we make significant changes we'll tell you in the app or by email before they take effect.</p>
+      </section>
+
+      <section id="contact">
+        <h2><span class="n">15</span>Contact and complaints</h2>
+        <p>Questions, requests or concerns: <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>.</p>
+        <p>You also have the right to complain to a data protection authority. In Denmark that's <strong>Datatilsynet</strong>, Carl Jacobsens Vej 35, 2500 Valby, <a href="https://www.datatilsynet.dk" target="_blank" rel="noopener">datatilsynet.dk</a>. If you live elsewhere in the EU/EEA, you can contact your local authority. We'd appreciate the chance to sort things out with you first.</p>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="index.html" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="index.html#how">How it works</a></li>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Download</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Barbers</h4>
+        <ul>
+          <li><a href="barbers.html">Join Cutz</a></li>
+          <li><a href="barbers.html#pricing">Pricing</a></li>
+          <li><a href="barbers.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="mailto:cutz.support@gmail.com">Support</a></li>
+          <li><a href="privacy.html" aria-current="page">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>© <span data-year>2026</span> Cutz. All rights reserved.</span>
+      <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'),btn=document.getElementById('menuBtn'),bar=document.getElementById('progress');
+  btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o);btn.setAttribute('aria-label',o?'Close menu':'Open menu')});
+  document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false')})});
+  addEventListener('scroll',function(){var h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?scrollY/h*100:0)+'%'},{passive:true});
+  var links={};document.querySelectorAll('.toc a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){for(var k in links)links[k].classList.toggle('on',k===e.target.id)}})},{rootMargin:'-20% 0px -70% 0px'});
+    document.querySelectorAll('article section').forEach(function(s){io.observe(s)});
+  }
+  document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()});
+})();
+</script>
+</body>
+</html>
