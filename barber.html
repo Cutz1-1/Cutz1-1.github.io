@@ -253,6 +253,22 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
 @media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.ok-ic path{stroke-dashoffset:0}}
 </style>
+<!-- og -->
+<meta property="og:site_name" content="Cutz">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Barber — Book on Cutz">
+<meta property="og:description" content="See services, prices, opening hours and reviews, and book your next cut online with Cutz.">
+<meta property="og:image" content="https://cutzapp.one/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cutz: book your barber in seconds">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Barber — Book on Cutz">
+<meta name="twitter:description" content="See services, prices, opening hours and reviews, and book your next cut online with Cutz.">
+<meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- /og -->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -263,10 +279,11 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
     <nav class="nav-links" id="navLinks" aria-label="Main">
       <a href="find.html">Find a barber</a>
+      <a href="map.html">Map</a>
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
       <a href="faq.html">FAQ</a>
-      <a href="https://apps.apple.com/app/cutz/id6811618000" class="btn btn-green" target="_blank" rel="noopener">Get the app</a>
+      <a href="download.html" class="btn btn-green">Get the app</a>
     </nav>
   </div>
 </header>
@@ -290,10 +307,30 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
         <a href="index.html" class="logo">CUTZ<i></i></a>
         <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
       </div>
-      <div><h4>Product</h4><ul><li><a href="find.html">Find a barber</a></li><li><a href="index.html#how">How it works</a></li><li><a href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Download</a></li></ul></div>
-      <div><h4>Business</h4><ul><li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="mailto:cutz.support@gmail.com">Support</a></li></ul></div>
-      <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Business</h4>
+        <ul>
+          <li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
     </div>
     <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
   </div>
@@ -530,7 +567,7 @@ function renderStep() {
   if (!(b.services || []).length) { el.innerHTML = '<div class="step"><h3>Not bookable yet</h3><p class="hint">This barber hasn\'t added any services. Check back soon.</p></div>'; return; }
   ({ service: stepService, date: stepDate, time: stepTime, details: stepDetails, otp: stepOtp, confirm: stepConfirm, done: stepDone })[S.step](el);
 }
-const backBtn = to => `<button class="back" data-back="${to}">${ICON.left}Back</button>`;
+const backBtn = to => `<button type="button" class="back" data-back="${to}">${ICON.left}Back</button>`;
 function wireBack(el) { el.querySelectorAll('[data-back]').forEach(b => b.onclick = () => go(b.dataset.back)); }
 function showErr(el, msg) {
   let e = el.querySelector('.err');
@@ -674,16 +711,17 @@ async function stepDetails(el) {
   }
 
   const signup = S.authMode === 'signup', p = S.pending || {};
-  el.innerHTML = `<div class="step">${backBtn('time')}<h3>${signup ? 'Your details' : 'Sign in to book'}</h3><p class="hint">${signup ? 'Create a free Cutz account. You can use it in the app too.' : 'Use your Cutz account, the same one as in the app.'}</p>
+  el.innerHTML = `<form class="step" id="authForm" novalidate>${backBtn('time')}<h3>${signup ? 'Your details' : 'Sign in to book'}</h3><p class="hint">${signup ? 'Create a free Cutz account. You can use it in the app too.' : 'Use your Cutz account, the same one as in the app.'}</p>
     <div class="tabs" role="tablist"><button role="tab" data-m="signup" class="${signup ? 'on' : ''}" aria-selected="${signup}">New to Cutz</button><button role="tab" data-m="signin" class="${signup ? '' : 'on'}" aria-selected="${!signup}">I have an account</button></div>
     ${signup ? `<div class="field"><label for="f-name">Full name</label><input id="f-name" autocomplete="name" value="${esc(p.name || '')}"></div>${phoneField(p.phone)}` : ''}
     <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(p.email || '')}"></div>
     <div class="field"><label for="f-pw">Password</label><input id="f-pw" type="password" autocomplete="${signup ? 'new-password' : 'current-password'}" ${signup ? 'minlength="6" placeholder="At least 6 characters"' : ''}></div>
     ${signup ? '<label class="check"><input type="checkbox" id="f-ok"><span>I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</span></label>' : ''}
-    <button class="btn btn-green btn-lg btn-block" id="next">${signup ? 'Continue' : 'Sign in'}</button>
-    ${signup ? '' : '<p class="note">Forgot your password? Reset it in the Cutz app.</p>'}</div>`;
+    <button class="btn btn-green btn-lg btn-block" id="next" type="button">${signup ? 'Continue' : 'Sign in'}</button>
+    ${signup ? '' : '<p class="note">Forgot your password? Reset it in the Cutz app.</p>'}</form>`;
   wireBack(el);
-  el.querySelectorAll('.tabs button').forEach(t => t.onclick = () => { S.authMode = t.dataset.m; renderStep(); });
+  el.querySelector('#authForm').onsubmit = e => { e.preventDefault(); el.querySelector('#next').click(); };
+  el.querySelectorAll('.tabs button').forEach(t => { t.type = 'button'; t.onclick = () => { S.authMode = t.dataset.m; renderStep(); }; });
   el.querySelector('#next').onclick = async () => {
     const email = el.querySelector('#f-email').value.trim(), pw = el.querySelector('#f-pw').value;
     if (!/^\S+@\S+\.\S+$/.test(email)) return showErr(el, 'Please enter a valid email address.');

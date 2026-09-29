@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barber map — Cutz</title>
+<meta name="description" content="See barbers and barbershops on a live map. Filter by distance, walk-ins, rating and who's open now, then book online with Cutz.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://cutzapp.one/map.html">
+<meta name="apple-itunes-app" content="app-id=6811618000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ukoovhgmbqfocalykhyx.supabase.co" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);
+  --mute:rgba(255,255,255,.64);--dim:rgba(255,255,255,.42);--faint:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.1);--card:#0a0a0a;--card-2:#121212;
+  --r:22px;--max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+svg{display:block}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
+.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
+.nav-links a:not(.btn){transition:color .2s}
+.nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:var(--fg)}
+.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
+.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
+.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:900px){
+  .menu-btn{display:block}
+  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
+  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
+  .nav-links .btn{margin-top:20px;justify-content:center}
+  .nav.open{background:#000}
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s var(--ease),background .2s,border-color .2s;white-space:nowrap;cursor:pointer;border:0}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#1bff82}
+.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--fg);background:none}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn-lg{height:54px;padding:0 26px;font-size:16px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,220,100,.7);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(0,220,100,0)}100%{box-shadow:0 0 0 0 rgba(0,220,100,0)}}
+
+
+/* Map page */
+body.map-page{overflow:hidden;height:100vh;height:100dvh}
+.mapwrap{position:fixed;inset:68px 0 0 0;display:grid;grid-template-columns:380px 1fr}
+#map{position:relative;height:100%;background:#0d1110;z-index:1}
+.leaflet-container{background:#0d1110;font-family:inherit}
+.leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.6)}
+.leaflet-control-attribution{background:rgba(0,0,0,.7)!important;color:var(--dim)!important;font-size:10px}
+.leaflet-control-attribution a{color:var(--mute)!important}
+.leaflet-bar{border:1px solid var(--line)!important;box-shadow:none!important}
+.leaflet-bar a{background:#111!important;color:#fff!important;border-bottom-color:var(--line)!important}
+.leaflet-bar a:hover{background:#1c1c1c!important}
+#map a.btn-green{color:#000}
+#map a.btn-ghost{color:#fff}
+.pinx{background:none;border:0}
+.pill{display:inline-flex;align-items:center;gap:5px;transform:translate(-50%,-100%);white-space:nowrap;background:#fff;color:#000;font:800 12px/1 Inter,system-ui,sans-serif;padding:7px 10px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.55);cursor:pointer;transition:transform .2s var(--ease)}
+.pill::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;margin-left:-5px;background:inherit;transform:rotate(45deg);border-radius:2px;z-index:-1}
+.pill.open{background:var(--green)}
+.pill.salon{background:#111;color:#fff;border:1.5px solid var(--green)}
+.pill.salon::after{border-right:1.5px solid var(--green);border-bottom:1.5px solid var(--green)}
+.pill.sel{transform:translate(-50%,-100%) scale(1.15);box-shadow:0 0 0 4px rgba(0,220,100,.35),0 8px 22px rgba(0,0,0,.6)}
+.me-dot{width:18px;height:18px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 10px rgba(59,130,246,.2);transform:translate(-50%,-50%)}
+
+/* Side panel */
+.panel{background:#000;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;z-index:2}
+.p-head{padding:20px 20px 12px}
+.p-head h1{font-size:28px;letter-spacing:-.03em;margin:0;font-weight:800}
+.p-head p{margin:4px 0 0;color:var(--dim);font-size:14px}
+.p-head p a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+.fl{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 14px;border-bottom:1px solid var(--line)}
+.chip{height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--mute);transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:rgba(255,255,255,.3);color:var(--fg)}
+.chip.on{background:#fff;color:#000;border-color:#fff}
+.chip.loc.on{background:var(--green);border-color:var(--green)}
+.sel-dist{height:34px;border-radius:999px;border:1px solid var(--line);background:#000;padding:0 30px 0 13px;font-size:13px;color:var(--mute);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='3'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.list{flex:1;overflow:auto;padding:8px 12px 20px;min-height:0}
+.row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px;border-radius:16px;border:1px solid transparent;background:none;cursor:pointer;transition:background .2s,border-color .2s}
+.row:hover{background:#0d0d0d}
+.row.sel{border-color:var(--green);background:rgba(0,220,100,.06)}
+.av{width:48px;height:48px;border-radius:14px;flex:none;background:linear-gradient(135deg,#2a2a2a,#151515);display:grid;place-items:center;font-weight:800;overflow:hidden;border:1px solid var(--line)}
+.av img{width:100%;height:100%;object-fit:cover}
+.row .t{flex:1;min-width:0}
+.row b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row small{display:block;color:var(--dim);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .pr{font-weight:700;font-size:14px;white-space:nowrap}
+.dotg{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:1px}
+.none{color:var(--dim);font-size:14px;text-align:center;padding:28px 12px}
+
+/* Card */
+.card{position:absolute;z-index:500;left:20px;bottom:20px;width:340px;max-width:calc(100% - 40px);background:rgba(12,12,12,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(calc(100% + 40px));transition:transform .45s var(--ease)}
+.card.show{transform:none}
+.c-cover{height:130px;background:radial-gradient(70% 90% at 70% 10%,rgba(0,220,100,.18),transparent 60%),#111;position:relative;display:grid;place-items:center;font-size:44px;font-weight:900;color:rgba(255,255,255,.14)}
+.c-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.c-x{font-size:14px;color:#fff;position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(0,0,0,.7);cursor:pointer;display:grid;place-items:center;z-index:1}
+.c-body{padding:16px 18px 18px}
+.c-name{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0}
+.c-sub{color:var(--dim);font-size:13px;margin-top:2px}
+.c-tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
+.c-tags span{font-size:12px;padding:5px 10px;border-radius:999px;background:#1a1a1a;color:var(--mute)}
+.c-tags span.g{background:var(--green-dim);color:var(--green)}
+.c-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.c-btns .btn{height:44px}
+
+/* Overlays */
+.ov{position:absolute;z-index:450;left:50%;top:50%;transform:translate(-50%,-50%);width:min(420px,calc(100% - 32px));background:rgba(8,8,8,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:26px;padding:28px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.ov h2{margin:0 0 8px;font-size:26px;letter-spacing:-.03em}
+.ov p{margin:0 0 20px;color:var(--mute);font-size:15px}
+.ov .r{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.ov .x{font-size:13px;position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;display:grid;place-items:center;color:var(--dim)}
+.loading{position:absolute;z-index:450;left:50%;top:20px;transform:translateX(-50%);background:rgba(10,10,10,.9);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:13px;color:var(--mute);display:flex;align-items:center;gap:8px}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--green);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.grab{display:none}
+
+@media (max-width:900px){
+  .mapwrap{grid-template-columns:1fr}
+  .panel{position:absolute;left:0;right:0;bottom:0;z-index:600;border-right:0;border-top:1px solid var(--line);border-radius:24px 24px 0 0;height:58%;transform:translateY(calc(100% - 132px));transition:transform .4s var(--ease);box-shadow:0 -20px 60px rgba(0,0,0,.5);padding-bottom:env(safe-area-inset-bottom)}
+  .panel.up{transform:none}
+  .grab{display:block;width:100%;height:28px;border:0;background:none;cursor:pointer;position:relative;flex:none}
+  .grab::before{content:"";position:absolute;left:50%;top:10px;width:40px;height:4px;margin-left:-20px;border-radius:4px;background:#3a3a3a}
+  .p-head{padding:0 16px 10px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .p-head h1{font-size:20px}
+  .p-head p{margin:0;font-size:13px}
+  .fl{padding:0 16px 12px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .fl::-webkit-scrollbar{display:none}
+  .fl>*{flex:none}
+  .card{left:12px;right:12px;width:auto;max-width:none;bottom:144px}
+  .loading{top:12px}
+  .ov{top:38%}
+}
+@media (prefers-reduced-motion:reduce){.pill,.card,.panel{transition:none}}
+footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
+.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
+.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f-grid a{color:var(--mute);transition:color .2s}
+.f-grid a:hover{color:var(--fg)}
+.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+@media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<!-- og -->
+<meta property="og:site_name" content="Cutz">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://cutzapp.one/map.html">
+<meta property="og:title" content="Barber map — Cutz">
+<meta property="og:description" content="See barbers and barbershops on a live map. Filter by distance, walk-ins, rating and who's open now, then book online with Cutz.">
+<meta property="og:image" content="https://cutzapp.one/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cutz: book your barber in seconds">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Barber map — Cutz">
+<meta name="twitter:description" content="See barbers and barbershops on a live map. Filter by distance, walk-ins, rating and who's open now, then book online with Cutz.">
+<meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- /og -->
+</head>
+<body class="map-page">
+<a class="skip" href="#list">Skip to barber list</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="find.html">Find a barber</a>
+      <a href="map.html" aria-current="page">Map</a>
+      <a href="barbers.html">For barbers</a>
+      <a href="salons.html">For salons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="download.html" class="btn btn-green">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<div class="mapwrap">
+  <aside class="panel" id="panel" aria-label="Barbers on the map">
+    <button class="grab" id="grab" aria-label="Expand list" aria-expanded="false"></button>
+    <div class="p-head"><h1>Barber map</h1><p><span id="count">Loading…</span> · <a href="find.html">List view</a></p></div>
+    <div class="fl" role="group" aria-label="Filters">
+      <button class="chip loc" id="locate" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg>Locate me</button>
+      <label class="sr" for="dist">Distance</label>
+      <select class="sel-dist" id="dist"><option value="">Any distance</option><option value="1">Within 1 km</option><option value="3">Within 3 km</option><option value="5">Within 5 km</option><option value="10">Within 10 km</option></select>
+      <button class="chip" data-f="open" aria-pressed="false">Open now</button>
+      <button class="chip" data-f="walkin" aria-pressed="false">Walk-ins</button>
+      <button class="chip" data-f="rated" aria-pressed="false">★ 4+</button>
+    </div>
+    <div class="list" id="list" aria-live="polite"></div>
+  </aside>
+  <div id="map" role="application" aria-label="Map of barbers">
+    <div class="loading" id="loading"><span class="spin"></span>Loading barbers…</div>
+    <div class="ov" id="ov" hidden></div>
+    <article class="card" id="card" aria-live="polite"></article>
+  </div>
+</div>
+</main>
+
+<footer hidden>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="index.html" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html" aria-current="page">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Business</h4>
+        <ul>
+          <li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function(){
+  var SB_URL='https://ukoovhgmbqfocalykhyx.supabase.co';
+  // Public anon key: only RLS-protected public views are readable.
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
+  // App Store review account, never shown on the public site.
+  var DEMO_ID='98cc2e6f-1395-488f-bee4-fd91b164b4ac';
+  var APP_STORE='https://apps.apple.com/app/cutz/id6811618000';
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');
+  mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+
+  var H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
+  function get(p){return fetch(SB_URL+'/rest/v1/'+p,{headers:H}).then(function(r){if(!r.ok)throw r;return r.json()})}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function ini(n){return(n||'?').trim().split(/\s+/).map(function(p){return p[0]}).join('').slice(0,2).toUpperCase()}
+  function toMin(t){var p=String(t).split(':');return(+p[0])*60+(+p[1]||0)}
+  function openNow(b){var h=b.hours;if(!h||!Object.keys(h).length)return null;var now=new Date(),r=h[DAYS[now.getDay()]];if(!r||r==='Closed')return false;var p=r.split(' - '),m=now.getHours()*60+now.getMinutes();return m>=toMin(p[0])&&m<toMin(p[1])}
+  function minPrice(b){var s=b.services||[];return s.length?Math.min.apply(null,s.map(function(x){return+x.price||0})):null}
+  function km(a,b){var R=6371,r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lng-a.lng)*r;var x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))}
+  function fmtKm(d){return d<1?Math.round(d*100)*10+' m':d.toFixed(d<10?1:0)+' km'}
+
+  var map=L.map('map',{zoomControl:false,attributionControl:true}).setView([56.0,10.4],7);
+  L.control.zoom({position:'topright'}).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(map);
+
+  var S={items:[],me:null,meMarker:null,dist:'',open:false,walkin:false,rated:false,sel:null};
+  var list=document.getElementById('list'),card=document.getElementById('card'),panel=document.getElementById('panel'),grab=document.getElementById('grab'),ov=document.getElementById('ov');
+
+  Promise.all([
+    // Same rule as the app's map: only barbers who are online with at least one service.
+    get('barbers_public?select=*&is_discoverable=eq.true&id=neq.'+DEMO_ID),
+    get('salons_public?select=*').catch(function(){return[]})
+  ]).then(function(r){
+    document.getElementById('loading').remove();
+    var salons=(r[1]||[]).map(function(s){s._salon=true;return s});
+    S.items=(r[0]||[]).concat(salons).filter(function(x){return x.lat!=null&&x.lng!=null&&!isNaN(+x.lat)&&!isNaN(+x.lng)});
+    S.items.forEach(function(x){x._lat=+x.lat;x._lng=+x.lng;x._marker=L.marker([x._lat,x._lng],{icon:icon(x),keyboard:true,title:x.name}).on('click',function(){select(x,false)})});
+    if(!S.items.length)showEmpty();
+    else{var b=L.latLngBounds(S.items.map(function(x){return[x._lat,x._lng]}));map.fitBounds(b,{padding:[60,60],maxZoom:14})}
+    render();
+  }).catch(function(){
+    document.getElementById('loading').remove();
+    document.getElementById('count').textContent='Couldn\'t load';
+    ov.hidden=false;ov.innerHTML='<h2>Couldn\'t load barbers</h2><p>Check your connection and try again.</p><div class="r"><button class="btn btn-green" onclick="location.reload()">Try again</button></div>';
+  });
+
+  function icon(x){
+    var mp=minPrice(x),op=openNow(x);
+    var label=x._salon?'Salon':(mp!=null?'from '+mp+' kr':'Cutz');
+    return L.divIcon({className:'pinx',iconSize:[0,0],html:'<span class="pill'+(x._salon?' salon':op===true?' open':'')+(S.sel===x?' sel':'')+'">'+esc(label)+'</span>'});
+  }
+  function showEmpty(){
+    ov.hidden=false;
+    ov.innerHTML='<button class="x" id="ovx" aria-label="Dismiss">✕</button><h2>Barbers are joining now</h2><p>Cutz has only just launched. The first barbers are setting up and will appear on this map as soon as they go live.</p><div class="r"><a class="btn btn-green" href="'+APP_STORE+'" target="_blank" rel="noopener">Get the app</a><a class="btn btn-ghost" href="barbers.html">I\'m a barber</a></div>';
+    document.getElementById('ovx').onclick=function(){ov.hidden=true};
+  }
+
+  function pass(x){
+    if(S.open&&openNow(x)!==true)return false;
+    if(S.walkin&&!x.walk_in_available)return false;
+    if(S.rated&&!((+x.rating||0)>=4))return false;
+    if(S.dist&&S.me&&km(S.me,{lat:x._lat,lng:x._lng})>+S.dist)return false;
+    // Barber-only filters hide salons (they have no hours/queue/rating of their own).
+    if(x._salon&&(S.open||S.walkin||S.rated))return false;
+    return true;
+  }
+  function render(){
+    var vis=S.items.filter(pass);
+    S.items.forEach(function(x){x._d=S.me?km(S.me,{lat:x._lat,lng:x._lng}):null;var on=vis.indexOf(x)>=0;if(on&&!map.hasLayer(x._marker))x._marker.addTo(map);if(!on&&map.hasLayer(x._marker))x._marker.remove()});
+    if(S.me)vis.sort(function(a,b){return a._d-b._d});
+    var nb=vis.filter(function(x){return!x._salon}).length,ns=vis.length-nb;
+    document.getElementById('count').textContent=S.items.length?(nb+' barber'+(nb===1?'':'s')+(ns?' · '+ns+' salon'+(ns===1?'':'s'):'')):'No barbers yet';
+    if(!vis.length){list.innerHTML='<p class="none">'+(S.items.length?'Nothing matches these filters.':'No barbers on the map yet.')+'</p>';return}
+    list.innerHTML=vis.map(function(x,i){var op=openNow(x),mp=minPrice(x),photo=x._salon?(x.photos||[])[0]:x.avatar_photo;
+      return'<button class="row'+(S.sel===x?' sel':'')+'" data-i="'+S.items.indexOf(x)+'"><span class="av">'+(photo?'<img src="'+esc(photo)+'" alt="" loading="lazy">':esc(ini(x.name)))+'</span><span class="t"><b>'+esc(x.name)+'</b><small>'+(x._salon?'Salon':(op===true?'<span class="dotg"></span>Open now · ':'')+(+x.rating?'★ '+(+x.rating).toFixed(1):'New on Cutz'))+(x._d!=null?' · '+fmtKm(x._d):'')+'</small></span>'+(mp!=null&&!x._salon?'<span class="pr">'+mp+' kr</span>':'')+'</button>'}).join('');
+    list.querySelectorAll('.row').forEach(function(r){r.onclick=function(){select(S.items[+r.dataset.i],true)}});
+  }
+  function select(x,fly){
+    var prev=S.sel;S.sel=x;
+    if(prev)prev._marker.setIcon(icon(prev));
+    x._marker.setIcon(icon(x));x._marker.setZIndexOffset(1000);
+    if(prev&&prev!==x)prev._marker.setZIndexOffset(0);
+    if(fly)map.flyTo([x._lat,x._lng],Math.max(map.getZoom(),15),{duration:.8});
+    showCard(x);panelUp(false);render();
+  }
+  function showCard(x){
+    var op=openNow(x),mp=minPrice(x),cover=(x.photos||[])[0],href=(x._salon?'salon.html':'barber.html')+'?id='+encodeURIComponent(x.id);
+    var tags=[];
+    if(x._salon){tags.push('<span>Salon</span>')}else{
+      tags.push(op===true?'<span class="g">Open now</span>':op===false?'<span>Closed now</span>':'');
+      tags.push(+x.rating?'<span>★ '+(+x.rating).toFixed(1)+' ('+(x.review_count||0)+')</span>':'<span>New on Cutz</span>');
+      if(x.walk_in_available)tags.push('<span>Walk-ins · '+(x.queue_size||0)+' in queue</span>');
+      if(mp!=null)tags.push('<span>From '+mp+' kr</span>');
+    }
+    if(x._d!=null)tags.push('<span>'+fmtKm(x._d)+' away</span>');
+    card.innerHTML='<div class="c-cover">'+(cover?'<img src="'+esc(cover)+'" alt="">':esc(ini(x.name)))+'<button class="c-x" id="cx" aria-label="Close">✕</button></div>'+
+      '<div class="c-body"><h2 class="c-name">'+esc(x.name)+'</h2><div class="c-sub">'+esc(x._salon?(x.address||''):[x.salon,x.address].filter(Boolean).join(' · '))+'</div><div class="c-tags">'+tags.join('')+'</div>'+
+      '<div class="c-btns">'+(x._salon?'<a class="btn btn-green" href="'+href+'#team">See the team</a><a class="btn btn-ghost" href="'+href+'">View salon</a>':'<a class="btn btn-green" href="'+href+'#booker">Book now</a><a class="btn btn-ghost" href="'+href+'">View profile</a>')+'</div></div>';
+    card.classList.add('show');
+    document.getElementById('cx').onclick=closeCard;
+  }
+  function closeCard(){card.classList.remove('show');if(S.sel){var p=S.sel;S.sel=null;p._marker.setIcon(icon(p));p._marker.setZIndexOffset(0)}render()}
+  map.on('click',function(){if(card.classList.contains('show'))closeCard()});
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&card.classList.contains('show'))closeCard()});
+
+  function panelUp(up){panel.classList.toggle('up',up);grab.setAttribute('aria-expanded',up);grab.setAttribute('aria-label',up?'Collapse list':'Expand list')}
+  grab.onclick=function(){panelUp(!panel.classList.contains('up'))};
+
+  document.querySelectorAll('[data-f]').forEach(function(b){b.onclick=function(){var k=b.dataset.f;S[k]=!S[k];b.classList.toggle('on',S[k]);b.setAttribute('aria-pressed',S[k]);render()}});
+  var loc=document.getElementById('locate'),dist=document.getElementById('dist');
+  function locate(then){
+    if(!navigator.geolocation){alert('Location isn\'t available in this browser.');return}
+    loc.lastChild.textContent='Locating…';
+    navigator.geolocation.getCurrentPosition(function(p){
+      S.me={lat:p.coords.latitude,lng:p.coords.longitude};
+      loc.lastChild.textContent='Located';loc.classList.add('on');loc.setAttribute('aria-pressed','true');
+      if(S.meMarker)S.meMarker.remove();
+      S.meMarker=L.marker([S.me.lat,S.me.lng],{icon:L.divIcon({className:'pinx',iconSize:[0,0],html:'<div class="me-dot"></div>'}),interactive:false,zIndexOffset:-100}).addTo(map);
+      map.flyTo([S.me.lat,S.me.lng],S.dist?(S.dist<=1?15:S.dist<=3?14:S.dist<=5?13:12):13,{duration:.8});
+      render();if(then)then();
+    },function(){loc.lastChild.textContent='Locate me';alert('We couldn\'t get your location. Check your browser\'s location permission.');dist.value='';S.dist='';render()},{timeout:10000,maximumAge:300000});
+  }
+  loc.onclick=function(){locate()};
+  dist.onchange=function(){S.dist=dist.value;if(S.dist&&!S.me){locate();return}if(S.me&&S.dist)map.flyTo([S.me.lat,S.me.lng],S.dist<=1?15:S.dist<=3?14:S.dist<=5?13:12,{duration:.6});render()};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Download Cutz for iPhone</title>
+<meta name="description" content="Download Cutz free on the App Store. Find barbers near you, book in seconds or join the walk-in queue. Barbers manage bookings with 0% commission.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://cutzapp.one/download.html">
+<meta name="apple-itunes-app" content="app-id=6811618000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ukoovhgmbqfocalykhyx.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);
+  --mute:rgba(255,255,255,.64);--dim:rgba(255,255,255,.42);--faint:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.1);--card:#0a0a0a;--card-2:#121212;
+  --r:22px;--max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+svg{display:block}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
+.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
+.nav-links a:not(.btn){transition:color .2s}
+.nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:var(--fg)}
+.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
+.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
+.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:900px){
+  .menu-btn{display:block}
+  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
+  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
+  .nav-links .btn{margin-top:20px;justify-content:center}
+  .nav.open{background:#000}
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s var(--ease),background .2s,border-color .2s;white-space:nowrap;cursor:pointer;border:0}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#1bff82}
+.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--fg);background:none}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn-lg{height:54px;padding:0 26px;font-size:16px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,220,100,.7);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(0,220,100,0)}100%{box-shadow:0 0 0 0 rgba(0,220,100,0)}}
+
+
+.h-lg{font-size:clamp(36px,6vw,72px);line-height:1;letter-spacing:-.04em;font-weight:800;margin:0}
+.lead{font-size:clamp(17px,1.6vw,20px);color:var(--mute);line-height:1.55;margin:0}
+.sec{padding:clamp(80px,11vw,140px) 0}
+.sec-head{max-width:720px;margin-bottom:clamp(40px,5vw,64px)}
+.sec-head .eyebrow{margin-bottom:18px}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+
+/* Hero */
+.dl-hero{padding:clamp(128px,15vw,180px) 0 clamp(60px,8vw,100px);position:relative;overflow:hidden}
+.dl-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(45% 60% at 75% 35%,rgba(0,220,100,.15),transparent 70%);pointer-events:none}
+.dl-grid{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(40px,6vw,88px);align-items:center}
+.dl-hero h1{font-size:clamp(48px,9vw,112px);line-height:.94;letter-spacing:-.045em;font-weight:900;margin:22px 0 0}
+.dl-hero h1 span{color:var(--green)}
+.dl-hero .lead{max-width:520px;margin-top:26px}
+.dl-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:38px}
+.store{display:inline-flex;align-items:center;gap:12px;height:64px;padding:0 28px 0 24px;border-radius:18px;background:#fff;color:#000;transition:transform .25s var(--ease),box-shadow .25s}
+.store:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,220,100,.25)}
+.store svg{width:28px;height:28px}
+.store small{display:block;font-size:11px;font-weight:500;opacity:.6;line-height:1.1}
+.store b{display:block;font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.note-sm{margin-top:18px;font-size:14px;color:var(--dim)}
+.qr-card{justify-self:end;background:#0a0a0a;border:1px solid var(--line);border-radius:30px;padding:28px;text-align:center;box-shadow:0 40px 100px -30px rgba(0,220,100,.3);width:min(320px,100%)}
+.qr-card .qr{background:#fff;border-radius:20px;padding:18px;width:100%;aspect-ratio:1}
+.qr-card .qr svg{width:100%;height:100%;display:block}
+.qr-card b{display:block;margin-top:18px;font-size:16px}
+.qr-card small{display:block;color:var(--dim);font-size:13px;margin-top:4px}
+@media (max-width:900px){.dl-grid{grid-template-columns:1fr}.qr-card{display:none}.store{width:100%;justify-content:center}}
+
+/* Carousel */
+.car{display:flex;gap:clamp(20px,3vw,36px);overflow-x:auto;scroll-snap-type:x mandatory;padding:10px var(--gutter) 30px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.car::-webkit-scrollbar{display:none}
+.car-wrap{max-width:var(--max);margin:0 auto;position:relative}
+.car-nav{display:flex;gap:8px;justify-content:flex-end;padding:0 var(--gutter);margin-top:-8px}
+.car-nav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;display:grid;place-items:center}
+.car-nav button:hover{border-color:#fff}
+.shot{flex:none;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:22px}
+.shot figcaption{text-align:center;max-width:250px}
+.shot figcaption b{display:block;font-size:17px}
+.shot figcaption span{color:var(--mute);font-size:14px}
+.ph{width:260px;height:540px;border-radius:44px;background:#0c0c0c;padding:10px;box-shadow:0 0 0 1.5px #2a2a2a,0 0 0 5px #0a0a0a,0 0 0 6px #222,0 40px 80px -20px rgba(0,220,100,.18),0 30px 60px rgba(0,0,0,.7)}
+.scr{position:relative;width:100%;height:100%;border-radius:35px;overflow:hidden;background:#0b0b0b;font-size:12px}
+.isl{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:84px;height:24px;border-radius:20px;background:#000;z-index:5}
+.sb{position:absolute;top:12px;left:22px;right:22px;display:flex;justify-content:space-between;font-size:11px;font-weight:700;z-index:4}
+.inr{position:absolute;inset:44px 12px 12px}
+.ttl{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:4px 0 10px}
+/* screen 1: map */
+.m-map{position:absolute;inset:0;background:
+  linear-gradient(115deg,transparent 46%,#1d2421 46.5%,#1d2421 49%,transparent 49.5%),
+  linear-gradient(25deg,transparent 60%,#1a201e 60.5%,#1a201e 62.5%,transparent 63%),
+  linear-gradient(170deg,transparent 30%,#161c1a 30.5%,#161c1a 32%,transparent 32.5%),
+  linear-gradient(80deg,transparent 70%,#161c1a 70.5%,#161c1a 71.8%,transparent 72.3%),#0e1312}
+.m-map::after{content:"";position:absolute;left:-10%;right:-10%;top:56%;height:60px;background:#0b1a22;transform:rotate(-8deg)}
+.pn{position:absolute;z-index:2;transform:translate(-50%,-100%);background:#fff;color:#000;font-size:10px;font-weight:800;padding:4px 8px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.5);white-space:nowrap}
+.pn.g{background:var(--green)}
+.medot{position:absolute;left:50%;top:46%;width:14px;height:14px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 10px rgba(59,130,246,.18);z-index:2}
+.srch{position:absolute;top:44px;left:12px;right:12px;height:36px;border-radius:12px;background:rgba(20,20,20,.92);border:1px solid var(--line);display:flex;align-items:center;padding:0 12px;color:var(--dim);font-size:11px;z-index:3}
+.mini{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(14,14,14,.96);border:1px solid var(--line);border-radius:22px;padding:12px 14px;z-index:4;display:flex;gap:10px;align-items:center}
+.mini .a{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#2d2d2d,#151515);display:grid;place-items:center;font-weight:800;font-size:12px}
+.mini b{display:block;font-size:13px}
+.mini small{color:var(--dim);font-size:10px}
+.mini .go{margin-left:auto;background:var(--green);color:#000;font-weight:800;font-size:11px;padding:7px 12px;border-radius:999px}
+/* screen 2: profile */
+.cov{height:150px;margin:-44px -12px 0;background:radial-gradient(70% 90% at 70% 10%,rgba(0,220,100,.25),transparent 60%),linear-gradient(160deg,#1c1c1c,#0b0b0b);position:relative}
+.pav{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#333,#161616);border:3px solid #0b0b0b;margin-top:-28px;position:relative;display:grid;place-items:center;font-weight:800}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 10px}
+.chips span{font-size:9.5px;padding:4px 8px;border-radius:999px;background:#191919;color:var(--mute)}
+.chips span.g{background:var(--green-dim);color:var(--green)}
+.sv{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.sv small{display:block;color:var(--dim);font-size:10px}
+.sv b{font-size:12px}
+.bk{position:absolute;left:0;right:0;bottom:0;height:40px;border-radius:12px;background:var(--green);color:#000;font-weight:800;display:grid;place-items:center;font-size:13px}
+/* screen 3: calendar */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;margin-bottom:12px}
+.cal i{font-style:normal;font-size:9px;color:var(--dim);padding:3px 0}
+.cal span{aspect-ratio:1;display:grid;place-items:center;font-size:11px;font-weight:600;border-radius:9px}
+.cal span.x{color:#333;text-decoration:line-through}
+.cal span.on{background:var(--green);color:#000}
+.sl{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sl span{height:32px;border-radius:9px;background:#161616;border:1px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:600}
+.sl span.on{background:#fff;color:#000}
+.sl span.x{opacity:.3;text-decoration:line-through}
+/* screen 4: queue */
+.qbig{text-align:center;margin:16px 0 18px}
+.qbig .n{font-size:88px;font-weight:900;letter-spacing:-.06em;line-height:1;color:var(--green)}
+.qbig small{display:block;color:var(--mute);font-size:12px;margin-top:4px}
+.qr2{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:13px;background:#131313;border:1px solid var(--line);margin-bottom:7px;font-size:12px}
+.qr2 .p{width:24px;height:24px;border-radius:50%;background:#222;display:grid;place-items:center;font-weight:700;font-size:11px}
+.qr2.me{border-color:var(--green);background:rgba(0,220,100,.08)}
+.qr2.me .p{background:var(--green);color:#000}
+.qr2 em{font-style:normal;margin-left:auto;color:var(--dim);font-size:11px}
+.push{margin-top:14px;padding:11px;border-radius:14px;background:#1a1a1a;display:flex;gap:9px;align-items:center;font-size:11px}
+.push .i{width:26px;height:26px;border-radius:7px;background:var(--green);color:#000;display:grid;place-items:center;font-weight:900;flex:none}
+.push small{display:block;color:var(--dim);font-size:10px}
+
+/* Features */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fcol{background:#0a0a0a;border:1px solid var(--line);border-radius:28px;padding:clamp(26px,4vw,40px)}
+.fcol.b{background:radial-gradient(80% 100% at 100% 0%,rgba(0,220,100,.12),transparent 55%),#060606}
+.fcol h3{margin:0 0 6px;font-size:24px;letter-spacing:-.02em}
+.fcol>p{margin:0 0 24px;color:var(--dim);font-size:14px}
+.fcol ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.fcol li{display:flex;gap:12px;color:var(--mute);font-size:15px}
+.fcol li b{color:var(--fg);font-weight:600}
+.tick{flex:none;width:22px;height:22px;border-radius:50%;background:var(--green-dim);color:var(--green);display:grid;place-items:center;margin-top:1px}
+.fcol .btn{margin-top:28px}
+@media (max-width:820px){.feat{grid-template-columns:1fr}}
+
+/* Links row */
+.lrow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.lrow a{display:flex;flex-direction:column;gap:6px;padding:24px;border-radius:22px;border:1px solid var(--line);background:#070707;transition:border-color .3s,transform .4s var(--ease)}
+.lrow a:hover{border-color:rgba(255,255,255,.25);transform:translateY(-3px)}
+.lrow b{font-size:17px}
+.lrow span{color:var(--mute);font-size:14px}
+.lrow em{font-style:normal;color:var(--green);font-size:14px;font-weight:600;margin-top:6px}
+@media (max-width:760px){.lrow{grid-template-columns:1fr}}
+.android{margin-top:28px;padding:18px 20px;border-radius:18px;border:1px dashed var(--line);color:var(--mute);font-size:15px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.android a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
+.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
+.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f-grid a{color:var(--mute);transition:color .2s}
+.f-grid a:hover{color:var(--fg)}
+.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+@media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<!-- og -->
+<meta property="og:site_name" content="Cutz">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="https://cutzapp.one/download.html">
+<meta property="og:title" content="Download Cutz for iPhone">
+<meta property="og:description" content="Download Cutz free on the App Store. Find barbers near you, book in seconds or join the walk-in queue. Barbers manage bookings with 0% commission.">
+<meta property="og:image" content="https://cutzapp.one/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cutz: book your barber in seconds">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Download Cutz for iPhone">
+<meta name="twitter:description" content="Download Cutz free on the App Store. Find barbers near you, book in seconds or join the walk-in queue. Barbers manage bookings with 0% commission.">
+<meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- /og -->
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="find.html">Find a barber</a>
+      <a href="map.html">Map</a>
+      <a href="barbers.html">For barbers</a>
+      <a href="salons.html">For salons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="download.html" class="btn btn-green">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="dl-hero">
+  <div class="wrap dl-grid">
+    <div>
+      <div class="eyebrow rv"><span class="pulse"></span>Free on the App Store</div>
+      <h1 class="rv" style="--d:.08s">Cutz for<br><span>iPhone.</span></h1>
+      <p class="lead rv" style="--d:.16s">Find barbers near you, book in seconds or join the live walk-in queue. Barbers run their whole chair from the same app.</p>
+      <div class="dl-cta rv" style="--d:.24s">
+        <a class="store" href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener" aria-label="Download Cutz on the App Store">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
+          <span><small>Download on the</small><b>App Store</b></span>
+        </a>
+      </div>
+      <p class="note-sm rv" style="--d:.3s">Free for customers. iPhone only for now, and Android isn't available yet.</p>
+    </div>
+    <div class="qr-card rv" style="--d:.2s">
+      <div class="qr"><svg role="img" aria-label="QR code linking to Cutz on the App Store" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h29v29H0z"/><path stroke="#000000" d="M0 0.5h7m7 0h1m1 0h1m1 0h1m1 0h1m1 0h7M0 1.5h1m5 0h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h1m5 0h1m1 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h2m1 0h7m1 0h2m1 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m3 0h2m1 0h1m4 0h3m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m3 0h3m5 0h1m1 0h1m1 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h1m2 0h2m6 0h2M0 8.5h1m5 0h1m1 0h2m1 0h7m1 0h1m1 0h2m2 0h3M3 9.5h2m5 0h3m3 0h1m2 0h1m4 0h1m1 0h2M2 10.5h1m2 0h2m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m1 0h2M0 11.5h3m1 0h2m3 0h1m1 0h2m3 0h1m1 0h2m2 0h1m1 0h2M0 12.5h2m4 0h3m4 0h4m2 0h2m1 0h1m5 0h1M0 13.5h3m2 0h1m2 0h2m1 0h1m3 0h2m2 0h2m1 0h3m2 0h2M1 14.5h1m1 0h1m2 0h2m1 0h1m2 0h1m2 0h2m1 0h1m2 0h1m2 0h3M1 15.5h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h1m1 0h1M0 16.5h1m2 0h2m1 0h1m3 0h1m1 0h1m4 0h3m3 0h1m1 0h2M0 17.5h1m1 0h2m3 0h3m3 0h1m1 0h5m1 0h4m1 0h3M0 18.5h4m2 0h2m2 0h2m3 0h1m3 0h1m1 0h5m2 0h1M0 19.5h1m2 0h1m3 0h4m1 0h2m1 0h2m3 0h1m3 0h1M0 20.5h1m3 0h1m1 0h4m1 0h1m2 0h1m2 0h1m2 0h5m1 0h3M8 21.5h3m3 0h3m1 0h1m1 0h1m3 0h2M0 22.5h7m3 0h3m2 0h1m1 0h4m1 0h1m1 0h3M0 23.5h1m5 0h1m3 0h1m1 0h1m1 0h2m3 0h2m3 0h1m3 0h1M0 24.5h1m1 0h3m1 0h1m2 0h1m1 0h4m4 0h7m1 0h2M0 25.5h1m1 0h3m1 0h1m3 0h7m4 0h1m1 0h1m1 0h2m1 0h1M0 26.5h1m1 0h3m1 0h1m3 0h1m1 0h1m2 0h1m3 0h2m1 0h6M0 27.5h1m5 0h1m2 0h2m3 0h1m7 0h5m1 0h1M0 28.5h7m1 0h1m2 0h7m1 0h1m1 0h1m2 0h1m1 0h1"/></svg></div>
+      <b>Scan with your iPhone camera</b>
+      <small>Opens Cutz on the App Store</small>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0" aria-labelledby="shots-h">
+  <div class="wrap"><div class="sec-head"><div class="eyebrow rv">Inside the app</div><h2 class="h-lg rv" id="shots-h" style="--d:.08s">See it before<br>you download.</h2></div></div>
+  <!--
+    These are HTML/CSS mockups of real app screens, not screenshots.
+    To use real screenshots instead: export them from the simulator
+    (1290x2796 PNG), save as assets/screens/1.png … 4.png, and replace each
+    <div class="scr">…</div> with
+    <img class="scr" src="assets/screens/1.png" alt="…" loading="lazy" style="object-fit:cover">
+  -->
+  <div class="car-wrap">
+    <div class="car" id="car" tabindex="0" aria-label="App screens, scroll sideways">
+      <figure class="shot rv">
+        <div class="ph" aria-hidden="true"><div class="scr"><div class="isl"></div><div class="sb"><span>9:41</span><span>●●●</span></div>
+          <div class="m-map"></div>
+          <div class="srch">Search fade, beard, lineup…</div>
+          <span class="pn g" style="left:30%;top:30%">Free now</span><span class="pn" style="left:74%;top:26%">150 kr</span><span class="pn g" style="left:68%;top:46%">2 in queue</span><span class="pn" style="left:24%;top:52%">200 kr</span><span class="pn" style="left:56%;top:66%">120 kr</span>
+          <div class="medot"></div>
+          <div class="mini"><span class="a">MK</span><span><b>Your local barber</b><small>★ 4.9 · 350 m · Open</small></span><span class="go">Book</span></div>
+        </div></div>
+        <figcaption><b>Every barber on one map</b><span>See who's near you, what they charge and who's free right now.</span></figcaption>
+      </figure>
+      <figure class="shot rv" style="--d:.08s">
+        <div class="ph" aria-hidden="true"><div class="scr"><div class="isl"></div><div class="sb"><span>9:41</span><span>●●●</span></div>
+          <div class="inr"><div class="cov"></div><div class="pav">MK</div>
+            <div class="ttl">Your local barber</div>
+            <div class="chips"><span class="g">Open until 18:00</span><span>★ 4.9</span><span>Walk-ins</span></div>
+            <div class="sv"><span><b>Skin fade</b><small>30 min</small></span><b>200 kr</b></div>
+            <div class="sv"><span><b>Cut + beard</b><small>45 min</small></span><b>280 kr</b></div>
+            <div class="sv"><span><b>Lineup</b><small>15 min</small></span><b>100 kr</b></div>
+            <div class="sv"><span><b>Kids' cut</b><small>20 min</small></span><b>120 kr</b></div>
+            <div class="bk">Book now</div>
+          </div>
+        </div></div>
+        <figcaption><b>Know before you go</b><span>Photos, services, prices and ratings on every profile.</span></figcaption>
+      </figure>
+      <figure class="shot rv" style="--d:.16s">
+        <div class="ph" aria-hidden="true"><div class="scr"><div class="isl"></div><div class="sb"><span>9:41</span><span>●●●</span></div>
+          <div class="inr"><div class="ttl" style="margin-top:14px">Pick a time</div>
+            <div class="cal"><i>M</i><i>T</i><i>W</i><i>T</i><i>F</i><i>S</i><i>S</i>
+              <span class="x">6</span><span>7</span><span>8</span><span class="on">9</span><span>10</span><span>11</span><span class="x">12</span>
+              <span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span class="x">19</span></div>
+            <div class="sl"><span>10:00</span><span class="x">10:30</span><span>11:00</span><span>13:30</span><span class="on">14:00</span><span>14:30</span><span>15:00</span><span class="x">15:30</span><span>16:00</span></div>
+            <div class="bk">Confirm 14:00</div>
+          </div>
+        </div></div>
+        <figcaption><b>Book ahead or same day</b><span>Pick a date and a free slot, and you're confirmed on the spot.</span></figcaption>
+      </figure>
+      <figure class="shot rv" style="--d:.24s">
+        <div class="ph" aria-hidden="true"><div class="scr"><div class="isl"></div><div class="sb"><span>9:41</span><span>●●●</span></div>
+          <div class="inr"><div class="ttl" style="margin-top:14px">Walk-in queue</div>
+            <div class="qbig"><div class="n">#2</div><small>You're next up · about 12 min</small></div>
+            <div class="qr2"><span class="p">1</span>In the chair<em>now</em></div>
+            <div class="qr2 me"><span class="p">2</span><b>You</b><em>~12 min</em></div>
+            <div class="qr2"><span class="p">3</span>Waiting<em>~27 min</em></div>
+            <div class="push"><span class="i">C</span><span><b>Head over now</b><small>You're up in about 10 minutes</small></span></div>
+          </div>
+        </div></div>
+        <figcaption><b>Skip the waiting room</b><span>Join the queue from anywhere and get a push when it's your turn.</span></figcaption>
+      </figure>
+    </div>
+    <div class="car-nav"><button id="prev" aria-label="Previous screen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg></button><button id="next" aria-label="Next screen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg></button></div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow rv">Features</div><h2 class="h-lg rv" style="--d:.08s">One app,<br><span style="color:var(--dim)">both sides of the chair.</span></h2></div>
+    <div class="feat">
+      <div class="fcol rv">
+        <h3>For customers</h3><p>Free to download and free to book.</p>
+        <ul>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Live map</b> of barbers and shops near you</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Book ahead or same day</b> with instant confirmation</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Walk-in queue</b> with your live position</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Profiles</b> with photos, prices and ratings</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Reminders</b> for bookings and your turn in the queue</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>0 kr.</b> You pay the barber for the cut, nothing else.</span></li>
+        </ul>
+        <a class="btn btn-green btn-lg" href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Get Cutz</a>
+      </div>
+      <div class="fcol b rv" style="--d:.1s">
+        <h3>For barbers</h3><p>300 kr a month, flat. 0% commission.</p>
+        <ul>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Dashboard</b> for today's bookings and walk-ins</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Live walk-in queue</b> you can switch on and off</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>No-show protection</b> that blocks repeat offenders</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>0% commission</b>. Every krone from your cuts is yours.</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>300 kr/month</b>, cancel any time</span></li>
+          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>LAUNCH</b> gives 3 months free to the first 10 barbers</span></li>
+        </ul>
+        <a class="btn btn-ghost btn-lg" href="barbers.html">Cutz for barbers →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="lrow">
+      <a href="faq.html" class="rv"><b>FAQ</b><span>Bookings, cancellations, no-shows and billing.</span><em>Read the FAQ →</em></a>
+      <a href="contact.html" class="rv" style="--d:.06s"><b>Contact us</b><span>Questions or problems? A real person replies.</span><em>Get in touch →</em></a>
+      <a href="barbers.html" class="rv" style="--d:.12s"><b>Are you a barber?</b><span>Get listed and take bookings with 0% commission.</span><em>Join Cutz →</em></a>
+    </div>
+    <div class="android rv">🤖 <span>iPhone only for now. Android isn't available yet. Want to know when it is? <a href="mailto:cutz.support@gmail.com?subject=Android%20waitlist">Email us</a>.</span></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="index.html" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html" aria-current="page">Download the app</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Business</h4>
+        <ul>
+          <li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');
+  mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+  document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()});
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,els=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window&&!reduce){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});els.forEach(function(el){io.observe(el)})}
+  else els.forEach(function(el){el.classList.add('in')});
+  var car=document.getElementById('car');
+  function step(d){var s=car.querySelector('.shot');car.scrollBy({left:d*(s.offsetWidth+30),behavior:reduce?'auto':'smooth'})}
+  document.getElementById('prev').onclick=function(){step(-1)};
+  document.getElementById('next').onclick=function(){step(1)};
+})();
+</script>
+</body>
+</html>
