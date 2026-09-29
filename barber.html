@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barber — Book on Cutz</title>
+<meta name="description" content="See services, prices, opening hours and reviews, and book your next cut online with Cutz.">
+<meta name="theme-color" content="#000000">
+<meta name="apple-itunes-app" content="app-id=6811618000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ukoovhgmbqfocalykhyx.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);--red:#ff5a5a;
+  --mute:rgba(255,255,255,.64);--dim:rgba(255,255,255,.42);--faint:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.1);--card:#0a0a0a;--card-2:#121212;
+  --r:22px;--max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+svg{display:block}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+
+/* Nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
+.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
+.nav-links a:not(.btn){transition:color .2s}
+.nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:var(--fg)}
+.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
+.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
+.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:900px){
+  .menu-btn{display:block}
+  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
+  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
+  .nav-links .btn{margin-top:20px;justify-content:center}
+  .nav.open{background:#000}
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s,opacity .2s;white-space:nowrap;cursor:pointer;border:0}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.35;cursor:default;transform:none}
+.btn-green{background:var(--green);color:#000}
+.btn-green:not(:disabled):hover{background:#1bff82}
+.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--fg);background:none}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn-lg{height:54px;padding:0 26px;font-size:16px}
+.btn-block{width:100%}
+
+/* States */
+.state{min-height:80vh;display:grid;place-items:center;text-align:center;padding:120px var(--gutter) 60px}
+.state h1{font-size:clamp(32px,5vw,48px);letter-spacing:-.03em;margin:0 0 12px}
+.state p{color:var(--mute);margin:0 auto 28px;max-width:420px}
+.spinner{width:30px;height:30px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green);animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skel{background:linear-gradient(90deg,#0d0d0d 25%,#161616 50%,#0d0d0d 75%);background-size:200% 100%;animation:sh 1.4s infinite;border-radius:16px}
+@keyframes sh{to{background-position:-200% 0}}
+
+/* Gallery */
+.top{padding-top:92px}
+.crumbs{font-size:13px;color:var(--dim);margin-bottom:18px;display:flex;gap:8px;flex-wrap:wrap}
+.crumbs a:hover{color:var(--fg)}
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;height:clamp(260px,42vw,460px);border-radius:26px;overflow:hidden}
+.gallery button{border:0;padding:0;background:#111;cursor:zoom-in;position:relative;overflow:hidden}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.gallery button:hover img{transform:scale(1.04)}
+.gallery .g0{grid-row:span 2}
+.gallery.n1{grid-template-columns:1fr}.gallery.n1 .g0{grid-row:span 2}
+.gallery.n2{grid-template-columns:2fr 1fr}.gallery.n2 .g1{grid-row:span 2}
+.gallery.n3 .g1,.gallery.n3 .g2,.gallery.n4 .g3{grid-column:span 2}
+.gallery .more{position:absolute;right:14px;bottom:14px;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--line)}
+.no-photo{height:clamp(200px,30vw,320px);border-radius:26px;background:radial-gradient(60% 80% at 70% 20%,rgba(0,220,100,.18),transparent 60%),#0a0a0a;border:1px solid var(--line);display:grid;place-items:center;font-size:clamp(64px,10vw,120px);font-weight:900;letter-spacing:-.04em;color:rgba(255,255,255,.14)}
+@media (max-width:700px){.gallery{grid-template-columns:1fr 1fr;grid-template-rows:2fr 1fr;height:360px}.gallery .g0{grid-column:span 2;grid-row:auto}.gallery .g3,.gallery .g4{display:none}.gallery.n2 .g1{grid-row:auto;grid-column:span 2}.gallery.n3 .g1,.gallery.n3 .g2{grid-column:auto}}
+
+/* Header */
+.head{display:flex;gap:20px;align-items:center;margin:28px 0 8px}
+.avatar{width:84px;height:84px;border-radius:24px;flex:none;background:linear-gradient(135deg,#2a2a2a,#111);display:grid;place-items:center;font-weight:800;font-size:28px;overflow:hidden;border:1px solid var(--line)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.head h1{font-size:clamp(32px,5vw,56px);letter-spacing:-.04em;line-height:1;margin:0;font-weight:900}
+.head .sub{color:var(--mute);margin-top:8px;font-size:16px}
+.head .sub a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.badge.g{color:var(--green);background:var(--green-dim);border-color:transparent}
+.badge.r{color:#ff8a8a;background:rgba(255,90,90,.1);border-color:transparent}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.offer{margin-top:18px;padding:14px 18px;border-radius:16px;background:linear-gradient(90deg,rgba(0,220,100,.14),rgba(0,220,100,.03));border:1px solid rgba(0,220,100,.35);font-size:15px}
+.offer b{color:var(--green)}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:clamp(32px,5vw,64px);padding:36px 0 120px;align-items:start}
+@media (max-width:960px){.layout{grid-template-columns:1fr}}
+.block{padding:36px 0;border-top:1px solid var(--line)}
+.block:first-child{border-top:0;padding-top:8px}
+.block h2{font-size:clamp(22px,2.6vw,28px);letter-spacing:-.025em;margin:0 0 20px;font-weight:700}
+.bio{color:var(--mute);font-size:17px;max-width:640px;white-space:pre-line;margin:0}
+.svc{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.svc:last-child{border-bottom:0}
+.svc .nm{font-weight:600;font-size:16px}
+.svc .du{font-size:13px;color:var(--dim);margin-top:2px}
+.svc .pr{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.svc .btn{height:38px;padding:0 16px;font-size:13px}
+.hours{display:grid;gap:0;max-width:460px}
+.hours div{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--mute);font-variant-numeric:tabular-nums}
+.hours div.today{color:var(--fg);font-weight:600}
+.hours div.today span:first-child::after{content:"Today";margin-left:10px;font-size:11px;font-weight:700;color:var(--green);background:var(--green-dim);padding:2px 8px;border-radius:999px;vertical-align:2px}
+.loc{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.loc p{margin:0;color:var(--mute);font-size:16px;flex:1 1 240px}
+.loc .btns{display:flex;gap:8px;flex-wrap:wrap}
+.rv-sum{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-bottom:28px}
+.rv-big{font-size:64px;font-weight:900;letter-spacing:-.05em;line-height:1}
+.rv-big small{display:block;font-size:13px;font-weight:500;letter-spacing:0;color:var(--dim);margin-top:6px}
+.bars{display:grid;gap:6px;max-width:320px}
+.bar{display:grid;grid-template-columns:14px 1fr 28px;gap:10px;align-items:center;font-size:12px;color:var(--dim)}
+.bar i{height:6px;border-radius:6px;background:#1c1c1c;overflow:hidden;display:block}
+.bar i b{display:block;height:100%;background:var(--green);border-radius:6px}
+.review{padding:18px 0;border-bottom:1px solid var(--line)}
+.review:last-child{border-bottom:0}
+.review .who{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.review .who b{font-weight:600}
+.review .who span{color:var(--dim)}
+.stars{color:var(--green);letter-spacing:2px;font-size:14px;margin:4px 0}
+.review p{margin:4px 0 0;color:var(--mute);font-size:15px}
+.empty{color:var(--dim);font-size:15px;padding:18px;border:1px dashed var(--line);border-radius:16px;text-align:center}
+.app-cta{border-radius:24px;padding:28px;background:radial-gradient(70% 120% at 100% 0%,rgba(0,220,100,.14),transparent 60%),#070707;border:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;justify-content:space-between}
+.app-cta h3{margin:0;font-size:20px;letter-spacing:-.02em}
+.app-cta p{margin:4px 0 0;color:var(--mute);font-size:14px}
+
+/* Booker */
+.booker{position:sticky;top:92px;background:var(--card);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.bk-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 22px 0}
+.bk-head h2{margin:0;font-size:19px;letter-spacing:-.02em}
+.bk-close{display:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;place-items:center}
+.progress{display:flex;gap:6px;padding:14px 22px 0}
+.progress i{flex:1;height:3px;border-radius:3px;background:#1e1e1e;overflow:hidden;position:relative}
+.progress i::after{content:"";position:absolute;inset:0;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.progress i.on::after{transform:scaleX(1)}
+.bk-body{padding:20px 22px 22px;min-height:360px}
+.step{animation:stepIn .45s var(--ease)}
+@keyframes stepIn{from{opacity:0;transform:translateX(14px)}}
+.step h3{margin:0 0 4px;font-size:22px;letter-spacing:-.02em}
+.step .hint{color:var(--dim);font-size:14px;margin:0 0 18px}
+.back{background:none;border:0;color:var(--dim);font-size:13px;cursor:pointer;padding:0;margin-bottom:12px;display:inline-flex;gap:6px;align-items:center}
+.back:hover{color:var(--fg)}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;border-radius:16px;border:1px solid var(--line);background:var(--card-2);cursor:pointer;margin-bottom:8px;transition:border-color .2s,background .2s}
+.opt:hover{border-color:rgba(255,255,255,.25)}
+.opt.on{border-color:var(--green);background:rgba(0,220,100,.07)}
+.opt .radio{width:18px;height:18px;border-radius:50%;border:2px solid #444;flex:none;transition:border .2s}
+.opt.on .radio{border:5px solid var(--green)}
+.opt .nm{font-weight:600;font-size:15px}
+.opt .du{font-size:12px;color:var(--dim)}
+.opt .pr{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-head b{font-size:16px}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;display:grid;place-items:center}
+.cal-nav button:disabled{opacity:.25;cursor:default}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal .dow{font-size:11px;color:var(--dim);font-weight:600;padding:4px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.cal button{aspect-ratio:1;border-radius:12px;border:0;background:none;cursor:pointer;font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;position:relative;transition:background .15s}
+.cal button:not(:disabled):hover{background:#1c1c1c}
+.cal button:disabled{color:#3a3a3a;cursor:default;text-decoration:line-through;text-decoration-color:#2a2a2a}
+.cal button.today::after{content:"";position:absolute;bottom:5px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--dim)}
+.cal button.on{background:var(--green);color:#000}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:300px;overflow:auto;padding-right:2px}
+.slots button{height:46px;border-radius:12px;border:1px solid var(--line);background:var(--card-2);cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums;transition:all .15s}
+.slots button:hover:not(:disabled){border-color:rgba(255,255,255,.3)}
+.slots button.on{background:#fff;color:#000;border-color:#fff}
+.slots button:disabled{opacity:.3;text-decoration:line-through;cursor:default}
+.slot-group{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin:14px 0 8px;grid-column:1/-1}
+.slot-group:first-child{margin-top:0}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#161616;border-radius:14px;padding:4px;margin-bottom:18px}
+.tabs button{height:38px;border:0;border-radius:10px;background:none;cursor:pointer;font-weight:600;font-size:14px;color:var(--mute)}
+.tabs button.on{background:#fff;color:#000}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin-bottom:6px}
+.field input,.field select{width:100%;height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:#141414;font-size:16px;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus{border-color:var(--green)}
+.phone{display:grid;grid-template-columns:104px 1fr;gap:8px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--mute);margin:6px 0 16px;line-height:1.5}
+.check input{margin-top:3px;accent-color:var(--green);width:16px;height:16px;flex:none}
+.check a{color:var(--fg);text-decoration:underline}
+.err{color:#ff8a8a;background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.25);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:14px}
+.note{font-size:13px;color:var(--dim);margin:12px 0 0;text-align:center}
+.who-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:#141414;margin-bottom:16px;font-size:14px}
+.who-card b{display:block}
+.who-card span{color:var(--dim);font-size:13px}
+.who-card button{margin-left:auto;background:none;border:0;color:var(--dim);cursor:pointer;font-size:13px;text-decoration:underline}
+.otp{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px}
+.otp input{height:56px;text-align:center;font-size:22px;font-weight:800;border-radius:12px;border:1px solid var(--line);background:#141414;outline:none}
+.otp input:focus{border-color:var(--green)}
+.sum{border-radius:18px;background:#141414;padding:6px 16px;margin-bottom:16px}
+.sum div{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}
+.sum div:last-child{border-bottom:0}
+.sum span{color:var(--dim)}
+.sum b{text-align:right}
+.sum .tot b{font-size:18px}
+.ok{text-align:center;padding:12px 0}
+.ok-ic{width:76px;height:76px;margin:6px auto 20px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:#000;animation:pop .6s var(--ease)}
+.ok-ic path{stroke-dasharray:30;stroke-dashoffset:30;animation:draw .5s .25s var(--ease) forwards}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.08)}100%{transform:none;opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ok h3{font-size:26px}
+.ok p{color:var(--mute);margin:8px 0 20px}
+.ok .btn+.btn{margin-top:8px}
+.bar-mobile{display:none}
+@media (max-width:960px){
+  .booker{position:fixed;inset:auto 0 0 0;top:auto;z-index:70;border-radius:28px 28px 0 0;max-height:92vh;overflow:auto;transform:translateY(105%);transition:transform .45s var(--ease);border-bottom:0;padding-bottom:env(safe-area-inset-bottom)}
+  .booker.open{transform:none}
+  .bk-close{display:grid}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:65;opacity:0;pointer-events:none;transition:opacity .3s}
+  .scrim.open{opacity:1;pointer-events:auto}
+  .bar-mobile{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:60;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 18px;border-radius:20px;background:rgba(16,16,16,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);margin-bottom:env(safe-area-inset-bottom)}
+  .bar-mobile small{display:block;color:var(--dim);font-size:12px}
+  .bar-mobile b{font-size:16px}
+  footer{padding-bottom:110px!important}
+}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb img{max-width:92vw;max-height:84vh;border-radius:16px;object-fit:contain}
+.lb button{position:absolute;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(20,20,20,.8);cursor:pointer;display:grid;place-items:center}
+.lb .x{top:20px;right:20px}.lb .p{left:20px;top:50%;margin-top:-24px}.lb .n{right:20px;top:50%;margin-top:-24px}
+.lb .c{position:absolute;bottom:24px;left:0;right:0;text-align:center;color:var(--dim);font-size:13px}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
+.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
+.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f-grid a{color:var(--mute);transition:color .2s}
+.f-grid a:hover{color:var(--fg)}
+.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+@media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.ok-ic path{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="find.html">Find a barber</a>
+      <a href="barbers.html">For barbers</a>
+      <a href="salons.html">For salons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="https://apps.apple.com/app/cutz/id6811618000" class="btn btn-green" target="_blank" rel="noopener">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div id="app"><div class="state"><div class="spinner" aria-label="Loading"></div></div></div>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="x" data-lb="x" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <button class="p" data-lb="-1" aria-label="Previous photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg></button>
+  <img alt="">
+  <button class="n" data-lb="1" aria-label="Next photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg></button>
+  <div class="c"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="index.html" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+      </div>
+      <div><h4>Product</h4><ul><li><a href="find.html">Find a barber</a></li><li><a href="index.html#how">How it works</a></li><li><a href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Download</a></li></ul></div>
+      <div><h4>Business</h4><ul><li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="mailto:cutz.support@gmail.com">Support</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'),btn=document.getElementById('menuBtn');
+  btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o);btn.setAttribute('aria-label',o?'Close menu':'Open menu')});
+  document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()});
+})();
+</script>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// Same project and public anon key as the app (src/config.js). Access control
+// lives in Postgres RLS, so the key is safe to ship to the browser.
+const SUPABASE_URL = 'https://ukoovhgmbqfocalykhyx.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+
+const APP_STORE = 'https://apps.apple.com/app/cutz/id6811618000';
+// Slot rules mirror the app (src/utils/slots.js, BookingScreen.js): 30-minute
+// grid inside opening hours, the fixed 9:00–17:30 list when no hours are set,
+// bookable from tomorrow up to 21 days out. The server triggers
+// (opening hours, overlaps) remain the authority.
+const SLOT_STEP = 30;
+const FALLBACK_SLOTS = ['9:00','9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+const BOOK_FROM_DAYS = 1, BOOK_DAYS = 21;
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WEEK = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const COUNTRIES = [['45','🇩🇰 +45'],['46','🇸🇪 +46'],['47','🇳🇴 +47'],['49','🇩🇪 +49'],['44','🇬🇧 +44'],['31','🇳🇱 +31'],['358','🇫🇮 +358'],['354','🇮🇸 +354'],['48','🇵🇱 +48'],['1','🇺🇸 +1']];
+
+const app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const initials = n => (n || '?').trim().split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase();
+const kr = a => { const n = Number(a) || 0; return `${Number.isInteger(n) ? n : n.toFixed(2)} kr`; };
+const toMin = t => { const [h, m] = String(t).split(':').map(Number); return h * 60 + (m || 0); };
+const toLabel = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+const pad = n => String(n).padStart(2, '0');
+const dateKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const fromKey = k => new Date(`${k}T00:00:00`);
+const dur = s => Math.max(Number(s?.duration) || SLOT_STEP, 1);
+const ICON = {
+  check: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  left: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg>',
+  right: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg>',
+  x: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+};
+
+function slotsForRange(range, mins) {
+  if (!range || range === 'Closed') return [];
+  const [a, b] = String(range).split(' - ').map(x => x.trim());
+  if (!a || !b) return [];
+  const out = [];
+  for (let m = toMin(a); m <= toMin(b) - Math.max(mins, SLOT_STEP); m += SLOT_STEP) out.push(toLabel(m));
+  return out;
+}
+function hasHours(h) { return h && Object.keys(h).length > 0; }
+function rangeFor(barber, key) {
+  if (!hasHours(barber.hours)) return null;
+  return barber.hours[DAYS[fromKey(key).getDay()]] || 'Closed';
+}
+function isBookableDay(barber, key) {
+  if ((barber.time_off || []).some(t => key >= t.startDate && key <= t.endDate)) return false;
+  const r = rangeFor(barber, key);
+  return r !== 'Closed';
+}
+function openNow(barber) {
+  if (!hasHours(barber.hours)) return null;
+  const now = new Date(), r = barber.hours[DAYS[now.getDay()]];
+  if (!r || r === 'Closed') return { open: false, label: 'Closed today' };
+  const [a, b] = r.split(' - ').map(x => x.trim());
+  const m = now.getHours() * 60 + now.getMinutes();
+  if (m >= toMin(a) && m < toMin(b)) return { open: true, label: `Open until ${b}` };
+  return { open: false, label: m < toMin(a) ? `Opens at ${a}` : 'Closed now' };
+}
+function idFromUrl() {
+  const q = new URLSearchParams(location.search).get('id');
+  if (q) return q;
+  const m = location.pathname.match(/\/b\/([^/]+)\/?$/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+function stateScreen(title, text) {
+  app.innerHTML = `<div class="state"><div><h1>${title}</h1><p>${text}</p><a class="btn btn-green btn-lg" href="find.html">Find a barber</a></div></div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Profile
+// ---------------------------------------------------------------------------
+const S = { barber: null, reviews: [], salon: null, step: 'service', service: null, date: null, time: null, month: null, user: null, customer: null, mine: [], authMode: 'signup', pending: null };
+
+async function boot() {
+  const id = idFromUrl();
+  if (!id) return stateScreen('No barber selected', 'Browse barbers near you and pick one to see their profile.');
+  const { data: barber, error } = await sb.from('barbers_public').select('*').eq('id', id).maybeSingle();
+  if (error || !barber) return stateScreen('Barber not found', "This profile isn't available right now. The barber may be offline or no longer listed.");
+  S.barber = barber;
+  const [rv, salon, sess] = await Promise.all([
+    sb.from('reviews').select('stars, description, customer_name, created_at').eq('barber_id', id).order('created_at', { ascending: false }).limit(50),
+    barber.salon_id ? sb.from('salons_public').select('id, name').eq('id', barber.salon_id).maybeSingle() : Promise.resolve({ data: null }),
+    sb.auth.getSession(),
+  ]);
+  S.reviews = rv.data || [];
+  S.salon = salon.data;
+  S.user = sess.data.session?.user || null;
+  document.title = `${barber.name} — Book on Cutz`;
+  const md = document.querySelector('meta[name=description]');
+  md.content = `Book ${barber.name}${barber.salon ? ` at ${barber.salon}` : ''} on Cutz. Services, prices, opening hours and reviews.`;
+  renderProfile();
+  const pre = new URLSearchParams(location.search).get('service');
+  if (pre) { const s = (barber.services || []).find(x => String(x.id) === pre); if (s) { S.service = s; S.step = 'date'; } }
+  renderStep();
+  // Links from find/salon pages land here with #booker; the panel only exists after render.
+  if (location.hash === '#booker') openSheet(true);
+}
+
+function renderProfile() {
+  const b = S.barber, services = b.services || [], photos = (b.photos || []).filter(Boolean);
+  const status = openNow(b);
+  const rating = Number(b.rating) || 0, count = b.review_count || S.reviews.length;
+  const minPrice = services.length ? Math.min(...services.map(s => Number(s.price) || 0)) : null;
+  const salonLink = S.salon ? `<a href="salon.html?id=${encodeURIComponent(S.salon.id)}">${esc(S.salon.name)}</a>` : esc(b.salon || '');
+  const offer = b.active_offer;
+  const gallery = photos.length
+    ? `<div class="gallery n${Math.min(photos.length, 5)}">${photos.slice(0, 5).map((p, i) => `<button class="g${i}" data-photo="${i}" aria-label="Open photo ${i + 1}"><img src="${esc(p)}" alt="" loading="${i ? 'lazy' : 'eager'}">${i === 4 && photos.length > 5 ? `<span class="more">+${photos.length - 5} photos</span>` : ''}</button>`).join('')}</div>`
+    : `<div class="no-photo" aria-hidden="true">${esc(initials(b.name))}</div>`;
+
+  app.innerHTML = `
+  <div class="wrap top">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="find.html">Find a barber</a><span>/</span>${S.salon ? `<a href="salon.html?id=${encodeURIComponent(S.salon.id)}">${esc(S.salon.name)}</a><span>/</span>` : ''}<span>${esc(b.name)}</span></nav>
+    ${gallery}
+    <div class="head">
+      <div class="avatar">${b.avatar_photo ? `<img src="${esc(b.avatar_photo)}" alt="">` : esc(initials(b.name))}</div>
+      <div><h1>${esc(b.name)}</h1>${salonLink ? `<div class="sub">${salonLink}</div>` : ''}</div>
+    </div>
+    <div class="badges">
+      ${rating ? `<span class="badge">★ ${rating.toFixed(1)} · ${count} review${count === 1 ? '' : 's'}</span>` : '<span class="badge">New on Cutz</span>'}
+      ${status ? `<span class="badge ${status.open ? 'g' : ''}"><span class="dot"></span>${esc(status.label)}</span>` : ''}
+      ${b.is_online ? `<span class="badge g"><span class="dot"></span>Taking bookings</span>` : '<span class="badge r"><span class="dot"></span>Offline right now</span>'}
+      ${b.walk_in_available ? `<span class="badge">Walk-ins · ${b.queue_size || 0} in queue${b.wait_time ? ` · ~${b.wait_time} min` : ''}</span>` : ''}
+      ${minPrice !== null ? `<span class="badge">From ${kr(minPrice)}</span>` : ''}
+    </div>
+    ${offer && offer.label ? `<div class="offer"><b>Offer:</b> ${esc(offer.label)}</div>` : ''}
+    <div class="layout">
+      <div>
+        ${b.bio ? `<section class="block"><h2>About</h2><p class="bio">${esc(b.bio)}</p></section>` : ''}
+        <section class="block" id="services"><h2>Services</h2>
+          ${services.length ? services.map(s => `<div class="svc"><div><div class="nm">${esc(s.name)}</div>${s.duration ? `<div class="du">${esc(s.duration)} min</div>` : ''}</div><div class="pr">${kr(s.price)}</div><button class="btn btn-ghost" data-book="${esc(s.id)}">Book</button></div>`).join('') : '<p class="empty">No services listed yet.</p>'}
+        </section>
+        ${hasHours(b.hours) ? `<section class="block"><h2>Opening hours</h2><div class="hours">${WEEK.map(d => `<div class="${DAYS[new Date().getDay()] === d ? 'today' : ''}"><span>${d}</span><span>${esc(b.hours[d] || 'Closed')}</span></div>`).join('')}</div></section>` : ''}
+        <section class="block"><h2>Reviews</h2>${renderReviews()}</section>
+        ${b.address ? `<section class="block"><h2>Location</h2><div class="loc"><p>${esc(b.address)}</p><div class="btns">${mapLinks(b)}</div></div></section>` : ''}
+        <section class="block"><div class="app-cta"><div><h3>Get the Cutz app</h3><p>Join the walk-in queue, get reminders and manage your bookings.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-green" href="${APP_STORE}" target="_blank" rel="noopener">Download</a><a class="btn btn-ghost" href="cutz://barber/${encodeURIComponent(b.id)}">Open in app</a></div></div></section>
+      </div>
+      <aside class="booker" id="booker" aria-label="Book an appointment">
+        <div class="bk-head"><h2>Book ${esc(b.name.split(' ')[0])}</h2><button class="bk-close" id="bkClose" aria-label="Close booking">${ICON.x}</button></div>
+        <div class="progress" id="progress"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="bk-body" id="bk" aria-live="polite"></div>
+      </aside>
+    </div>
+  </div>
+  <div class="scrim" id="scrim"></div>
+  <div class="bar-mobile"><span><small>${minPrice !== null ? `From ${kr(minPrice)}` : 'Book online'}</small><b>${esc(b.name)}</b></span><button class="btn btn-green" id="openBook">Book now</button></div>`;
+
+  document.querySelectorAll('[data-book]').forEach(el => el.addEventListener('click', () => {
+    S.service = services.find(s => String(s.id) === el.dataset.book) || null;
+    S.date = S.time = null;
+    S.step = S.service ? 'date' : 'service';
+    renderStep(); openSheet(true);
+  }));
+  document.querySelectorAll('[data-photo]').forEach(el => el.addEventListener('click', () => openLb(photos, +el.dataset.photo)));
+  document.getElementById('openBook').onclick = () => openSheet(true);
+  document.getElementById('bkClose').onclick = () => openSheet(false);
+  document.getElementById('scrim').onclick = () => openSheet(false);
+}
+
+function mapLinks(b) {
+  const q = encodeURIComponent(b.address || '');
+  const ll = b.lat && b.lng ? `${b.lat},${b.lng}` : null;
+  return `<a class="btn btn-ghost" target="_blank" rel="noopener" href="https://maps.apple.com/?${ll ? `daddr=${ll}&` : ''}q=${q}">Apple Maps</a><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${ll || q}">Google Maps</a>`;
+}
+
+function renderReviews() {
+  const r = S.reviews;
+  if (!r.length) return '<p class="empty">No reviews yet. Ratings come from customers after a completed booking.</p>';
+  const avg = r.reduce((a, x) => a + x.stars, 0) / r.length;
+  const dist = [5, 4, 3, 2, 1].map(n => [n, r.filter(x => x.stars === n).length]);
+  const nameOf = n => { const p = String(n || 'Customer').trim().split(/\s+/); return p[0] + (p[1] ? ` ${p[1][0]}.` : ''); };
+  const when = d => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  return `<div class="rv-sum"><div class="rv-big">${avg.toFixed(1)}<small>${r.length} review${r.length === 1 ? '' : 's'}</small></div><div class="bars">${dist.map(([n, c]) => `<div class="bar"><span>${n}</span><i><b style="width:${(c / r.length) * 100}%"></b></i><span>${c}</span></div>`).join('')}</div></div>
+    ${r.slice(0, 10).map(x => `<div class="review"><div class="who"><b>${esc(nameOf(x.customer_name))}</b><span>${when(x.created_at)}</span></div><div class="stars" aria-label="${x.stars} out of 5">${'★'.repeat(x.stars)}<span style="color:#333">${'★'.repeat(5 - x.stars)}</span></div>${x.description ? `<p>${esc(x.description)}</p>` : ''}</div>`).join('')}`;
+}
+
+function openSheet(open) {
+  if (!matchMedia('(max-width:960px)').matches) { if (open) document.getElementById('booker').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  document.getElementById('booker').classList.toggle('open', open);
+  document.getElementById('scrim').classList.toggle('open', open);
+  document.body.classList.toggle('lock', open);
+}
+
+// Lightbox
+let lbPhotos = [], lbI = 0;
+const lb = document.getElementById('lb');
+function openLb(p, i) { lbPhotos = p; lbI = i; showLb(); lb.classList.add('open'); document.body.classList.add('lock'); }
+function showLb() { lb.querySelector('img').src = lbPhotos[lbI]; lb.querySelector('.c').textContent = `${lbI + 1} / ${lbPhotos.length}`; }
+lb.addEventListener('click', e => {
+  const b = e.target.closest('[data-lb]');
+  if (!b && e.target !== lb) return;
+  const v = b ? b.dataset.lb : 'x';
+  if (v === 'x') { lb.classList.remove('open'); document.body.classList.remove('lock'); return; }
+  lbI = (lbI + Number(v) + lbPhotos.length) % lbPhotos.length; showLb();
+});
+addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') lb.querySelector('.x').click();
+  if (e.key === 'ArrowRight') lb.querySelector('.n').click();
+  if (e.key === 'ArrowLeft') lb.querySelector('.p').click();
+});
+
+// ---------------------------------------------------------------------------
+// Booking flow: service → date → time → details (account) → confirm → done
+// ---------------------------------------------------------------------------
+const ORDER = ['service', 'date', 'time', 'details', 'confirm'];
+function go(step) { S.step = step; renderStep(); }
+function renderStep() {
+  const el = document.getElementById('bk'); if (!el) return;
+  const idx = S.step === 'otp' ? 3 : S.step === 'done' ? 5 : ORDER.indexOf(S.step);
+  document.querySelectorAll('#progress i').forEach((i, n) => i.classList.toggle('on', n <= idx));
+  const b = S.barber;
+  if (!(b.services || []).length) { el.innerHTML = '<div class="step"><h3>Not bookable yet</h3><p class="hint">This barber hasn\'t added any services. Check back soon.</p></div>'; return; }
+  ({ service: stepService, date: stepDate, time: stepTime, details: stepDetails, otp: stepOtp, confirm: stepConfirm, done: stepDone })[S.step](el);
+}
+const backBtn = to => `<button class="back" data-back="${to}">${ICON.left}Back</button>`;
+function wireBack(el) { el.querySelectorAll('[data-back]').forEach(b => b.onclick = () => go(b.dataset.back)); }
+function showErr(el, msg) {
+  let e = el.querySelector('.err');
+  if (!e) {
+    e = document.createElement('div'); e.className = 'err'; e.setAttribute('role', 'alert');
+    const step = el.querySelector('.step');
+    (step.querySelector('.hint') || step.querySelector('h3')).after(e);
+  }
+  e.textContent = msg;
+}
+
+function stepService(el) {
+  const svcs = S.barber.services;
+  el.innerHTML = `<div class="step"><h3>Choose a service</h3><p class="hint">Prices are set by the barber and paid at the shop.</p>
+    <div role="radiogroup">${svcs.map(s => `<button class="opt ${S.service && S.service.id === s.id ? 'on' : ''}" role="radio" aria-checked="${S.service && S.service.id === s.id}" data-id="${esc(s.id)}"><span class="radio"></span><span><span class="nm">${esc(s.name)}</span>${s.duration ? `<br><span class="du">${esc(s.duration)} min</span>` : ''}</span><span class="pr">${kr(s.price)}</span></button>`).join('')}</div>
+    <button class="btn btn-green btn-lg btn-block" id="next" ${S.service ? '' : 'disabled'} style="margin-top:10px">Continue</button></div>`;
+  el.querySelectorAll('.opt').forEach(o => o.onclick = () => {
+    S.service = svcs.find(s => String(s.id) === o.dataset.id); S.time = null;
+    el.querySelectorAll('.opt').forEach(x => { x.classList.toggle('on', x === o); x.setAttribute('aria-checked', x === o); });
+    el.querySelector('#next').disabled = false;
+  });
+  el.querySelector('#next').onclick = () => go('date');
+}
+
+function bookWindow() {
+  const t = new Date(); t.setHours(0, 0, 0, 0);
+  const first = new Date(t); first.setDate(t.getDate() + BOOK_FROM_DAYS);
+  const last = new Date(t); last.setDate(t.getDate() + BOOK_FROM_DAYS + BOOK_DAYS - 1);
+  return { today: t, first, last };
+}
+function stepDate(el) {
+  const { today, first, last } = bookWindow();
+  if (!S.month) S.month = new Date(first.getFullYear(), first.getMonth(), 1);
+  const m = S.month, y = m.getFullYear(), mo = m.getMonth();
+  const lead = (new Date(y, mo, 1).getDay() + 6) % 7, daysIn = new Date(y, mo + 1, 0).getDate();
+  const canPrev = new Date(y, mo, 1) > new Date(first.getFullYear(), first.getMonth(), 1);
+  const canNext = new Date(y, mo + 1, 1) <= last;
+  let cells = WEEK.map(d => `<div class="dow">${d[0]}${d[1]}</div>`).join('') + '<span></span>'.repeat(lead);
+  let any = false;
+  for (let d = 1; d <= daysIn; d++) {
+    const dt = new Date(y, mo, d), k = dateKey(dt);
+    const ok = dt >= first && dt <= last && isBookableDay(S.barber, k);
+    any = any || ok;
+    cells += `<button data-k="${k}" ${ok ? '' : 'disabled'} class="${S.date === k ? 'on' : ''} ${dt.getTime() === today.getTime() ? 'today' : ''}" aria-label="${d} ${MONTHS_LONG[mo]}${ok ? '' : ', unavailable'}">${d}</button>`;
+  }
+  el.innerHTML = `<div class="step">${backBtn('service')}<h3>Pick a date</h3><p class="hint">${esc(S.service.name)} · ${kr(S.service.price)}</p>
+    <div class="cal-head"><b>${MONTHS_LONG[mo]} ${y}</b><div class="cal-nav"><button id="pm" ${canPrev ? '' : 'disabled'} aria-label="Previous month">${ICON.left}</button><button id="nm" ${canNext ? '' : 'disabled'} aria-label="Next month">${ICON.right}</button></div></div>
+    <div class="cal">${cells}</div>
+    ${any ? '' : '<p class="note">No open days this month. Try the next one.</p>'}
+    <p class="note">You can book up to ${BOOK_DAYS} days ahead.</p></div>`;
+  wireBack(el);
+  el.querySelector('#pm').onclick = () => { S.month = new Date(y, mo - 1, 1); renderStep(); };
+  el.querySelector('#nm').onclick = () => { S.month = new Date(y, mo + 1, 1); renderStep(); };
+  el.querySelectorAll('.cal button[data-k]').forEach(b => b.onclick = () => { S.date = b.dataset.k; S.time = null; go('time'); });
+}
+
+async function loadMine() {
+  if (!S.user) { S.mine = []; return; }
+  // RLS only returns this customer's own bookings, same as the app. Other
+  // customers' clashes are caught by the server's overlap trigger on insert.
+  const { data } = await sb.from('bookings').select('date_key, time, service, status').eq('customer_id', S.user.id).eq('barber_id', S.barber.id);
+  S.mine = (data || []).filter(x => x.status === 'pending' || x.status === 'upcoming');
+}
+async function stepTime(el) {
+  const d = fromKey(S.date), label = `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  el.innerHTML = `<div class="step">${backBtn('date')}<h3>Pick a time</h3><p class="hint">${label} · ${esc(S.service.name)}</p><div class="spinner" style="margin:40px auto"></div></div>`;
+  await loadMine();
+  if (S.step !== 'time') return;
+  const mins = dur(S.service), range = rangeFor(S.barber, S.date);
+  const all = range ? slotsForRange(range, mins) : FALLBACK_SLOTS.filter(s => toMin(s) + mins <= toMin(FALLBACK_SLOTS.at(-1)) + SLOT_STEP);
+  const taken = s => S.mine.some(x => x.date_key === S.date && toMin(x.time) < toMin(s) + mins && toMin(x.time) + dur(x.service) > toMin(s));
+  const groups = [['Morning', s => toMin(s) < 720], ['Afternoon', s => toMin(s) >= 720 && toMin(s) < 1020], ['Evening', s => toMin(s) >= 1020]];
+  const grid = groups.map(([g, f]) => { const ss = all.filter(f); return ss.length ? `<div class="slot-group">${g}</div>` + ss.map(s => `<button data-t="${s}" class="${S.time === s ? 'on' : ''}" ${taken(s) ? 'disabled aria-label="' + s + ', you already have a booking"' : ''}>${s}</button>`).join('') : ''; }).join('');
+  el.querySelector('.step').innerHTML = `${backBtn('date')}<h3>Pick a time</h3><p class="hint">${label} · ${esc(S.service.name)} · ${mins} min</p>
+    ${all.length ? `<div class="slots">${grid}</div>` : '<p class="empty">No times fit this service on that day. Try another date.</p>'}
+    <button class="btn btn-green btn-lg btn-block" id="next" ${S.time ? '' : 'disabled'} style="margin-top:16px">Continue</button>`;
+  wireBack(el);
+  el.querySelectorAll('.slots button[data-t]').forEach(b => b.onclick = () => {
+    S.time = b.dataset.t;
+    el.querySelectorAll('.slots button').forEach(x => x.classList.toggle('on', x === b));
+    el.querySelector('#next').disabled = false;
+  });
+  el.querySelector('#next').onclick = () => go('details');
+}
+
+function splitPhone(p) {
+  const m = String(p || '').match(/^\+(\d+)\s+(.*)$/);
+  if (!m) return { cc: '45', num: String(p || '').replace(/^\+/, '') };
+  return { cc: m[1], num: m[2] };
+}
+function phoneField(val) {
+  const { cc, num } = splitPhone(val);
+  const opts = COUNTRIES.some(c => c[0] === cc) ? COUNTRIES : [[cc, `+${cc}`], ...COUNTRIES];
+  return `<div class="field"><label for="f-num">Phone number</label><div class="phone"><select id="f-cc" aria-label="Country code">${opts.map(([c, l]) => `<option value="${c}" ${c === cc ? 'selected' : ''}>${l}</option>`).join('')}</select><input id="f-num" type="tel" inputmode="tel" autocomplete="tel-national" value="${esc(num)}" placeholder="12 34 56 78"></div></div>`;
+}
+function readPhone(el) {
+  const num = el.querySelector('#f-num').value.replace(/[^\d]/g, '');
+  return num.length >= 6 ? `+${el.querySelector('#f-cc').value} ${num}` : null;
+}
+async function loadCustomer() {
+  if (!S.user) return null;
+  const { data } = await sb.from('customers').select('name, phone, email').eq('id', S.user.id).maybeSingle();
+  S.customer = data;
+  return data;
+}
+async function stepDetails(el) {
+  if (S.user) {
+    el.innerHTML = `<div class="step">${backBtn('time')}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p><div class="spinner" style="margin:30px auto"></div></div>`;
+    const type = S.user.user_metadata?.userType;
+    if (type && type !== 'customer') {
+      el.querySelector('.step').innerHTML = `${backBtn('time')}<h3>Use a customer account</h3><p class="hint">You're signed in with a ${esc(type)} account. Sign out and sign in with a customer account to book.</p><button class="btn btn-ghost btn-lg btn-block" id="out">Sign out</button>`;
+      wireBack(el);
+      el.querySelector('#out').onclick = async () => { await sb.auth.signOut(); S.user = null; go('details'); };
+      return;
+    }
+    const c = await loadCustomer() || {};
+    if (S.step !== 'details') return;
+    el.querySelector('.step').innerHTML = `${backBtn('time')}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p>
+      <div class="who-card"><div><b>${esc(S.user.email)}</b><span>Signed in to Cutz</span></div><button id="out">Not you?</button></div>
+      <div class="field"><label for="f-name">Full name</label><input id="f-name" autocomplete="name" value="${esc(c.name && c.name !== 'New customer' ? c.name : '')}"></div>
+      ${phoneField(c.phone)}
+      <button class="btn btn-green btn-lg btn-block" id="next">Review booking</button>`;
+    wireBack(el);
+    el.querySelector('#out').onclick = async () => { await sb.auth.signOut(); S.user = null; S.customer = null; go('details'); };
+    el.querySelector('#next').onclick = async () => {
+      const name = el.querySelector('#f-name').value.trim(), phone = readPhone(el);
+      if (!name) return showErr(el, 'Please enter your name.');
+      if (!phone) return showErr(el, 'Please enter a valid phone number.');
+      const btn = el.querySelector('#next'); btn.disabled = true;
+      if (!S.customer) {
+        const { error } = await sb.from('customers').insert({ id: S.user.id, name, email: S.user.email, phone, gdpr_accepted_at: new Date().toISOString() });
+        if (error) { btn.disabled = false; return showErr(el, phoneError(error)); }
+      } else if (name !== S.customer.name || phone !== S.customer.phone) {
+        const { error } = await sb.from('customers').update({ name, phone }).eq('id', S.user.id);
+        if (error) { btn.disabled = false; return showErr(el, phoneError(error)); }
+      }
+      S.customer = { ...(S.customer || {}), name, phone };
+      go('confirm');
+    };
+    return;
+  }
+
+  const signup = S.authMode === 'signup', p = S.pending || {};
+  el.innerHTML = `<div class="step">${backBtn('time')}<h3>${signup ? 'Your details' : 'Sign in to book'}</h3><p class="hint">${signup ? 'Create a free Cutz account. You can use it in the app too.' : 'Use your Cutz account, the same one as in the app.'}</p>
+    <div class="tabs" role="tablist"><button role="tab" data-m="signup" class="${signup ? 'on' : ''}" aria-selected="${signup}">New to Cutz</button><button role="tab" data-m="signin" class="${signup ? '' : 'on'}" aria-selected="${!signup}">I have an account</button></div>
+    ${signup ? `<div class="field"><label for="f-name">Full name</label><input id="f-name" autocomplete="name" value="${esc(p.name || '')}"></div>${phoneField(p.phone)}` : ''}
+    <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(p.email || '')}"></div>
+    <div class="field"><label for="f-pw">Password</label><input id="f-pw" type="password" autocomplete="${signup ? 'new-password' : 'current-password'}" ${signup ? 'minlength="6" placeholder="At least 6 characters"' : ''}></div>
+    ${signup ? '<label class="check"><input type="checkbox" id="f-ok"><span>I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</span></label>' : ''}
+    <button class="btn btn-green btn-lg btn-block" id="next">${signup ? 'Continue' : 'Sign in'}</button>
+    ${signup ? '' : '<p class="note">Forgot your password? Reset it in the Cutz app.</p>'}</div>`;
+  wireBack(el);
+  el.querySelectorAll('.tabs button').forEach(t => t.onclick = () => { S.authMode = t.dataset.m; renderStep(); });
+  el.querySelector('#next').onclick = async () => {
+    const email = el.querySelector('#f-email').value.trim(), pw = el.querySelector('#f-pw').value;
+    if (!/^\S+@\S+\.\S+$/.test(email)) return showErr(el, 'Please enter a valid email address.');
+    if (pw.length < 6) return showErr(el, 'Your password needs at least 6 characters.');
+    const btn = el.querySelector('#next'); btn.disabled = true; btn.textContent = 'One moment…';
+    if (signup) {
+      const name = el.querySelector('#f-name').value.trim(), phone = readPhone(el);
+      if (!name || !phone || !el.querySelector('#f-ok').checked) {
+        btn.disabled = false; btn.textContent = 'Continue';
+        return showErr(el, !name ? 'Please enter your name.' : !phone ? 'Please enter a valid phone number.' : 'Please accept the Terms and Privacy Policy.');
+      }
+      S.pending = { name, phone, email };
+      const { error } = await sb.auth.signUp({ email, password: pw, options: { data: { userType: 'customer' } } });
+      if (error) { btn.disabled = false; btn.textContent = 'Continue'; return showErr(el, /registered|exists/i.test(error.message) ? 'That email already has a Cutz account. Switch to "I have an account".' : error.message); }
+      go('otp');
+    } else {
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+      if (error) {
+        if (/not confirmed/i.test(error.message)) { S.pending = { email }; await sb.auth.resend({ type: 'signup', email }).catch(() => {}); return go('otp'); }
+        btn.disabled = false; btn.textContent = 'Sign in';
+        return showErr(el, "That email and password don't match a Cutz account.");
+      }
+      S.user = data.user; go('details');
+    }
+  };
+}
+function phoneError(e) {
+  return e && (e.code === '23505' || /phone/i.test(e.message || '')) ? 'That phone number is already used by another Cutz account.' : (e?.message || 'Something went wrong. Please try again.');
+}
+
+function stepOtp(el) {
+  const email = S.pending?.email || '';
+  el.innerHTML = `<div class="step">${backBtn('details')}<h3>Check your email</h3><p class="hint">Enter the 6-digit code we sent to <b style="color:#fff">${esc(email)}</b>.</p>
+    <div class="otp">${[0,1,2,3,4,5].map(i => `<input inputmode="numeric" autocomplete="${i ? 'off' : 'one-time-code'}" maxlength="6" aria-label="Digit ${i + 1}">`).join('')}</div>
+    <button class="btn btn-green btn-lg btn-block" id="next">Verify</button><p class="note"><button class="back" id="resend" style="margin:0">Send a new code</button></p></div>`;
+  wireBack(el);
+  const ins = [...el.querySelectorAll('.otp input')];
+  ins[0].focus();
+  ins.forEach((inp, i) => {
+    inp.oninput = () => {
+      const v = inp.value.replace(/\D/g, '');
+      if (v.length > 1) { v.slice(0, 6).split('').forEach((c, j) => { if (ins[j]) ins[j].value = c; }); ins[Math.min(v.length, 6) - 1].focus(); if (v.length >= 6) el.querySelector('#next').click(); return; }
+      inp.value = v; if (v && ins[i + 1]) ins[i + 1].focus();
+    };
+    inp.onkeydown = e => { if (e.key === 'Backspace' && !inp.value && ins[i - 1]) ins[i - 1].focus(); };
+  });
+  el.querySelector('#resend').onclick = async () => { await sb.auth.resend({ type: 'signup', email }).catch(() => {}); showErr(el, 'A new code is on its way.'); };
+  el.querySelector('#next').onclick = async () => {
+    const code = ins.map(i => i.value).join('');
+    if (code.length < 6) return showErr(el, 'Please enter all 6 digits.');
+    const btn = el.querySelector('#next'); btn.disabled = true;
+    const { data, error } = await sb.auth.verifyOtp({ email, token: code, type: 'signup' });
+    if (error) { btn.disabled = false; return showErr(el, 'That code is incorrect or has expired.'); }
+    S.user = data.user;
+    const existing = await loadCustomer();
+    if (!existing && S.pending?.name) {
+      const { error: e2 } = await sb.from('customers').insert({ id: S.user.id, name: S.pending.name, email, phone: S.pending.phone, gdpr_accepted_at: new Date().toISOString() });
+      if (!e2) S.customer = { name: S.pending.name, phone: S.pending.phone, email };
+    }
+    try { await sb.rpc('mark_customer_email_verified'); } catch (_) {}
+    go(S.customer?.phone ? 'confirm' : 'details');
+  };
+}
+
+function stepConfirm(el) {
+  const d = fromKey(S.date), c = S.customer || {};
+  el.innerHTML = `<div class="step">${backBtn('details')}<h3>Confirm booking</h3><p class="hint">Check everything looks right.</p>
+    <div class="sum">
+      <div><span>Barber</span><b>${esc(S.barber.name)}</b></div>
+      <div><span>Service</span><b>${esc(S.service.name)}</b></div>
+      <div><span>When</span><b>${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} · ${esc(S.time)}</b></div>
+      <div><span>Duration</span><b>${dur(S.service)} min</b></div>
+      <div><span>Name</span><b>${esc(c.name || '')}</b></div>
+      <div><span>Phone</span><b>${esc(c.phone || '')}</b></div>
+      <div class="tot"><span>Pay at the shop</span><b>${kr(S.service.price)}</b></div>
+    </div>
+    <button class="btn btn-green btn-lg btn-block" id="next">Confirm booking</button>
+    <p class="note">Free cancellation up to 24 hours before. <a href="terms.html#conduct" style="text-decoration:underline">No-show policy</a></p></div>`;
+  wireBack(el);
+  el.querySelector('#next').onclick = async () => {
+    const btn = el.querySelector('#next'); btn.disabled = true; btn.textContent = 'Booking…';
+    const [h, m] = S.time.split(':').map(Number);
+    const at = fromKey(S.date); at.setHours(h, m, 0, 0);
+    const { data, error } = await sb.from('bookings').insert({
+      barber_id: S.barber.id, customer_id: S.user.id,
+      customer_name: c.name || '', customer_phone: c.phone || '',
+      service: S.service, date_key: S.date,
+      date_label: `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`,
+      time: S.time, date_time_iso: at.toISOString(),
+    }).select('id, status').maybeSingle();
+    if (error) {
+      btn.disabled = false; btn.textContent = 'Confirm booking';
+      if (error.code === '23505') { S.time = null; showErr(el, 'Someone just booked that time. Please pick another one.'); setTimeout(() => go('time'), 1600); return; }
+      return showErr(el, bookingError(error));
+    }
+    S.result = data || {};
+    go('done');
+  };
+}
+function bookingError(e) {
+  const m = e.message || '';
+  if (/opening hours|closed|shift/i.test(m)) return "That time is outside the barber's opening hours. Please pick another.";
+  if (/block/i.test(m)) return "You can't book with this barber.";
+  if (/strike|cooldown|no-show/i.test(m)) return "Your account can't make new bookings right now because of recent no-shows.";
+  return m || 'Something went wrong. Please try again.';
+}
+
+function stepDone(el) {
+  const d = fromKey(S.date), pending = S.result?.status === 'pending';
+  el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>${pending ? 'Booking requested' : "You're booked"}</h3>
+    <p>${esc(S.service.name)} with ${esc(S.barber.name)}<br><b style="color:#fff">${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} at ${esc(S.time)}</b>${pending ? '<br>You\'ll get a confirmation in the Cutz app.' : ''}</p>
+    <button class="btn btn-green btn-lg btn-block" id="ics">Add to calendar</button>
+    <a class="btn btn-ghost btn-lg btn-block" href="${APP_STORE}" target="_blank" rel="noopener">Manage in the Cutz app</a>
+    <button class="btn btn-lg btn-block" id="again" style="background:none;color:var(--dim)">Book another</button></div>`;
+  document.querySelectorAll('#progress i').forEach(i => i.classList.add('on'));
+  el.querySelector('#ics').onclick = downloadIcs;
+  el.querySelector('#again').onclick = () => { S.service = S.date = S.time = null; go('service'); };
+}
+function downloadIcs() {
+  const [h, m] = S.time.split(':').map(Number);
+  const start = fromKey(S.date); start.setHours(h, m, 0, 0);
+  const end = new Date(start.getTime() + dur(S.service) * 60000);
+  const f = x => x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const clean = s => String(s || '').replace(/[,;\\]/g, ' ').replace(/\n/g, ' ');
+  const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Cutz//Booking//EN','BEGIN:VEVENT',`UID:${S.result?.id || Date.now()}@cutzapp.one`,`DTSTAMP:${f(new Date())}`,`DTSTART:${f(start)}`,`DTEND:${f(end)}`,`SUMMARY:${clean(S.service.name)} with ${clean(S.barber.name)}`,`LOCATION:${clean(S.barber.address)}`,`URL:${location.origin}/barber.html?id=${S.barber.id}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+  a.download = 'cutz-booking.ics'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+boot().catch(() => stateScreen('Something went wrong', "We couldn't load this profile. Check your connection and try again."));
+</script>
+</body>
+</html>

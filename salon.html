@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Salon — Book on Cutz</title>
+<meta name="description" content="See the team, services and location, and book a barber at this salon on Cutz.">
+<meta name="theme-color" content="#000000">
+<meta name="apple-itunes-app" content="app-id=6811618000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ukoovhgmbqfocalykhyx.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);--red:#ff5a5a;
+  --mute:rgba(255,255,255,.64);--dim:rgba(255,255,255,.42);--faint:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.1);--card:#0a0a0a;--card-2:#121212;
+  --r:22px;--max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+svg{display:block}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+
+/* Nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
+.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
+.nav-links a:not(.btn){transition:color .2s}
+.nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:var(--fg)}
+.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
+.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
+.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:900px){
+  .menu-btn{display:block}
+  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
+  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
+  .nav-links .btn{margin-top:20px;justify-content:center}
+  .nav.open{background:#000}
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s,opacity .2s;white-space:nowrap;cursor:pointer;border:0}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.35;cursor:default;transform:none}
+.btn-green{background:var(--green);color:#000}
+.btn-green:not(:disabled):hover{background:#1bff82}
+.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--fg);background:none}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn-lg{height:54px;padding:0 26px;font-size:16px}
+.btn-block{width:100%}
+
+/* States */
+.state{min-height:80vh;display:grid;place-items:center;text-align:center;padding:120px var(--gutter) 60px}
+.state h1{font-size:clamp(32px,5vw,48px);letter-spacing:-.03em;margin:0 0 12px}
+.state p{color:var(--mute);margin:0 auto 28px;max-width:420px}
+.spinner{width:30px;height:30px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green);animation:spin .8s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skel{background:linear-gradient(90deg,#0d0d0d 25%,#161616 50%,#0d0d0d 75%);background-size:200% 100%;animation:sh 1.4s infinite;border-radius:16px}
+@keyframes sh{to{background-position:-200% 0}}
+
+/* Gallery */
+.top{padding-top:92px}
+.crumbs{font-size:13px;color:var(--dim);margin-bottom:18px;display:flex;gap:8px;flex-wrap:wrap}
+.crumbs a:hover{color:var(--fg)}
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;height:clamp(260px,42vw,460px);border-radius:26px;overflow:hidden}
+.gallery button{border:0;padding:0;background:#111;cursor:zoom-in;position:relative;overflow:hidden}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.gallery button:hover img{transform:scale(1.04)}
+.gallery .g0{grid-row:span 2}
+.gallery.n1{grid-template-columns:1fr}.gallery.n1 .g0{grid-row:span 2}
+.gallery.n2{grid-template-columns:2fr 1fr}.gallery.n2 .g1{grid-row:span 2}
+.gallery.n3 .g1,.gallery.n3 .g2,.gallery.n4 .g3{grid-column:span 2}
+.gallery .more{position:absolute;right:14px;bottom:14px;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--line)}
+.no-photo{height:clamp(200px,30vw,320px);border-radius:26px;background:radial-gradient(60% 80% at 70% 20%,rgba(0,220,100,.18),transparent 60%),#0a0a0a;border:1px solid var(--line);display:grid;place-items:center;font-size:clamp(64px,10vw,120px);font-weight:900;letter-spacing:-.04em;color:rgba(255,255,255,.14)}
+@media (max-width:700px){.gallery{grid-template-columns:1fr 1fr;grid-template-rows:2fr 1fr;height:360px}.gallery .g0{grid-column:span 2;grid-row:auto}.gallery .g3,.gallery .g4{display:none}.gallery.n2 .g1{grid-row:auto;grid-column:span 2}.gallery.n3 .g1,.gallery.n3 .g2{grid-column:auto}}
+
+/* Header */
+.head{display:flex;gap:20px;align-items:center;margin:28px 0 8px}
+.avatar{width:84px;height:84px;border-radius:24px;flex:none;background:linear-gradient(135deg,#2a2a2a,#111);display:grid;place-items:center;font-weight:800;font-size:28px;overflow:hidden;border:1px solid var(--line)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.head h1{font-size:clamp(32px,5vw,56px);letter-spacing:-.04em;line-height:1;margin:0;font-weight:900}
+.head .sub{color:var(--mute);margin-top:8px;font-size:16px}
+.head .sub a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.badge.g{color:var(--green);background:var(--green-dim);border-color:transparent}
+.badge.r{color:#ff8a8a;background:rgba(255,90,90,.1);border-color:transparent}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.offer{margin-top:18px;padding:14px 18px;border-radius:16px;background:linear-gradient(90deg,rgba(0,220,100,.14),rgba(0,220,100,.03));border:1px solid rgba(0,220,100,.35);font-size:15px}
+.offer b{color:var(--green)}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:clamp(32px,5vw,64px);padding:36px 0 120px;align-items:start}
+@media (max-width:960px){.layout{grid-template-columns:1fr}}
+.block{padding:36px 0;border-top:1px solid var(--line)}
+.block:first-child{border-top:0;padding-top:8px}
+.block h2{font-size:clamp(22px,2.6vw,28px);letter-spacing:-.025em;margin:0 0 20px;font-weight:700}
+.bio{color:var(--mute);font-size:17px;max-width:640px;white-space:pre-line;margin:0}
+.svc{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.svc:last-child{border-bottom:0}
+.svc .nm{font-weight:600;font-size:16px}
+.svc .du{font-size:13px;color:var(--dim);margin-top:2px}
+.svc .pr{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.svc .btn{height:38px;padding:0 16px;font-size:13px}
+.hours{display:grid;gap:0;max-width:460px}
+.hours div{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--mute);font-variant-numeric:tabular-nums}
+.hours div.today{color:var(--fg);font-weight:600}
+.hours div.today span:first-child::after{content:"Today";margin-left:10px;font-size:11px;font-weight:700;color:var(--green);background:var(--green-dim);padding:2px 8px;border-radius:999px;vertical-align:2px}
+.loc{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.loc p{margin:0;color:var(--mute);font-size:16px;flex:1 1 240px}
+.loc .btns{display:flex;gap:8px;flex-wrap:wrap}
+.rv-sum{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-bottom:28px}
+.rv-big{font-size:64px;font-weight:900;letter-spacing:-.05em;line-height:1}
+.rv-big small{display:block;font-size:13px;font-weight:500;letter-spacing:0;color:var(--dim);margin-top:6px}
+.bars{display:grid;gap:6px;max-width:320px}
+.bar{display:grid;grid-template-columns:14px 1fr 28px;gap:10px;align-items:center;font-size:12px;color:var(--dim)}
+.bar i{height:6px;border-radius:6px;background:#1c1c1c;overflow:hidden;display:block}
+.bar i b{display:block;height:100%;background:var(--green);border-radius:6px}
+.review{padding:18px 0;border-bottom:1px solid var(--line)}
+.review:last-child{border-bottom:0}
+.review .who{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.review .who b{font-weight:600}
+.review .who span{color:var(--dim)}
+.stars{color:var(--green);letter-spacing:2px;font-size:14px;margin:4px 0}
+.review p{margin:4px 0 0;color:var(--mute);font-size:15px}
+.empty{color:var(--dim);font-size:15px;padding:18px;border:1px dashed var(--line);border-radius:16px;text-align:center}
+.app-cta{border-radius:24px;padding:28px;background:radial-gradient(70% 120% at 100% 0%,rgba(0,220,100,.14),transparent 60%),#070707;border:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;justify-content:space-between}
+.app-cta h3{margin:0;font-size:20px;letter-spacing:-.02em}
+.app-cta p{margin:4px 0 0;color:var(--mute);font-size:14px}
+
+/* Salon */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.tm{display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:20px;background:var(--card);border:1px solid var(--line);transition:border-color .3s,transform .4s var(--ease)}
+.tm:hover{border-color:rgba(255,255,255,.22);transform:translateY(-3px)}
+.tm-top{display:flex;gap:12px;align-items:center}
+.tm .av{width:52px;height:52px;border-radius:16px;flex:none;background:linear-gradient(135deg,#2a2a2a,#151515);display:grid;place-items:center;font-weight:800;overflow:hidden;border:1px solid var(--line)}
+.tm .av img{width:100%;height:100%;object-fit:cover}
+.tm b{display:block;font-size:16px}
+.tm small{color:var(--dim);font-size:13px}
+.tm-meta{display:flex;flex-wrap:wrap;gap:6px}
+.tm-meta span{font-size:12px;padding:4px 9px;border-radius:999px;background:#161616;color:var(--mute)}
+.tm-meta span.g{background:var(--green-dim);color:var(--green)}
+.tm .btn{margin-top:auto}
+.svc-g{border-bottom:1px solid var(--line)}
+.svc-g summary{list-style:none;display:flex;align-items:center;gap:16px;padding:18px 0;cursor:pointer}
+.svc-g summary::-webkit-details-marker{display:none}
+.svc-g .nm{font-weight:600}
+.svc-g .du{font-size:13px;color:var(--dim)}
+.svc-g .pr{margin-left:auto;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.svc-g .chev{transition:transform .3s var(--ease);color:var(--dim)}
+.svc-g[open] .chev{transform:rotate(180deg)}
+.who-list{display:grid;gap:8px;padding:0 0 18px}
+.who-list a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:#111;border:1px solid var(--line);font-size:14px;transition:border-color .2s}
+.who-list a:hover{border-color:var(--green)}
+.who-list .av{width:32px;height:32px;border-radius:10px;background:#222;display:grid;place-items:center;font-size:12px;font-weight:700;overflow:hidden;flex:none}
+.who-list .av img{width:100%;height:100%;object-fit:cover}
+.who-list em{font-style:normal;margin-left:auto;color:var(--green);font-weight:600}
+.side{position:sticky;top:92px;display:grid;gap:12px}
+.side .box{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px}
+.side h3{margin:0 0 6px;font-size:18px;letter-spacing:-.02em}
+.side p{margin:0 0 16px;color:var(--mute);font-size:14px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat-row div{background:#121212;border-radius:14px;padding:12px;text-align:center}
+.stat-row b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em}
+.stat-row small{font-size:11px;color:var(--dim)}
+.btn-block{width:100%}
+@media (max-width:960px){.side{position:static}}
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb img{max-width:92vw;max-height:84vh;border-radius:16px;object-fit:contain}
+.lb button{position:absolute;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(20,20,20,.8);cursor:pointer;display:grid;place-items:center}
+.lb .x{top:20px;right:20px}.lb .p{left:20px;top:50%;margin-top:-24px}.lb .n{right:20px;top:50%;margin-top:-24px}
+.lb .c{position:absolute;bottom:24px;left:0;right:0;text-align:center;color:var(--dim);font-size:13px}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
+.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
+.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f-grid a{color:var(--mute);transition:color .2s}
+.f-grid a:hover{color:var(--fg)}
+.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+@media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.ok-ic path{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="find.html">Find a barber</a>
+      <a href="barbers.html">For barbers</a>
+      <a href="salons.html">For salons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="https://apps.apple.com/app/cutz/id6811618000" class="btn btn-green" target="_blank" rel="noopener">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div id="app"><div class="state"><div class="spinner" aria-label="Loading"></div></div></div>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="x" data-lb="x" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <button class="p" data-lb="-1" aria-label="Previous photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg></button>
+  <img alt="">
+  <button class="n" data-lb="1" aria-label="Next photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg></button>
+  <div class="c"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="index.html" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+      </div>
+      <div><h4>Product</h4><ul><li><a href="find.html">Find a barber</a></li><li><a href="index.html#how">How it works</a></li><li><a href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Download</a></li></ul></div>
+      <div><h4>Business</h4><ul><li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="mailto:cutz.support@gmail.com">Support</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'),btn=document.getElementById('menuBtn');
+  btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o);btn.setAttribute('aria-label',o?'Close menu':'Open menu')});
+  document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()});
+})();
+</script>
+<script>
+(function(){
+  var SB_URL='https://ukoovhgmbqfocalykhyx.supabase.co';
+  // Public anon key: only RLS-protected public views are readable.
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
+  var APP_STORE='https://apps.apple.com/app/cutz/id6811618000';
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var app=document.getElementById('app');
+  var H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
+  function get(p){return fetch(SB_URL+'/rest/v1/'+p,{headers:H}).then(function(r){if(!r.ok)throw r;return r.json()})}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function ini(n){return(n||'?').trim().split(/\s+/).map(function(p){return p[0]}).join('').slice(0,2).toUpperCase()}
+  function kr(a){var n=+a||0;return(n%1?n.toFixed(2):n)+' kr'}
+  function toMin(t){var p=String(t).split(':');return(+p[0])*60+(+p[1]||0)}
+  function todayHours(b){var h=b.hours;if(!h||!Object.keys(h).length)return null;return h[DAYS[new Date().getDay()]]||'Closed'}
+  function openNow(b){var r=todayHours(b);if(r==null)return null;if(r==='Closed')return false;var p=r.split(' - '),m=new Date().getHours()*60+new Date().getMinutes();return m>=toMin(p[0])&&m<toMin(p[1])}
+  function state(t,x){app.innerHTML='<div class="state"><div><h1>'+t+'</h1><p>'+x+'</p><a class="btn btn-green btn-lg" href="find.html">Find a barber</a></div></div>'}
+  function idFromUrl(){var q=new URLSearchParams(location.search).get('id');if(q)return q;var m=location.pathname.match(/\/s\/([^/]+)\/?$/);return m?decodeURIComponent(m[1]):null}
+
+  var id=idFromUrl();
+  if(!id)return state('No salon selected','Browse barbers and salons near you.');
+  Promise.all([
+    get('salons_public?select=*&id=eq.'+encodeURIComponent(id)),
+    get('barbers_public?select=*&salon_id=eq.'+encodeURIComponent(id)+'&is_discoverable=eq.true')
+  ]).then(function(r){
+    var salon=r[0][0],team=r[1]||[];
+    if(!salon)return state('Salon not found','This salon isn\'t available right now. It may no longer be listed.');
+    var ids=team.map(function(b){return b.id});
+    (ids.length?get('reviews?select=stars,description,customer_name,created_at,barber_id&barber_id=in.('+ids.join(',')+')&order=created_at.desc&limit=30'):Promise.resolve([]))
+      .catch(function(){return[]}).then(function(rv){render(salon,team,rv||[])});
+  }).catch(function(){state('Something went wrong','We couldn\'t load this salon. Check your connection and try again.')});
+
+  function render(s,team,reviews){
+    document.title=s.name+' — Book on Cutz';
+    document.querySelector('meta[name=description]').content='Book a barber at '+s.name+' on Cutz. See the team, services, prices and location.';
+    var photos=(s.photos||[]).filter(Boolean);
+    // Services across the whole team, grouped by name, with who offers each one.
+    var svc={};team.forEach(function(b){(b.services||[]).forEach(function(x){var k=String(x.name).trim().toLowerCase();svc[k]=svc[k]||{name:x.name,min:1e9,max:0,dur:x.duration,who:[]};svc[k].min=Math.min(svc[k].min,+x.price||0);svc[k].max=Math.max(svc[k].max,+x.price||0);svc[k].who.push({b:b,s:x})})});
+    var svcs=Object.keys(svc).map(function(k){return svc[k]}).sort(function(a,b){return b.who.length-a.who.length||a.min-b.min});
+    var openCount=team.filter(function(b){return openNow(b)===true}).length;
+    var avg=reviews.length?reviews.reduce(function(a,x){return a+x.stars},0)/reviews.length:0;
+    var minP=svcs.length?Math.min.apply(null,svcs.map(function(x){return x.min})):null;
+    var nameOf=function(b){return team.filter(function(t){return t.id===b})[0]};
+    var ll=s.lat&&s.lng?s.lat+','+s.lng:null,q=encodeURIComponent(s.address||s.name);
+    var gallery=photos.length?'<div class="gallery n'+Math.min(photos.length,5)+'">'+photos.slice(0,5).map(function(p,i){return'<button class="g'+i+'" data-photo="'+i+'" aria-label="Open photo '+(i+1)+'"><img src="'+esc(p)+'" alt="" loading="'+(i?'lazy':'eager')+'">'+(i===4&&photos.length>5?'<span class="more">+'+(photos.length-5)+' photos</span>':'')+'</button>'}).join('')+'</div>':'<div class="no-photo" aria-hidden="true">'+esc(ini(s.name))+'</div>';
+
+    app.innerHTML='<div class="wrap top">'+
+      '<nav class="crumbs" aria-label="Breadcrumb"><a href="find.html">Find a barber</a><span>/</span><span>'+esc(s.name)+'</span></nav>'+gallery+
+      '<div class="head"><div class="avatar">'+esc(ini(s.name))+'</div><div><h1>'+esc(s.name)+'</h1>'+(s.address?'<div class="sub">'+esc(s.address)+'</div>':'')+'</div></div>'+
+      '<div class="badges"><span class="badge">Salon · '+team.length+' barber'+(team.length===1?'':'s')+'</span>'+(openCount?'<span class="badge g"><span class="dot"></span>'+openCount+' open now</span>':'')+(avg?'<span class="badge">★ '+avg.toFixed(1)+' · '+reviews.length+' review'+(reviews.length===1?'':'s')+'</span>':'')+(minP!=null?'<span class="badge">From '+kr(minP)+'</span>':'')+'</div>'+
+      '<div class="layout"><div>'+
+        (s.bio?'<section class="block"><h2>About</h2><p class="bio">'+esc(s.bio)+'</p></section>':'')+
+        '<section class="block" id="team"><h2>The team</h2>'+(team.length?'<div class="team-grid">'+team.map(function(b){var o=openNow(b),th=todayHours(b),mp=(b.services||[]).length?Math.min.apply(null,b.services.map(function(x){return+x.price||0})):null;return'<article class="tm"><div class="tm-top"><span class="av">'+(b.avatar_photo?'<img src="'+esc(b.avatar_photo)+'" alt="" loading="lazy">':esc(ini(b.name)))+'</span><span><b>'+esc(b.name)+'</b><small>'+(+b.rating?'★ '+(+b.rating).toFixed(1)+' ('+(b.review_count||0)+')':'New on Cutz')+'</small></span></div><div class="tm-meta">'+(o===true?'<span class="g">Open · until '+esc(th.split(' - ')[1])+'</span>':th?'<span>'+(th==='Closed'?'Off today':'Today '+esc(th))+'</span>':'')+(mp!=null?'<span>From '+kr(mp)+'</span>':'')+(b.walk_in_available?'<span>Walk-ins</span>':'')+'</div><a class="btn btn-green" href="barber.html?id='+encodeURIComponent(b.id)+'#booker">Book '+esc(b.name.split(' ')[0])+'</a></article>'}).join('')+'</div>':'<p class="empty">No one is taking bookings here right now. Check back soon.</p>')+'</section>'+
+        (svcs.length?'<section class="block"><h2>Services</h2>'+svcs.map(function(x){return'<details class="svc-g"><summary><span><span class="nm">'+esc(x.name)+'</span>'+(x.dur?'<br><span class="du">'+esc(x.dur)+' min · '+x.who.length+' barber'+(x.who.length===1?'':'s')+'</span>':'')+'</span><span class="pr">'+(x.min===x.max?kr(x.min):kr(x.min)+' – '+kr(x.max))+'</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></summary><div class="who-list">'+x.who.map(function(w){return'<a href="barber.html?id='+encodeURIComponent(w.b.id)+'&service='+encodeURIComponent(w.s.id)+'#booker"><span class="av">'+(w.b.avatar_photo?'<img src="'+esc(w.b.avatar_photo)+'" alt="">':esc(ini(w.b.name)))+'</span>'+esc(w.b.name)+' · '+kr(w.s.price)+'<em>Book →</em></a>'}).join('')+'</div></details>'}).join('')+'</section>':'')+
+        '<section class="block"><h2>Reviews</h2>'+(reviews.length?reviews.slice(0,8).map(function(x){var b=nameOf(x.barber_id),p=String(x.customer_name||'Customer').trim().split(/\s+/);return'<div class="review"><div class="who"><b>'+esc(p[0]+(p[1]?' '+p[1][0]+'.':''))+'</b><span>'+(b?'for '+esc(b.name)+' · ':'')+new Date(x.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short'})+'</span></div><div class="stars" aria-label="'+x.stars+' out of 5">'+'★'.repeat(x.stars)+'<span style="color:#333">'+'★'.repeat(5-x.stars)+'</span></div>'+(x.description?'<p>'+esc(x.description)+'</p>':'')+'</div>'}).join(''):'<p class="empty">No reviews yet. Ratings come from customers after a completed booking.</p>')+'</section>'+
+        (s.address?'<section class="block"><h2>Location</h2><div class="loc"><p>'+esc(s.address)+'</p><div class="btns"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://maps.apple.com/?'+(ll?'daddr='+ll+'&':'')+'q='+q+'">Apple Maps</a><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+(ll||q)+'">Google Maps</a></div></div></section>':'')+
+      '</div><aside class="side">'+
+        '<div class="box"><h3>Book at '+esc(s.name)+'</h3><p>Choose a barber and pick a time. It takes about a minute.</p><div class="stat-row"><div><b>'+team.length+'</b><small>Barbers</small></div><div><b>'+svcs.length+'</b><small>Services</small></div><div><b>'+(avg?avg.toFixed(1):'–')+'</b><small>Rating</small></div></div><a class="btn btn-green btn-lg btn-block" href="#team">Choose a barber</a></div>'+
+        '<div class="box"><h3>Get the Cutz app</h3><p>Join walk-in queues and manage bookings on the go.</p><a class="btn btn-ghost btn-block" href="'+APP_STORE+'" target="_blank" rel="noopener">Download</a><a class="btn btn-block" style="margin-top:8px;color:var(--dim)" href="cutz://salon/'+encodeURIComponent(s.id)+'">Open in app</a></div>'+
+      '</aside></div></div>';
+
+    document.querySelectorAll('[data-photo]').forEach(function(el){el.addEventListener('click',function(){openLb(photos,+el.dataset.photo)})});
+  }
+
+  var lb=document.getElementById('lb'),lbP=[],lbI=0;
+  function show(){lb.querySelector('img').src=lbP[lbI];lb.querySelector('.c').textContent=(lbI+1)+' / '+lbP.length}
+  function openLb(p,i){lbP=p;lbI=i;show();lb.classList.add('open');document.body.classList.add('lock')}
+  lb.addEventListener('click',function(e){var b=e.target.closest('[data-lb]');if(!b&&e.target!==lb)return;var v=b?b.dataset.lb:'x';if(v==='x'){lb.classList.remove('open');document.body.classList.remove('lock');return}lbI=(lbI+ +v+lbP.length)%lbP.length;show()});
+  addEventListener('keydown',function(e){if(!lb.classList.contains('open'))return;if(e.key==='Escape')lb.querySelector('.x').click();if(e.key==='ArrowRight')lb.querySelector('.n').click();if(e.key==='ArrowLeft')lb.querySelector('.p').click()});
+})();
+</script>
+</body>
+</html>

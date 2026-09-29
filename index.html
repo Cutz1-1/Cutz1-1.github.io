@@ -50,7 +50,7 @@ img,svg{display:block}
 .menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease),opacity .2s}
 .nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
 .nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
-@media (max-width:820px){
+@media (max-width:900px){
   .menu-btn{display:block}
   .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .25s,transform .3s var(--ease)}
   .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
@@ -245,14 +245,14 @@ section{position:relative}
 
 /* ---------- Footer ---------- */
 footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
-.f-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
 .f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
 .f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .f-grid a{color:var(--mute);transition:color .2s}
 .f-grid a:hover{color:var(--fg)}
 .f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
 .f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
-@media (max-width:760px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (max-width:900px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -269,9 +269,10 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
     <nav class="nav-links" id="navLinks" aria-label="Main">
-      <a href="#how">How it works</a>
-      <a href="#features">Features</a>
+      <a href="find.html">Find a barber</a>
       <a href="barbers.html">For barbers</a>
+      <a href="salons.html">For salons</a>
+      <a href="faq.html">FAQ</a>
       <a href="https://apps.apple.com/app/cutz/id6811618000" class="btn btn-green" target="_blank" rel="noopener">Get the app</a>
     </nav>
   </div>
@@ -293,6 +294,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
           </a>
           <a class="btn btn-ghost btn-lg" href="barbers.html">I'm a barber <span class="arrow">→</span></a>
         </div>
+        <p class="rv" style="--d:.28s;margin:22px 0 0;font-size:15px;color:var(--mute)">No app? <a href="find.html" style="color:var(--fg);text-decoration:underline;text-underline-offset:3px">Find a barber and book on the web</a></p>
         <div class="live rv" id="livePill" style="--d:.32s" hidden>
           <span class="pulse"></span><span><b id="liveCount">—</b> barbers taking bookings on Cutz</span>
         </div>
@@ -511,25 +513,25 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="index.html#how">How it works</a></li>
-          <li><a href="index.html#features">Features</a></li>
-          <li><a href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Download</a></li>
+          <li><a href="find.html">Find a barber</a></li><li><a href="index.html#how">How it works</a></li><li><a href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Download</a></li>
         </ul>
       </div>
       <div>
-        <h4>Barbers</h4>
+        <h4>Business</h4>
         <ul>
-          <li><a href="barbers.html">Join Cutz</a></li>
-          <li><a href="barbers.html#pricing">Pricing</a></li>
-          <li><a href="barbers.html#faq">FAQ</a></li>
+          <li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li>
         </ul>
       </div>
       <div>
         <h4>Company</h4>
         <ul>
-          <li><a href="mailto:cutz.support@gmail.com">Support</a></li>
-          <li><a href="privacy.html">Privacy</a></li>
-          <li><a href="terms.html">Terms</a></li>
+          <li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="mailto:cutz.support@gmail.com">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li>
         </ul>
       </div>
     </div>
