@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="assets/appstore.js"></script>
+<title>My bookings — Cutz</title>
+<meta name="description" content="See, change or cancel your Cutz bookings.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://ukoovhgmbqfocalykhyx.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);
+  --mute:rgba(255,255,255,.64);--dim:rgba(255,255,255,.42);--faint:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.1);--card:#0a0a0a;--card-2:#121212;
+  --r:22px;--max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+svg{display:block}
+::selection{background:var(--green);color:#000}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
+.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
+.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
+.nav-links a:not(.btn){transition:color .2s}
+.nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:var(--fg)}
+.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
+.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
+.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:900px){
+  .menu-btn{display:block}
+  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
+  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
+  .nav-links .btn{margin-top:20px;justify-content:center}
+  .nav.open{background:#000}
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s var(--ease),background .2s,border-color .2s;white-space:nowrap;cursor:pointer;border:0}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#000}
+.btn-green:hover{background:#1bff82}
+.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--fg);background:none}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn-lg{height:54px;padding:0 26px;font-size:16px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,220,100,.7);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(0,220,100,0)}100%{box-shadow:0 0 0 0 rgba(0,220,100,0)}}
+
+
+/* Contact */
+.c-hero{padding:clamp(128px,15vw,170px) 0 48px;position:relative}
+.c-hero::before{content:"";position:absolute;inset:0 0 -40%;background:radial-gradient(40% 60% at 80% 10%,rgba(0,220,100,.13),transparent 70%);pointer-events:none}
+.c-hero h1{font-size:clamp(44px,8vw,96px);line-height:.95;letter-spacing:-.045em;font-weight:900;margin:18px 0 0;position:relative}
+.c-hero h1 span{color:var(--green)}
+.lead{font-size:clamp(17px,1.6vw,20px);color:var(--mute);max-width:560px;margin:24px 0 0;position:relative}
+.c-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:clamp(24px,4vw,48px);padding-bottom:120px;align-items:start}
+@media (max-width:900px){.c-grid{grid-template-columns:1fr}}
+.c-form{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:clamp(22px,4vw,36px);position:relative}
+.c-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.c-row{grid-template-columns:1fr;gap:0}}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--mute);margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:0 14px;height:50px;border-radius:14px;border:1px solid var(--line);background:#141414;font-size:16px;outline:none;transition:border-color .2s;font-family:inherit;color:#fff}
+.field textarea{height:auto;padding:14px;resize:vertical;min-height:150px;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green)}
+.field .bad{border-color:#ff5a5a}
+.count{text-align:right;font-size:12px;color:var(--dim);margin-top:6px;font-variant-numeric:tabular-nums}
+.err{color:#ff8a8a;background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.25);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:14px}
+.fine{font-size:13px;color:var(--dim);margin:14px 0 0}
+.done{position:absolute;inset:0;background:var(--card);border-radius:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;animation:fade .4s var(--ease)}
+.done[hidden]{display:none}
+.done h2{margin:0 0 8px;font-size:28px;letter-spacing:-.03em}
+.done p{color:var(--mute);max-width:360px;margin:0 0 24px}
+.ok-ic{width:68px;height:68px;border-radius:50%;background:var(--green);color:#000;display:grid;place-items:center;margin-bottom:20px}
+@keyframes fade{from{opacity:0;transform:scale(.98)}}
+.c-side{display:grid;gap:12px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px}
+.box h3{margin:0 0 8px;font-size:16px}
+.box p{margin:0;color:var(--mute);font-size:15px}
+.mail{color:var(--green);font-weight:600;font-size:17px;word-break:break-all}
+.links{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.links a{color:var(--mute);font-size:15px}
+.links a:hover{color:#fff}
+footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
+.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
+.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
+.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.f-grid a{color:var(--mute);transition:color .2s}
+.f-grid a:hover{color:var(--fg)}
+.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
+.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+@media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.pg{padding:120px 0 80px;min-height:70vh}
+.pg h1{font-size:clamp(34px,5vw,52px);letter-spacing:-.035em;line-height:1.05;margin:0 0 10px}
+.pg .lead{margin:0 0 30px;color:var(--mute);max-width:560px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:clamp(20px,3vw,30px)}
+.narrow{max-width:460px}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.note{font-size:13px;color:var(--dim);margin:14px 0 0;text-align:center}
+.note a,.link{text-decoration:underline;color:var(--mute);background:none;border:0;cursor:pointer;font-size:13px;padding:0}
+.err.ok{color:var(--green);background:var(--green-dim);border-color:rgba(0,220,100,.3)}
+.err[hidden]{display:none}
+.phone{display:grid;grid-template-columns:104px 1fr;gap:8px}
+.otp{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:6px 0 16px}
+.otp input{height:56px;width:100%;text-align:center;font-size:22px;font-weight:800;border-radius:12px;border:1px solid var(--line);background:#141414;outline:none;color:var(--fg)}
+.otp input:focus{border-color:var(--green)}
+.spinner{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green);animation:sp .8s linear infinite;margin:40px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.mb-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.who{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mute)}
+.sec-h{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:34px 0 12px}
+.list{display:grid;gap:12px}
+.bk{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;display:grid;gap:14px}
+.bk-row{display:flex;gap:14px;align-items:center}
+.av{width:52px;height:52px;border-radius:16px;flex:none;overflow:hidden;background:linear-gradient(135deg,#2a2a2a,#151515);display:grid;place-items:center;font-weight:800;border:1px solid var(--line)}
+.av img{width:100%;height:100%;object-fit:cover}
+.bk-main{flex:1;min-width:0}
+.bk-main b{display:block;font-size:17px}
+.bk-main span{display:block;color:var(--mute);font-size:14px}
+.when{font-size:15px;font-weight:700;color:var(--fg)!important;margin-top:2px}
+.tag{flex:none;font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;background:#1a1a1a;color:var(--mute)}
+.tag.g{background:var(--green-dim);color:var(--green)}
+.tag.y{background:rgba(255,196,0,.12);color:#ffc400}
+.tag.r{background:rgba(255,90,90,.1);color:#ff8a8a}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.acts .btn{height:40px;padding:0 16px;font-size:13px}
+.empty{color:var(--dim);font-size:15px;padding:22px;border:1px dashed var(--line);border-radius:20px;text-align:center}
+.empty a{color:var(--green)}
+.past .bk{opacity:.75}
+.panel{border-top:1px solid var(--line);padding-top:14px}
+.panel h3{margin:0 0 4px;font-size:16px}
+.panel p{margin:0 0 12px;color:var(--mute);font-size:14px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:none;width:58px;padding:9px 0;border-radius:14px;border:1px solid var(--line);background:#0d0d0d;cursor:pointer;display:grid;gap:1px;text-align:center}
+.days button small{font-size:11px;color:var(--dim)}
+.days button b{font-size:18px}
+.days button.on{background:#fff;color:#000;border-color:#fff}
+.days button.on small{color:#333}
+.days button:disabled{opacity:.35;cursor:not-allowed}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px;margin-bottom:12px}
+.slots button{height:44px;border-radius:12px;border:1px solid var(--line);background:#121212;cursor:pointer;font-weight:600}
+.slots button.on{background:var(--green);color:#000;border-color:var(--green)}
+.slots button:disabled{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+.warn{padding:12px 14px;border-radius:14px;background:rgba(255,196,0,.08);border:1px solid rgba(255,196,0,.25);color:#ffd866;font-size:14px;margin-bottom:12px}
+.btn-red{background:#ff5a5a;color:#000;font-weight:700}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="find.html">Find a barber</a>
+      <a href="map.html">Map</a>
+      <a href="barbers.html">For barbers</a>
+      <a href="salons.html">For salons</a>
+      <a href="faq.html">FAQ</a>
+      <a href="mybookings.html" aria-current="page">My bookings</a>
+      <a href="download.html" class="btn btn-green">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="pg"><div class="wrap">
+  <div id="app"><div class="spinner" aria-label="Loading"></div></div>
+</div></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="index.html" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Business</h4>
+        <ul>
+          <li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
+  </div>
+</footer>
+<script>
+(function(){var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()})})();
+</script>
+<script type="module">
+import { sb, esc, validEmail, startEmailSignIn, verifyEmailCode, resendCode, signInWithPassword, userType, otpBoxes, wireOtp } from './assets/cutz-auth.js';
+
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SLOT_STEP = 30, BOOK_FROM_DAYS = 1, BOOK_DAYS = 21, CANCEL_FREE_HOURS = 24;
+const FALLBACK_SLOTS = ['9:00','9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+const app = document.getElementById('app');
+const kr = a => { const n = Number(a) || 0; return `${Number.isInteger(n) ? n : n.toFixed(2)} kr`; };
+const toMin = t => { const [h, m] = String(t).split(':').map(Number); return h * 60 + (m || 0); };
+const toLabel = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+const pad = n => String(n).padStart(2, '0');
+const dateKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const fromKey = k => new Date(`${k}T00:00:00`);
+const ini = n => (n || '?').trim().split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase();
+const dur = s => Math.max(Number(s?.duration) || SLOT_STEP, 1);
+const whenOf = b => new Date(b.date_time_iso || `${b.date_key}T${pad(toMin(b.time) / 60 | 0)}:${pad(toMin(b.time) % 60)}:00`);
+const fmtWhen = b => { const d = whenOf(b); return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} · ${b.time}`; };
+const S = { user: null, customer: null, bookings: [], waitlist: [], barbers: {}, open: null, pending: null };
+
+function msg(el, text, ok) { const e = el.querySelector('.err'); e.hidden = false; e.className = ok ? 'err ok' : 'err'; e.textContent = text; }
+
+// ---------------------------------------------------------------------------
+// Sign in: email, then a 6-digit code (or password for returning customers).
+// ---------------------------------------------------------------------------
+function signInScreen(prefill = '') {
+  app.innerHTML = `<h1>My bookings</h1><p class="lead">See, move or cancel your appointments. Enter the email you booked with.</p>
+    <form class="card narrow" id="f" novalidate><div class="err" role="alert" hidden></div>
+      <div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(prefill)}" placeholder="you@example.com"></div>
+      <button class="btn btn-green btn-lg btn-block" id="go" type="submit">Continue</button>
+      <p class="note">No bookings yet? <a href="find.html">Find a barber</a></p></form>`;
+  const f = app.querySelector('#f');
+  f.querySelector('#em').focus();
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const email = f.querySelector('#em').value.trim().toLowerCase(), btn = f.querySelector('#go');
+    if (!validEmail(email)) return msg(f, 'Please enter a valid email address.');
+    btn.disabled = true; btn.textContent = 'One moment…';
+    try {
+      const r = await startEmailSignIn(email);
+      S.pending = { email, isNew: !!r.isNew };
+      r.mode === 'code' ? codeScreen() : passwordScreen();
+    } catch (err) { btn.disabled = false; btn.textContent = 'Continue'; msg(f, err.message); }
+  };
+}
+function codeScreen() {
+  const { email } = S.pending;
+  app.innerHTML = `<h1>Check your email</h1><p class="lead">We sent a 6-digit code to <b style="color:#fff">${esc(email)}</b>. Check spam if it's not there in a minute.</p>
+    <div class="card narrow" id="f"><div class="err" role="alert" hidden></div>${otpBoxes()}
+      <button class="btn btn-green btn-lg btn-block" id="go">Continue</button>
+      <p class="note"><button class="link" id="re">Send a new code</button> · <button class="link" id="other">Use another email</button></p></div>`;
+  const f = app.querySelector('#f'), btn = f.querySelector('#go');
+  const submit = async code => {
+    if (code.length < 6) return msg(f, 'Please enter all 6 digits.');
+    btn.disabled = true; btn.textContent = 'Checking…';
+    try { S.user = await verifyEmailCode(email, code, S.pending.isNew); load(); }
+    catch (err) { btn.disabled = false; btn.textContent = 'Continue'; msg(f, err.message); }
+  };
+  const read = wireOtp(f, submit);
+  btn.onclick = () => submit(read());
+  f.querySelector('#re').onclick = async () => { try { await resendCode(email, S.pending.isNew); msg(f, 'A new code is on its way.', true); } catch (err) { msg(f, err.message); } };
+  f.querySelector('#other').onclick = () => signInScreen();
+}
+function passwordScreen() {
+  const { email } = S.pending;
+  app.innerHTML = `<h1>Welcome back</h1><p class="lead"><b style="color:#fff">${esc(email)}</b> has a Cutz account. Enter its password.</p>
+    <form class="card narrow" id="f" novalidate><div class="err" role="alert" hidden></div>
+      <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"></div>
+      <button class="btn btn-green btn-lg btn-block" id="go" type="submit">Sign in</button>
+      <p class="note">Booked on the website, or forgot it? <a href="reset-password.html?email=${encodeURIComponent(email)}">Set a password</a> · <button class="link" type="button" id="other">Use another email</button></p></form>`;
+  const f = app.querySelector('#f');
+  f.querySelector('#pw').focus();
+  f.querySelector('#other').onclick = () => signInScreen();
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const btn = f.querySelector('#go'); btn.disabled = true; btn.textContent = 'Signing in…';
+    try { S.user = await signInWithPassword(email, f.querySelector('#pw').value); load(); }
+    catch (err) { btn.disabled = false; btn.textContent = 'Sign in'; msg(f, err.message); }
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Bookings
+// ---------------------------------------------------------------------------
+async function load() {
+  if (userType(S.user) !== 'customer') {
+    app.innerHTML = `<h1>My bookings</h1><p class="lead">You're signed in with a ${esc(userType(S.user))} account. Your bookings are in the barber dashboard in the app.</p><button class="btn btn-ghost btn-lg" id="out">Sign out</button>`;
+    app.querySelector('#out').onclick = signOut; return;
+  }
+  app.innerHTML = '<div class="spinner" aria-label="Loading"></div>';
+  const [cust, bk, wl] = await Promise.all([
+    sb.from('customers').select('name, email').eq('id', S.user.id).maybeSingle(),
+    sb.from('bookings').select('*').eq('customer_id', S.user.id).order('date_time_iso', { ascending: true }),
+    sb.from('waitlist_entries').select('*').eq('customer_id', S.user.id).eq('status', 'waiting').order('date_key'),
+  ]);
+  S.customer = cust.data; S.bookings = bk.data || []; S.waitlist = wl.data || [];
+  const ids = [...new Set([...S.bookings, ...S.waitlist].map(b => b.barber_id).filter(Boolean))];
+  if (ids.length) {
+    const { data } = await sb.from('barbers_public').select('id, name, salon, avatar_photo, address, lat, lng, hours, time_off, services, is_online').in('id', ids);
+    (data || []).forEach(b => { S.barbers[b.id] = b; });
+    // Barbers no longer listed publicly still get a name (same RPC as the app).
+    if (ids.some(id => !S.barbers[id])) { const { data: more } = await sb.rpc('get_my_booking_barbers'); (more || []).forEach(b => { S.barbers[b.id] = S.barbers[b.id] || b; }); }
+  }
+  render();
+}
+function statusTag(b) {
+  return ({ pending: '<span class="tag y">Waiting for barber</span>', upcoming: '<span class="tag g">Confirmed</span>', completed: '<span class="tag">Completed</span>',
+    cancelled: '<span class="tag">Cancelled</span>', declined: '<span class="tag r">Declined</span>', no_show: '<span class="tag r">Missed</span>' })[b.status] || `<span class="tag">${esc(b.status)}</span>`;
+}
+function render() {
+  const now = Date.now();
+  const upcoming = S.bookings.filter(b => ['pending', 'upcoming'].includes(b.status) && whenOf(b).getTime() > now - 2 * 3600e3);
+  const past = S.bookings.filter(b => !upcoming.includes(b)).reverse().slice(0, 30);
+  // A reschedule request is a second pending row pointing at the original.
+  const moving = new Set(upcoming.filter(b => b.reschedule_of).map(b => b.reschedule_of));
+  const first = (S.customer?.name || '').split(' ')[0];
+  app.innerHTML = `<div class="mb-top"><div><h1>${first ? `Hi ${esc(first)}` : 'My bookings'}</h1><div class="who">${esc(S.user.email)} · <button class="link" id="out">Sign out</button></div></div><a class="btn btn-green" href="find.html">Book a cut</a></div>
+    <div class="sec-h">Upcoming</div>
+    <div class="list">${upcoming.length ? upcoming.map(b => card(b, true, moving.has(b.id))).join('') : '<div class="empty">No upcoming bookings. <a href="find.html">Find a barber</a></div>'}</div>
+    ${S.waitlist.length ? `<div class="sec-h">Waitlist</div><div class="list">${S.waitlist.map(wlCard).join('')}</div>` : ''}
+    <div class="sec-h">Past</div>
+    <div class="list past">${past.length ? past.map(b => card(b, false)).join('') : '<div class="empty">Your past bookings will show up here.</div>'}</div>`;
+  app.querySelector('#out').onclick = signOut;
+  app.querySelectorAll('[data-act]').forEach(btn => btn.onclick = () => act(btn.dataset.act, btn.dataset.id));
+  if (S.open) openPanel(S.open.kind, S.open.id);
+}
+function barberBits(id) {
+  const br = S.barbers[id] || {};
+  return { br, name: br.name || 'Your barber', av: br.avatar_photo ? `<img src="${esc(br.avatar_photo)}" alt="">` : esc(ini(br.name)) };
+}
+function card(b, live, isMoving) {
+  const { br, name, av } = barberBits(b.barber_id), svc = b.service || {};
+  const canChange = live && !b.reschedule_of;
+  return `<article class="bk" id="b-${b.id}"><div class="bk-row"><span class="av">${av}</span><div class="bk-main"><b>${esc(svc.name || 'Booking')}</b><span>${br.id && br.address !== undefined ? `<a href="barber.html?id=${encodeURIComponent(br.id)}">${esc(name)}</a>` : esc(name)}${br.salon ? ` · ${esc(br.salon)}` : ''}</span><span class="when">${esc(fmtWhen(b))}${svc.price != null ? ` · ${kr(svc.price)}` : ''}</span></div>${b.reschedule_of ? '<span class="tag y">New time requested</span>' : statusTag(b)}</div>
+    ${isMoving ? '<p class="note" style="text-align:left;margin:0">You asked to move this booking. It stays as it is until the barber accepts the new time.</p>' : ''}
+    ${live ? `<div class="acts">${canChange ? `<button class="btn btn-ghost" data-act="move" data-id="${b.id}">Change time</button>` : ''}<button class="btn btn-ghost" data-act="cancel" data-id="${b.id}">${b.reschedule_of ? 'Withdraw request' : 'Cancel'}</button>${br.address ? `<a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${br.lat && br.lng ? `${br.lat},${br.lng}` : encodeURIComponent(br.address)}">Directions</a>` : ''}</div><div class="panel-slot"></div>` : ''}
+    ${!live && b.status === 'completed' && br.address !== undefined ? `<div class="acts"><a class="btn btn-ghost" href="barber.html?id=${encodeURIComponent(b.barber_id)}#booker">Book again</a></div>` : ''}</article>`;
+}
+function wlCard(w) {
+  const { name, av } = barberBits(w.barber_id), d = fromKey(w.date_key);
+  return `<article class="bk"><div class="bk-row"><span class="av">${av}</span><div class="bk-main"><b>${esc(name)}</b><span class="when">${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} · ${esc(w.preferred_start)}–${esc(w.preferred_end)}</span><span>We'll email you if a time opens up.</span></div><span class="tag">Waitlist</span></div>
+    <div class="acts"><button class="btn btn-ghost" data-act="leave" data-id="${w.id}">Leave waitlist</button></div></article>`;
+}
+async function signOut() { await sb.auth.signOut(); S.user = null; S.open = null; signInScreen(); }
+
+function act(kind, id) {
+  if (kind === 'leave') return leaveWaitlist(id);
+  S.open = S.open && S.open.id === id && S.open.kind === kind ? null : { kind, id };
+  render();
+}
+function openPanel(kind, id) {
+  const b = S.bookings.find(x => x.id === id); if (!b) return;
+  const slot = document.querySelector(`#b-${id} .panel-slot`); if (!slot) return;
+  slot.innerHTML = '<div class="panel"></div>';
+  const el = slot.firstChild;
+  kind === 'cancel' ? cancelPanel(el, b) : movePanel(el, b);
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Cancel: free more than 24h ahead, a warning inside 24h (same as the app).
+function cancelPanel(el, b) {
+  const hours = (whenOf(b) - Date.now()) / 3600e3, late = hours <= CANCEL_FREE_HOURS;
+  const withdraw = !!b.reschedule_of;
+  el.innerHTML = `<h3>${withdraw ? 'Withdraw this request?' : late ? 'Late cancellation' : 'Cancel this booking?'}</h3>
+    ${withdraw ? '<p>Your original booking stays as it is.</p>' : late ? `<div class="warn">This appointment is less than ${CANCEL_FREE_HOURS} hours away. You can still cancel, but your barber may have turned other customers away. Please cancel only if you really can't make it.</div>` : '<p>Cancelling is free this far ahead. We\'ll let the barber know.</p>'}
+    <div class="err" role="alert" hidden></div>
+    <div class="acts"><button class="btn ${late && !withdraw ? 'btn-red' : 'btn-green'}" id="yes">${withdraw ? 'Withdraw request' : 'Cancel booking'}</button><button class="btn btn-ghost" id="no">Keep it</button></div>`;
+  el.querySelector('#no').onclick = () => { S.open = null; render(); };
+  el.querySelector('#yes').onclick = async () => {
+    const btn = el.querySelector('#yes'); btn.disabled = true; btn.textContent = 'Cancelling…';
+    const { error } = await sb.rpc('cancel_booking', { p_booking_id: b.id });
+    if (error) { btn.disabled = false; btn.textContent = 'Try again'; return msg(el, error.message || 'Something went wrong.'); }
+    S.open = null; load();
+  };
+}
+
+// Reschedule: same day/slot rules as booking, via the app's reschedule_booking RPC.
+function slotsForRange(range, mins) {
+  if (!range || range === 'Closed') return [];
+  const [a, z] = String(range).split(' - ').map(x => x.trim()); if (!a || !z) return [];
+  const out = []; for (let m = toMin(a); m <= toMin(z) - Math.max(mins, SLOT_STEP); m += SLOT_STEP) out.push(toLabel(m)); return out;
+}
+const hasHours = h => h && Object.keys(h).length > 0;
+function dayOpen(br, k) {
+  if ((br.time_off || []).some(t => k >= t.startDate && k <= t.endDate)) return false;
+  return !hasHours(br.hours) || (br.hours[DAYS[fromKey(k).getDay()]] || 'Closed') !== 'Closed';
+}
+function daySlots(br, k, mins) {
+  if (!hasHours(br.hours)) return FALLBACK_SLOTS.filter(s => toMin(s) + mins <= toMin(FALLBACK_SLOTS.at(-1)) + SLOT_STEP);
+  return slotsForRange(br.hours[DAYS[fromKey(k).getDay()]] || 'Closed', mins);
+}
+async function movePanel(el, b) {
+  const br = S.barbers[b.barber_id];
+  if (!br || br.hours === undefined) { el.innerHTML = '<p>This barber isn\'t taking bookings on Cutz right now, so the time can\'t be changed here. Cancel instead, or contact the barber.</p>'; return; }
+  const mins = dur(b.service), t = new Date(); t.setHours(0, 0, 0, 0);
+  const days = []; for (let i = BOOK_FROM_DAYS; i < BOOK_FROM_DAYS + BOOK_DAYS; i++) { const d = new Date(t); d.setDate(t.getDate() + i); days.push({ d, k: dateKey(d), open: dayOpen(br, dateKey(d)) }); }
+  const st = { k: (days.find(x => x.open) || {}).k, time: null };
+  const draw = async () => {
+    el.innerHTML = `<h3>Pick a new time</h3><p>${esc(b.service?.name || '')} · ${mins} min${b.status === 'upcoming' ? '. Your barber confirms the new time; until then your current booking stays.' : ''}</p>
+      <div class="days">${days.map(x => `<button data-k="${x.k}" ${x.open ? '' : 'disabled'} class="${x.k === st.k ? 'on' : ''}"><small>${DAYS[x.d.getDay()]}</small><b>${x.d.getDate()}</b><small>${x.open ? MONTHS[x.d.getMonth()] : 'Closed'}</small></button>`).join('')}</div>
+      <div id="sl"><div class="spinner" style="margin:16px auto"></div></div><div class="err" role="alert" hidden></div>
+      <div class="acts"><button class="btn btn-green" id="yes" disabled>Change time</button><button class="btn btn-ghost" id="no">Never mind</button></div>`;
+    el.querySelector('.days .on')?.scrollIntoView({ inline: 'center', block: 'nearest' });
+    el.querySelectorAll('.days button[data-k]').forEach(x => x.onclick = () => { st.k = x.dataset.k; st.time = null; draw(); });
+    el.querySelector('#no').onclick = () => { S.open = null; render(); };
+    if (!st.k) { el.querySelector('#sl').innerHTML = '<p>No open days in the next 3 weeks.</p>'; return; }
+    const key = st.k;
+    const { data } = await sb.rpc('get_barber_busy_slots', { p_barber_id: br.id, p_date_key: key });
+    if (st.k !== key || !el.isConnected) return;
+    // This booking's own slot doesn't block moving it within the same day.
+    const busy = (data || []).filter(x => !(key === b.date_key && x.start_time === b.time)).map(x => ({ s: toMin(x.start_time), l: x.duration_min || SLOT_STEP }));
+    const taken = s => busy.some(x => x.s < toMin(s) + mins && x.s + x.l > toMin(s));
+    const all = daySlots(br, key, mins);
+    el.querySelector('#sl').innerHTML = all.length ? `<div class="slots">${all.map(s => `<button data-t="${s}" ${taken(s) || (key === b.date_key && s === b.time) ? 'disabled' : ''}>${s}</button>`).join('')}</div>` : '<p>No times fit this service that day.</p>';
+    el.querySelectorAll('.slots button[data-t]').forEach(x => x.onclick = () => {
+      st.time = x.dataset.t; el.querySelectorAll('.slots button').forEach(y => y.classList.toggle('on', y === x)); el.querySelector('#yes').disabled = false;
+    });
+    el.querySelector('#yes').onclick = async () => {
+      const btn = el.querySelector('#yes'); btn.disabled = true; btn.textContent = 'Saving…';
+      const d = fromKey(st.k), [h, m] = st.time.split(':').map(Number), at = fromKey(st.k); at.setHours(h, m, 0, 0);
+      const { error } = await sb.rpc('reschedule_booking', { p_booking_id: b.id, p_date_key: st.k, p_date_label: `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`, p_time: st.time, p_date_time_iso: at.toISOString() });
+      if (error) { btn.disabled = false; btn.textContent = 'Change time'; return msg(el, /overlap|taken|23505/i.test(error.message + error.code) ? 'Someone just took that time. Pick another.' : (error.message || 'Something went wrong.')); }
+      S.open = null; load();
+    };
+  };
+  draw();
+}
+async function leaveWaitlist(id) {
+  const { error } = await sb.from('waitlist_entries').delete().eq('id', id);
+  if (!error) { S.waitlist = S.waitlist.filter(w => w.id !== id); render(); }
+}
+
+(async () => {
+  const { data } = await sb.auth.getSession();
+  S.user = data.session?.user || null;
+  S.user ? load() : signInScreen(new URLSearchParams(location.search).get('email') || '');
+})().catch(() => { app.innerHTML = '<h1>Something went wrong</h1><p class="lead">Check your connection and try again.</p>'; });
+</script>
+</body>
+</html>

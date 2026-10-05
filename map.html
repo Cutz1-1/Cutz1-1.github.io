@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="assets/appstore.js"></script>
 <title>Barber map — Cutz</title>
 <meta name="description" content="See barbers and barbershops on a live map. Filter by distance, walk-ins, rating and who's open now, then book online with Cutz.">
 <meta name="theme-color" content="#000000">
@@ -100,6 +101,7 @@ body.map-page{overflow:hidden;height:100vh;height:100dvh}
 .chip.on{background:#fff;color:#000;border-color:#fff}
 .chip.loc.on{background:var(--green);border-color:var(--green)}
 .sel-dist{height:34px;border-radius:999px;border:1px solid var(--line);background:#000;padding:0 30px 0 13px;font-size:13px;color:var(--mute);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='3'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.sel-dist.on{border-color:#fff;color:var(--fg)}
 .list{flex:1;overflow:auto;padding:8px 12px 20px;min-height:0}
 .row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px;border-radius:16px;border:1px solid transparent;background:none;cursor:pointer;transition:background .2s,border-color .2s}
 .row:hover{background:#0d0d0d}
@@ -198,6 +200,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
       <a href="faq.html">FAQ</a>
+      <a href="mybookings.html">My bookings</a>
       <a href="download.html" class="btn btn-green">Get the app</a>
     </nav>
   </div>
@@ -212,10 +215,11 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     <div class="fl" role="group" aria-label="Filters">
       <button class="chip loc" id="locate" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg>Locate me</button>
       <label class="sr" for="dist">Distance</label>
-      <select class="sel-dist" id="dist"><option value="">Any distance</option><option value="1">Within 1 km</option><option value="3">Within 3 km</option><option value="5">Within 5 km</option><option value="10">Within 10 km</option></select>
+      <select class="sel-dist" id="dist"><option value="">Any distance</option><option value="1">Within 1 km</option><option value="2">Within 2 km</option><option value="5">Within 5 km</option><option value="10">Within 10 km</option><option value="25">Within 25 km</option><option value="50">Within 50 km</option></select>
       <button class="chip" data-f="open" aria-pressed="false">Open now</button>
       <button class="chip" data-f="walkin" aria-pressed="false">Walk-ins</button>
-      <button class="chip" data-f="rated" aria-pressed="false">★ 4+</button>
+      <label class="sr" for="minRating">Minimum rating</label>
+      <select class="sel-dist" id="minRating"><option value="">Any rating</option><option value="3">★ 3+</option><option value="3.5">★ 3.5+</option><option value="4">★ 4+</option><option value="4.5">★ 4.5+</option><option value="5">★ 5</option></select>
     </div>
     <div class="list" id="list" aria-live="polite"></div>
   </aside>
@@ -237,7 +241,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="find.html">Find a barber</a></li><li><a href="map.html" aria-current="page">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html" aria-current="page">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
         </ul>
       </div>
       <div>
@@ -291,7 +295,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   L.control.zoom({position:'topright'}).addTo(map);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(map);
 
-  var S={items:[],me:null,meMarker:null,dist:'',open:false,walkin:false,rated:false,sel:null};
+  var S={items:[],me:null,meMarker:null,dist:'',open:false,walkin:false,minRating:0,sel:null};
   var list=document.getElementById('list'),card=document.getElementById('card'),panel=document.getElementById('panel'),grab=document.getElementById('grab'),ov=document.getElementById('ov');
 
   Promise.all([
@@ -321,17 +325,17 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   }
   function showEmpty(){
     ov.hidden=false;
-    ov.innerHTML='<button class="x" id="ovx" aria-label="Dismiss">✕</button><h2>Barbers are joining now</h2><p>Cutz has only just launched. The first barbers are setting up and will appear on this map as soon as they go live.</p><div class="r"><a class="btn btn-green" href="'+APP_STORE+'">Get the app</a><a class="btn btn-ghost" href="barbers.html">I\'m a barber</a></div>';
+    ov.innerHTML='<button class="x" id="ovx" aria-label="Dismiss">✕</button><h2>Barbers are joining now</h2><p>Cutz has only just launched. The first barbers are setting up and will appear on this map as soon as they go live.</p><div class="r"><a class="btn btn-green" data-store href="'+APP_STORE+'">Get the app</a><a class="btn btn-ghost" href="barbers.html">I\'m a barber</a></div>';
     document.getElementById('ovx').onclick=function(){ov.hidden=true};
   }
 
   function pass(x){
     if(S.open&&openNow(x)!==true)return false;
     if(S.walkin&&!(x.is_online&&x.walk_in_available))return false;
-    if(S.rated&&!((+x.rating||0)>=4))return false;
+    if(S.minRating&&!((+x.rating||0)>=S.minRating))return false;
     if(S.dist&&S.me&&km(S.me,{lat:x._lat,lng:x._lng})>+S.dist)return false;
     // Hours and ratings are per barber, so those filters hide salons. Salons have their own walk-in queue.
-    if(x._salon&&(S.open||S.rated))return false;
+    if(x._salon&&(S.open||S.minRating))return false;
     return true;
   }
   function render(){
@@ -386,12 +390,21 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       loc.lastChild.textContent='Located';loc.classList.add('on');loc.setAttribute('aria-pressed','true');
       if(S.meMarker)S.meMarker.remove();
       S.meMarker=L.marker([S.me.lat,S.me.lng],{icon:L.divIcon({className:'pinx',iconSize:[0,0],html:'<div class="me-dot"></div>'}),interactive:false,zIndexOffset:-100}).addTo(map);
-      map.flyTo([S.me.lat,S.me.lng],S.dist?(S.dist<=1?15:S.dist<=3?14:S.dist<=5?13:12):13,{duration:.8});
+      map.flyTo([S.me.lat,S.me.lng],S.dist?zoomFor(S.dist):13,{duration:.8});
       render();if(then)then();
-    },function(){loc.lastChild.textContent='Locate me';alert('We couldn\'t get your location. Check your browser\'s location permission.');dist.value='';S.dist='';render()},{timeout:10000,maximumAge:300000});
+    },function(){loc.lastChild.textContent='Locate me';alert('We couldn\'t get your location. Check your browser\'s location permission.');dist.value='';S.dist='';dist.classList.remove('on');syncUrl();render()},{timeout:10000,maximumAge:300000});
   }
   loc.onclick=function(){locate()};
-  dist.onchange=function(){S.dist=dist.value;if(S.dist&&!S.me){locate();return}if(S.me&&S.dist)map.flyTo([S.me.lat,S.me.lng],S.dist<=1?15:S.dist<=3?14:S.dist<=5?13:12,{duration:.6});render()};
+  function zoomFor(d){d=+d;return d<=1?15:d<=2?14:d<=5?13:d<=10?12:d<=25?11:10}
+  // Filters live in the URL (?radius=&rating=) so a filtered map can be shared.
+  function syncUrl(){var u=new URLSearchParams(location.search);S.dist?u.set('radius',S.dist):u.delete('radius');S.minRating?u.set('rating',S.minRating):u.delete('rating');history.replaceState(null,'',location.pathname+(u.toString()?'?'+u:''))}
+  var rsel=document.getElementById('minRating');
+  rsel.onchange=function(){S.minRating=+rsel.value||0;rsel.classList.toggle('on',!!S.minRating);syncUrl();render()};
+  dist.onchange=function(){S.dist=dist.value;dist.classList.toggle('on',!!S.dist);syncUrl();if(S.dist&&!S.me){locate();return}if(S.me&&S.dist)map.flyTo([S.me.lat,S.me.lng],zoomFor(S.dist),{duration:.6});render()};
+  (function(){var u=new URLSearchParams(location.search),r=u.get('radius'),m=u.get('rating');
+    if(m&&[].some.call(rsel.options,function(o){return o.value===m})){rsel.value=m;S.minRating=+m;rsel.classList.add('on')}
+    if(r&&[].some.call(dist.options,function(o){return o.value===r})){dist.value=r;S.dist=r;dist.classList.add('on')}
+  })();
 })();
 </script>
 </body>

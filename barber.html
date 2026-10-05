@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script src="assets/appstore.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Barber — Book on Cutz</title>
 <meta name="description" content="See services, prices, opening hours and reviews, and book your next cut online with Cutz.">
@@ -213,6 +214,23 @@ svg{display:block}
 .star-in button:hover{transform:scale(1.12)}
 textarea.f-txt{width:100%;min-height:110px;resize:vertical;border-radius:14px;border:1px solid var(--line);background:#0d0d0d;color:var(--fg);font:inherit;font-size:15px;padding:12px 14px}
 .since{color:var(--dim);font-size:14px;margin:14px 0 0}
+.days{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -4px 18px;padding:2px 4px 6px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:none;scroll-snap-align:center;width:62px;padding:10px 0;border-radius:16px;border:1px solid var(--line);background:#0d0d0d;color:var(--fg);cursor:pointer;display:grid;gap:2px;text-align:center;transition:background .15s,border-color .15s}
+.days button small{font-size:11px;color:var(--dim)}
+.days button b{font-size:20px;font-weight:800}
+.days button.on{background:#fff;color:#000;border-color:#fff}
+.days button.on small{color:#333}
+.days button:disabled{opacity:.35;cursor:not-allowed}
+.bk-sum{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:var(--green-dim);border:1px solid rgba(0,220,100,.3);margin-bottom:16px;font-size:14px}
+.bk-sum div{display:grid;gap:2px}
+.bk-sum span{color:var(--mute);font-size:13px}
+.full{text-align:center;padding:22px 16px;border-radius:18px;border:1px dashed var(--line)}
+.full b{font-size:17px}
+.full p{color:var(--mute);font-size:14px;margin:6px 0 16px}
+.win{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sel{width:100%;height:52px;border-radius:14px;border:1px solid var(--line);background:#0d0d0d;color:var(--fg);font:inherit;font-size:16px;padding:0 12px}
+.err.ok{color:var(--green);background:var(--green-dim);border-color:rgba(0,220,100,.3)}
 .otp{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px}
 .otp input{height:56px;text-align:center;font-size:22px;font-weight:800;border-radius:12px;border:1px solid var(--line);background:#141414;outline:none}
 .otp input:focus{border-color:var(--green)}
@@ -293,6 +311,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
       <a href="faq.html">FAQ</a>
+      <a href="mybookings.html">My bookings</a>
       <a href="download.html" class="btn btn-green">Get the app</a>
     </nav>
   </div>
@@ -320,7 +339,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
         </ul>
       </div>
       <div>
@@ -355,13 +374,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
 </script>
 
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-// Same project and public anon key as the app (src/config.js). Access control
-// lives in Postgres RLS, so the key is safe to ship to the browser.
-const SUPABASE_URL = 'https://ukoovhgmbqfocalykhyx.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+import { sb, esc, validEmail, startEmailSignIn, verifyEmailCode, resendCode, signInWithPassword, loadCustomer, saveCustomer, userType, phoneField, readPhone, otpBoxes, wireOtp } from './assets/cutz-auth.js';
 
 const APP_STORE = 'download.html';
 // Slot rules mirror the app (src/utils/slots.js, BookingScreen.js): 30-minute
@@ -375,10 +388,8 @@ const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const WEEK = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const COUNTRIES = [['45','🇩🇰 +45'],['46','🇸🇪 +46'],['47','🇳🇴 +47'],['49','🇩🇪 +49'],['44','🇬🇧 +44'],['31','🇳🇱 +31'],['358','🇫🇮 +358'],['354','🇮🇸 +354'],['48','🇵🇱 +48'],['1','🇺🇸 +1']];
 
 const app = document.getElementById('app');
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const initials = n => (n || '?').trim().split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase();
 const kr = a => { const n = Number(a) || 0; return `${Number.isInteger(n) ? n : n.toFixed(2)} kr`; };
 const toMin = t => { const [h, m] = String(t).split(':').map(Number); return h * 60 + (m || 0); };
@@ -436,7 +447,8 @@ function stateScreen(title, text) {
 // ---------------------------------------------------------------------------
 // intent: 'book' (default flow), 'queue' (join the walk-in queue) or 'review'.
 // All three share the details/OTP account steps, then branch.
-const S = { intent: 'book', queueSalon: null, barber: null, reviews: [], salon: null, step: 'service', service: null, date: null, time: null, month: null, user: null, customer: null, mine: [], authMode: 'signup', pending: null };
+// customer: null = not loaded yet, undefined = signed in but no customers row yet.
+const S = { intent: 'book', queueSalon: null, barber: null, reviews: [], salon: null, step: 'service', service: null, date: null, time: null, wl: null, user: null, customer: null, pending: null };
 
 async function boot() {
   const id = idFromUrl();
@@ -458,7 +470,9 @@ async function boot() {
   renderProfile();
   const params = new URLSearchParams(location.search);
   const pre = params.get('service');
-  if (pre) { const s = (barber.services || []).find(x => String(x.id) === pre); if (s) { S.service = s; S.step = 'date'; } }
+  if (pre) { const s = (barber.services || []).find(x => String(x.id) === pre); if (s) { S.service = s; S.step = 'when'; } }
+  // Waitlist emails link back to the day that opened up.
+  if (/^\d{4}-\d{2}-\d{2}$/.test(params.get('date') || '')) S.date = params.get('date');
   // salon.html sends signed-out customers here to join the salon's shared queue.
   if (params.get('queue') === 'salon' && S.salon && queueOpen(S.salon)) { S.queueSalon = S.salon; S.intent = 'queue'; S.step = 'queue'; }
   else if (params.get('queue') && queueOpen(barber)) { S.intent = 'queue'; S.step = 'queue'; }
@@ -503,11 +517,11 @@ function renderProfile() {
         ${hasHours(b.hours) ? `<section class="block"><h2>Opening hours</h2><div class="hours">${WEEK.map(d => `<div class="${DAYS[new Date().getDay()] === d ? 'today' : ''}"><span>${d}</span><span>${esc(b.hours[d] || 'Closed')}</span></div>`).join('')}</div></section>` : ''}
         <section class="block"><div class="rv-head"><h2>Reviews</h2><button class="btn btn-ghost" id="writeReview">Write a review</button></div>${renderReviews()}</section>
         ${b.address || b.phone || b.website ? `<section class="block"><h2>Location and contact</h2><div class="loc"><p>${esc(b.address || '')}</p><div class="btns">${b.address ? mapLinks(b) : ''}${contactLinks(b)}</div></div></section>` : ''}
-        <section class="block"><div class="app-cta"><div><h3>Get the Cutz app</h3><p>Booking reminders, your turn in the queue and managing bookings. Coming soon to the App Store.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-green" href="${APP_STORE}">Get the app</a><a class="btn btn-ghost" href="cutz://barber/${encodeURIComponent(b.id)}">Open in app</a></div></div></section>
+        <section class="block"><div class="app-cta"><div><h3>Get the Cutz app</h3><p>Booking reminders, your turn in the queue and managing bookings. Coming soon to the App Store.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-green" href="${APP_STORE}" data-store>Get the app</a><a class="btn btn-ghost" href="cutz://barber/${encodeURIComponent(b.id)}">Open in app</a></div></div></section>
       </div>
       <aside class="booker" id="booker" aria-label="Book an appointment">
         <div class="bk-head"><h2>Book ${esc(b.name.split(' ')[0])}</h2><button class="bk-close" id="bkClose" aria-label="Close booking">${ICON.x}</button></div>
-        <div class="progress" id="progress"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="progress" id="progress"><i></i><i></i><i></i><i></i></div>
         <div class="bk-body" id="bk" aria-live="polite"></div>
       </aside>
     </div>
@@ -518,7 +532,7 @@ function renderProfile() {
   document.querySelectorAll('[data-book]').forEach(el => el.addEventListener('click', () => {
     S.service = services.find(s => String(s.id) === el.dataset.book) || null;
     S.date = S.time = null; S.intent = 'book';
-    S.step = S.service ? 'date' : 'service';
+    S.step = S.service ? 'when' : 'service';
     renderStep(); openSheet(true);
   }));
   document.querySelectorAll('[data-photo]').forEach(el => el.addEventListener('click', () => openLb(photos, +el.dataset.photo)));
@@ -581,291 +595,271 @@ addEventListener('keydown', e => {
 });
 
 // ---------------------------------------------------------------------------
-// Booking flow: service → date → time → details (account) → confirm → done
+// Booking flow: service → time → your details → 6-digit email code → done.
+// No passwords: the email code creates the account (or signs back in) in the
+// background, which keeps no-show protection, reminders and My bookings.
+// intent: 'book' (default), 'queue' (walk-in queue), 'waitlist', 'review'.
 // ---------------------------------------------------------------------------
-const ORDER = ['service', 'date', 'time', 'details', 'confirm'];
+const PROGRESS = { service: 0, when: 1, waitlist: 1, details: 2, code: 2, password: 2, done: 3, queued: 3, waitlisted: 3, reviewed: 3 };
 function go(step) { S.step = step; renderStep(); }
 function startIntent(intent) {
   S.intent = intent;
-  if (intent === 'book') { S.step = S.service ? 'date' : 'service'; } else S.step = intent;
+  S.step = intent === 'book' ? (S.service ? 'when' : 'service') : intent;
   renderStep();
 }
-// Where the shared account steps continue to, and where their Back button returns.
-const afterDetails = () => ({ book: 'confirm', queue: 'queue', review: 'review' })[S.intent];
-const beforeDetails = () => (S.intent === 'book' ? 'time' : S.intent);
+const back = () => ({ book: 'when', waitlist: 'waitlist', queue: 'queue', review: 'review' })[S.intent];
 function renderStep() {
   const el = document.getElementById('bk'); if (!el) return;
-  const book = S.intent === 'book';
-  const idx = S.step === 'otp' ? 3 : S.step === 'done' ? 5 : ORDER.indexOf(S.step);
+  const book = S.intent === 'book' || S.intent === 'waitlist';
   const pr = document.getElementById('progress');
   pr.hidden = !book;
-  pr.querySelectorAll('i').forEach((i, n) => i.classList.toggle('on', n <= idx));
-  const head = document.querySelector('.bk-head h2'), first = esc(S.barber.name.split(' ')[0]);
-  head.innerHTML = book ? `Book ${first}` : S.intent === 'queue' ? 'Join the queue' : `Review ${first}`;
+  pr.querySelectorAll('i').forEach((i, n) => i.classList.toggle('on', n <= (PROGRESS[S.step] ?? 0)));
+  const first = esc(S.barber.name.split(' ')[0]);
+  document.querySelector('.bk-head h2').innerHTML = { book: `Book ${first}`, waitlist: 'Join the waitlist', queue: 'Join the queue', review: `Review ${first}` }[S.intent];
   const b = S.barber;
   // The app refuses bookings for offline barbers and barbers without services.
-  if (book && S.step !== 'done' && !(b.services || []).length) { el.innerHTML = '<div class="step"><h3>Not bookable yet</h3><p class="hint">This barber hasn\'t added any services. Check back soon.</p></div>'; return; }
-  if (book && S.step !== 'done' && !b.is_online) { el.innerHTML = '<div class="step"><h3>Not taking bookings right now</h3><p class="hint">This barber is offline at the moment. Check back soon, or find another barber nearby.</p><a class="btn btn-green btn-lg btn-block" href="find.html">Find a barber</a></div>'; return; }
-  ({ service: stepService, date: stepDate, time: stepTime, details: stepDetails, otp: stepOtp, confirm: stepConfirm, done: stepDone, queue: stepQueue, queued: stepQueued, review: stepReview, reviewed: stepReviewed })[S.step](el);
+  if (book && !['done', 'waitlisted'].includes(S.step)) {
+    if (!(b.services || []).length) { el.innerHTML = '<div class="step"><h3>Not bookable yet</h3><p class="hint">This barber hasn\'t added any services. Check back soon.</p></div>'; return; }
+    if (!b.is_online) { el.innerHTML = '<div class="step"><h3>Not taking bookings right now</h3><p class="hint">This barber is offline at the moment. Check back soon, or find another barber nearby.</p><a class="btn btn-green btn-lg btn-block" href="find.html">Find a barber</a></div>'; return; }
+  }
+  ({ service: stepService, when: stepWhen, waitlist: stepWaitlist, details: stepDetails, code: stepCode, password: stepPassword,
+     done: stepDone, queue: stepQueue, queued: stepQueued, waitlisted: stepWaitlisted, review: stepReview, reviewed: stepReviewed })[S.step](el);
 }
 const backBtn = to => `<button type="button" class="back" data-back="${to}">${ICON.left}Back</button>`;
 function wireBack(el) { el.querySelectorAll('[data-back]').forEach(b => b.onclick = () => go(b.dataset.back)); }
-function showErr(el, msg) {
+function showErr(el, msg, ok) {
   let e = el.querySelector('.err');
   if (!e) {
-    e = document.createElement('div'); e.className = 'err'; e.setAttribute('role', 'alert');
+    e = document.createElement('div'); e.setAttribute('role', 'alert');
     const step = el.querySelector('.step');
     (step.querySelector('.hint') || step.querySelector('h3')).after(e);
   }
+  e.className = ok ? 'err ok' : 'err';
   e.textContent = msg;
 }
+function busy(btn, on, label) { btn.disabled = on; if (label) btn.textContent = label; }
 
+// 1. Service: one tap picks it and moves on.
 function stepService(el) {
   const svcs = S.barber.services;
-  el.innerHTML = `<div class="step"><h3>Choose a service</h3><p class="hint">Prices are set by the barber and paid at the shop.</p>
-    <div role="radiogroup">${svcs.map(s => `<button class="opt ${S.service && S.service.id === s.id ? 'on' : ''}" role="radio" aria-checked="${S.service && S.service.id === s.id}" data-id="${esc(s.id)}"><span class="radio"></span><span><span class="nm">${esc(s.name)}</span>${s.duration ? `<br><span class="du">${esc(s.duration)} min</span>` : ''}</span><span class="pr">${kr(s.price)}</span></button>`).join('')}</div>
-    <button class="btn btn-green btn-lg btn-block" id="next" ${S.service ? '' : 'disabled'} style="margin-top:10px">Continue</button></div>`;
+  el.innerHTML = `<div class="step"><h3>What are you getting?</h3><p class="hint">Pay at the shop. No booking fee.</p>
+    <div role="radiogroup">${svcs.map(s => `<button class="opt ${S.service && S.service.id === s.id ? 'on' : ''}" role="radio" aria-checked="${!!(S.service && S.service.id === s.id)}" data-id="${esc(s.id)}"><span class="radio"></span><span><span class="nm">${esc(s.name)}</span>${s.duration ? `<br><span class="du">${esc(s.duration)} min</span>` : ''}</span><span class="pr">${kr(s.price)}</span></button>`).join('')}</div></div>`;
   el.querySelectorAll('.opt').forEach(o => o.onclick = () => {
     S.service = svcs.find(s => String(s.id) === o.dataset.id); S.time = null;
-    el.querySelectorAll('.opt').forEach(x => { x.classList.toggle('on', x === o); x.setAttribute('aria-checked', x === o); });
-    el.querySelector('#next').disabled = false;
+    go('when');
   });
-  el.querySelector('#next').onclick = () => go('date');
 }
 
-function bookWindow() {
+// 2. When: day chips and that day's free times on one screen.
+function bookableDays() {
   const t = new Date(); t.setHours(0, 0, 0, 0);
-  const first = new Date(t); first.setDate(t.getDate() + BOOK_FROM_DAYS);
-  const last = new Date(t); last.setDate(t.getDate() + BOOK_FROM_DAYS + BOOK_DAYS - 1);
-  return { today: t, first, last };
-}
-function stepDate(el) {
-  const { today, first, last } = bookWindow();
-  if (!S.month) S.month = new Date(first.getFullYear(), first.getMonth(), 1);
-  const m = S.month, y = m.getFullYear(), mo = m.getMonth();
-  const lead = (new Date(y, mo, 1).getDay() + 6) % 7, daysIn = new Date(y, mo + 1, 0).getDate();
-  const canPrev = new Date(y, mo, 1) > new Date(first.getFullYear(), first.getMonth(), 1);
-  const canNext = new Date(y, mo + 1, 1) <= last;
-  let cells = WEEK.map(d => `<div class="dow">${d[0]}${d[1]}</div>`).join('') + '<span></span>'.repeat(lead);
-  let any = false;
-  for (let d = 1; d <= daysIn; d++) {
-    const dt = new Date(y, mo, d), k = dateKey(dt);
-    const ok = dt >= first && dt <= last && isBookableDay(S.barber, k);
-    any = any || ok;
-    cells += `<button data-k="${k}" ${ok ? '' : 'disabled'} class="${S.date === k ? 'on' : ''} ${dt.getTime() === today.getTime() ? 'today' : ''}" aria-label="${d} ${MONTHS_LONG[mo]}${ok ? '' : ', unavailable'}">${d}</button>`;
+  const out = [];
+  for (let i = BOOK_FROM_DAYS; i < BOOK_FROM_DAYS + BOOK_DAYS; i++) {
+    const d = new Date(t); d.setDate(t.getDate() + i);
+    const k = dateKey(d);
+    out.push({ k, d, open: isBookableDay(S.barber, k) });
   }
-  el.innerHTML = `<div class="step">${backBtn('service')}<h3>Pick a date</h3><p class="hint">${esc(S.service.name)} · ${kr(S.service.price)}</p>
-    <div class="cal-head"><b>${MONTHS_LONG[mo]} ${y}</b><div class="cal-nav"><button id="pm" ${canPrev ? '' : 'disabled'} aria-label="Previous month">${ICON.left}</button><button id="nm" ${canNext ? '' : 'disabled'} aria-label="Next month">${ICON.right}</button></div></div>
-    <div class="cal">${cells}</div>
-    ${any ? '' : '<p class="note">No open days this month. Try the next one.</p>'}
-    <p class="note">You can book up to ${BOOK_DAYS} days ahead.</p></div>`;
+  return out;
+}
+const busyCache = {};
+async function busyFor(key) {
+  if (!busyCache[key]) {
+    // Every pending/upcoming booking that day, from all customers (times only).
+    const { data } = await sb.rpc('get_barber_busy_slots', { p_barber_id: S.barber.id, p_date_key: key });
+    busyCache[key] = (data || []).map(x => ({ start: toMin(x.start_time), len: x.duration_min || SLOT_STEP }));
+  }
+  return busyCache[key];
+}
+function daySlots(key, mins) {
+  const range = rangeFor(S.barber, key);
+  return range ? slotsForRange(range, mins) : FALLBACK_SLOTS.filter(s => toMin(s) + mins <= toMin(FALLBACK_SLOTS.at(-1)) + SLOT_STEP);
+}
+async function stepWhen(el) {
+  const days = bookableDays();
+  if (!S.date || !days.some(x => x.k === S.date && x.open)) S.date = (days.find(x => x.open) || {}).k || null;
+  const mins = dur(S.service);
+  const head = `${backBtn('service')}<h3>Pick a time</h3><p class="hint">${esc(S.service.name)} · ${mins} min · ${kr(S.service.price)}</p>
+    <div class="days" role="listbox" aria-label="Day">${days.map(x => `<button role="option" data-k="${x.k}" ${x.open ? '' : 'disabled'} aria-selected="${x.k === S.date}" class="${x.k === S.date ? 'on' : ''}"><small>${DAYS[x.d.getDay()]}</small><b>${x.d.getDate()}</b><small>${x.open ? MONTHS[x.d.getMonth()] : 'Closed'}</small></button>`).join('')}</div>`;
+  el.innerHTML = `<div class="step">${head}<div id="slotArea"><div class="spinner" style="margin:30px auto"></div></div></div>`;
   wireBack(el);
-  el.querySelector('#pm').onclick = () => { S.month = new Date(y, mo - 1, 1); renderStep(); };
-  el.querySelector('#nm').onclick = () => { S.month = new Date(y, mo + 1, 1); renderStep(); };
-  el.querySelectorAll('.cal button[data-k]').forEach(b => b.onclick = () => { S.date = b.dataset.k; S.time = null; go('time'); });
-}
-
-async function loadMine() {
-  if (!S.user) { S.mine = []; return; }
-  // RLS only returns this customer's own bookings, same as the app. Other
-  // customers' clashes are caught by the server's overlap trigger on insert.
-  const { data } = await sb.from('bookings').select('date_key, time, service, status').eq('customer_id', S.user.id).eq('barber_id', S.barber.id);
-  S.mine = (data || []).filter(x => x.status === 'pending' || x.status === 'upcoming');
-}
-async function stepTime(el) {
-  const d = fromKey(S.date), label = `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
-  el.innerHTML = `<div class="step">${backBtn('date')}<h3>Pick a time</h3><p class="hint">${label} · ${esc(S.service.name)}</p><div class="spinner" style="margin:40px auto"></div></div>`;
-  await loadMine();
-  if (S.step !== 'time') return;
-  const mins = dur(S.service), range = rangeFor(S.barber, S.date);
-  const all = range ? slotsForRange(range, mins) : FALLBACK_SLOTS.filter(s => toMin(s) + mins <= toMin(FALLBACK_SLOTS.at(-1)) + SLOT_STEP);
-  const taken = s => S.mine.some(x => x.date_key === S.date && toMin(x.time) < toMin(s) + mins && toMin(x.time) + dur(x.service) > toMin(s));
-  const groups = [['Morning', s => toMin(s) < 720], ['Afternoon', s => toMin(s) >= 720 && toMin(s) < 1020], ['Evening', s => toMin(s) >= 1020]];
-  const grid = groups.map(([g, f]) => { const ss = all.filter(f); return ss.length ? `<div class="slot-group">${g}</div>` + ss.map(s => `<button data-t="${s}" class="${S.time === s ? 'on' : ''}" ${taken(s) ? 'disabled aria-label="' + s + ', you already have a booking"' : ''}>${s}</button>`).join('') : ''; }).join('');
-  el.querySelector('.step').innerHTML = `${backBtn('date')}<h3>Pick a time</h3><p class="hint">${label} · ${esc(S.service.name)} · ${mins} min</p>
-    ${all.length ? `<div class="slots">${grid}</div>` : '<p class="empty">No times fit this service on that day. Try another date.</p>'}
-    <button class="btn btn-green btn-lg btn-block" id="next" ${S.time ? '' : 'disabled'} style="margin-top:16px">Continue</button>`;
-  wireBack(el);
-  el.querySelectorAll('.slots button[data-t]').forEach(b => b.onclick = () => {
-    S.time = b.dataset.t;
-    el.querySelectorAll('.slots button').forEach(x => x.classList.toggle('on', x === b));
-    el.querySelector('#next').disabled = false;
-  });
-  el.querySelector('#next').onclick = () => go('details');
-}
-
-function splitPhone(p) {
-  const m = String(p || '').match(/^\+(\d+)\s+(.*)$/);
-  if (!m) return { cc: '45', num: String(p || '').replace(/^\+/, '') };
-  return { cc: m[1], num: m[2] };
-}
-function phoneField(val) {
-  const { cc, num } = splitPhone(val);
-  const opts = COUNTRIES.some(c => c[0] === cc) ? COUNTRIES : [[cc, `+${cc}`], ...COUNTRIES];
-  return `<div class="field"><label for="f-num">Phone number</label><div class="phone"><select id="f-cc" aria-label="Country code">${opts.map(([c, l]) => `<option value="${c}" ${c === cc ? 'selected' : ''}>${l}</option>`).join('')}</select><input id="f-num" type="tel" inputmode="tel" autocomplete="tel-national" value="${esc(num)}" placeholder="12 34 56 78"></div></div>`;
-}
-function readPhone(el) {
-  const num = el.querySelector('#f-num').value.replace(/[^\d]/g, '');
-  return num.length >= 6 ? `+${el.querySelector('#f-cc').value} ${num}` : null;
-}
-async function loadCustomer() {
-  if (!S.user) return null;
-  const { data } = await sb.from('customers').select('name, phone, email, cooldown_until').eq('id', S.user.id).maybeSingle();
-  S.customer = data;
-  return data;
-}
-async function stepDetails(el) {
-  if (S.user) {
-    el.innerHTML = `<div class="step">${backBtn(beforeDetails())}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p><div class="spinner" style="margin:30px auto"></div></div>`;
-    const type = S.user.user_metadata?.userType;
-    if (type && type !== 'customer') {
-      el.querySelector('.step').innerHTML = `${backBtn(beforeDetails())}<h3>Use a customer account</h3><p class="hint">You're signed in with a ${esc(type)} account. Sign out and sign in with a customer account to book.</p><button class="btn btn-ghost btn-lg btn-block" id="out">Sign out</button>`;
-      wireBack(el);
-      el.querySelector('#out').onclick = async () => { await sb.auth.signOut(); S.user = null; go('details'); };
-      return;
-    }
-    const c = await loadCustomer() || {};
-    if (S.step !== 'details') return;
-    el.querySelector('.step').innerHTML = `${backBtn(beforeDetails())}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p>
-      <div class="who-card"><div><b>${esc(S.user.email)}</b><span>Signed in to Cutz</span></div><button id="out">Not you?</button></div>
-      <div class="field"><label for="f-name">Full name</label><input id="f-name" autocomplete="name" value="${esc(c.name && c.name !== 'New customer' ? c.name : '')}"></div>
-      ${phoneField(c.phone)}
-      <button class="btn btn-green btn-lg btn-block" id="next">${S.intent === 'book' ? 'Review booking' : 'Continue'}</button>`;
-    wireBack(el);
-    el.querySelector('#out').onclick = async () => { await sb.auth.signOut(); S.user = null; S.customer = null; go('details'); };
-    el.querySelector('#next').onclick = async () => {
-      const name = el.querySelector('#f-name').value.trim(), phone = readPhone(el);
-      if (!name) return showErr(el, 'Please enter your name.');
-      if (!phone) return showErr(el, 'Please enter a valid phone number.');
-      const btn = el.querySelector('#next'); btn.disabled = true;
-      if (!S.customer) {
-        const { error } = await sb.from('customers').insert({ id: S.user.id, name, email: S.user.email, phone, gdpr_accepted_at: new Date().toISOString() });
-        if (error) { btn.disabled = false; return showErr(el, phoneError(error)); }
-      } else if (name !== S.customer.name || phone !== S.customer.phone) {
-        const { error } = await sb.from('customers').update({ name, phone }).eq('id', S.user.id);
-        if (error) { btn.disabled = false; return showErr(el, phoneError(error)); }
-      }
-      S.customer = { ...(S.customer || {}), name, phone };
-      go(afterDetails());
-    };
+  const strip = el.querySelector('.days');
+  strip.querySelector('.on')?.scrollIntoView({ inline: 'center', block: 'nearest' });
+  strip.querySelectorAll('button[data-k]').forEach(b => b.onclick = () => { S.date = b.dataset.k; S.time = null; stepWhen(el); });
+  if (!S.date) { el.querySelector('#slotArea').innerHTML = '<p class="empty">No open days in the next 3 weeks.</p>'; return; }
+  const key = S.date, taken = await busyFor(key);
+  if (S.step !== 'when' || S.date !== key) return;
+  const all = daySlots(key, mins);
+  const isTaken = s => taken.some(x => x.start < toMin(s) + mins && x.start + x.len > toMin(s));
+  const free = all.filter(s => !isTaken(s));
+  const area = el.querySelector('#slotArea');
+  if (!all.length) { area.innerHTML = '<p class="empty">No times fit this service that day. Try another day.</p>'; return; }
+  if (!free.length) {
+    area.innerHTML = `<div class="full"><b>Fully booked that day</b><p>Join the waitlist and we'll email you the moment a time opens up.</p><button class="btn btn-green btn-lg btn-block" id="wl">Join the waitlist</button></div>`;
+    area.querySelector('#wl').onclick = () => startIntent('waitlist');
     return;
   }
+  const groups = [['Morning', s => toMin(s) < 720], ['Afternoon', s => toMin(s) >= 720 && toMin(s) < 1020], ['Evening', s => toMin(s) >= 1020]];
+  area.innerHTML = `<div class="slots">${groups.map(([g, f]) => { const ss = all.filter(f); return ss.length ? `<div class="slot-group">${g}</div>` + ss.map(s => `<button data-t="${s}" ${isTaken(s) ? `disabled aria-label="${s}, booked"` : ''}>${s}</button>`).join('') : ''; }).join('')}</div>`;
+  area.querySelectorAll('.slots button[data-t]').forEach(b => b.onclick = () => { S.time = b.dataset.t; go('details'); });
+}
 
-  const signup = S.authMode === 'signup', p = S.pending || {};
-  el.innerHTML = `<form class="step" id="authForm" novalidate>${backBtn(beforeDetails())}<h3>${signup ? 'Your details' : S.intent === 'book' ? 'Sign in to book' : 'Sign in'}</h3><p class="hint">${signup ? 'Create a free Cutz account. You can use it in the app too.' : 'Use your Cutz account, the same one as in the app.'}</p>
-    <div class="tabs" role="tablist"><button role="tab" data-m="signup" class="${signup ? 'on' : ''}" aria-selected="${signup}">New to Cutz</button><button role="tab" data-m="signin" class="${signup ? '' : 'on'}" aria-selected="${!signup}">I have an account</button></div>
-    ${signup ? `<div class="field"><label for="f-name">Full name</label><input id="f-name" autocomplete="name" value="${esc(p.name || '')}"></div>${phoneField(p.phone)}` : ''}
-    <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(p.email || '')}"></div>
-    <div class="field"><label for="f-pw">Password</label><input id="f-pw" type="password" autocomplete="${signup ? 'new-password' : 'current-password'}" ${signup ? 'minlength="6" placeholder="At least 6 characters"' : ''}></div>
-    ${signup ? '<label class="check"><input type="checkbox" id="f-ok"><span>I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</span></label>' : ''}
-    <button class="btn btn-green btn-lg btn-block" id="next" type="button">${signup ? 'Continue' : 'Sign in'}</button>
-    ${signup ? '' : '<p class="note">Forgot your password? Email <a href="mailto:cutz.support@gmail.com" style="text-decoration:underline">cutz.support@gmail.com</a> and we\'ll help you reset it.</p>'}</form>`;
+// Waitlist: a time window on a fully booked day.
+async function stepWaitlist(el) {
+  const d = fromKey(S.date), opts = daySlots(S.date, SLOT_STEP);
+  const label = `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  if (!S.wl) S.wl = { from: opts[0], to: opts.at(-1) };
+  const sel = (id, v) => `<select id="${id}" class="sel">${opts.map(s => `<option ${s === v ? 'selected' : ''}>${s}</option>`).join('')}</select>`;
+  el.innerHTML = `<div class="step">${backBtn('when')}<h3>Join the waitlist</h3><p class="hint">${label} · ${esc(S.service?.name || '')}. If a time in your window opens up, we email you straight away.</p>
+    <div class="win"><div class="field"><label for="wf">From</label>${sel('wf', S.wl.from)}</div><div class="field"><label for="wt">To</label>${sel('wt', S.wl.to)}</div></div>
+    <button class="btn btn-green btn-lg btn-block" id="next">${S.user ? 'Join the waitlist' : 'Continue'}</button></div>`;
   wireBack(el);
-  el.querySelector('#authForm').onsubmit = e => { e.preventDefault(); el.querySelector('#next').click(); };
-  el.querySelectorAll('.tabs button').forEach(t => { t.type = 'button'; t.onclick = () => { S.authMode = t.dataset.m; renderStep(); }; });
-  el.querySelector('#next').onclick = async () => {
-    const email = el.querySelector('#f-email').value.trim(), pw = el.querySelector('#f-pw').value;
-    if (!/^\S+@\S+\.\S+$/.test(email)) return showErr(el, 'Please enter a valid email address.');
-    if (pw.length < 6) return showErr(el, 'Your password needs at least 6 characters.');
-    const btn = el.querySelector('#next'); btn.disabled = true; btn.textContent = 'One moment…';
-    if (signup) {
-      const name = el.querySelector('#f-name').value.trim(), phone = readPhone(el);
-      if (!name || !phone || !el.querySelector('#f-ok').checked) {
-        btn.disabled = false; btn.textContent = 'Continue';
-        return showErr(el, !name ? 'Please enter your name.' : !phone ? 'Please enter a valid phone number.' : 'Please accept the Terms and Privacy Policy.');
-      }
-      S.pending = { name, phone, email };
-      const { error } = await sb.auth.signUp({ email, password: pw, options: { data: { userType: 'customer' } } });
-      if (error) { btn.disabled = false; btn.textContent = 'Continue'; return showErr(el, /registered|exists/i.test(error.message) ? 'That email already has a Cutz account. Switch to "I have an account".' : error.message); }
-      go('otp');
-    } else {
-      const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
-      if (error) {
-        if (/not confirmed/i.test(error.message)) { S.pending = { email }; await sb.auth.resend({ type: 'signup', email }).catch(() => {}); return go('otp'); }
-        btn.disabled = false; btn.textContent = 'Sign in';
-        return showErr(el, "That email and password don't match a Cutz account.");
-      }
-      S.user = data.user; go('details');
-    }
+  el.querySelector('#next').onclick = () => {
+    const from = el.querySelector('#wf').value, to = el.querySelector('#wt').value;
+    if (toMin(to) < toMin(from)) return showErr(el, 'The end time must be after the start time.');
+    S.wl = { from, to };
+    if (S.user) return finish(el, el.querySelector('#next'));
+    go('details');
   };
 }
-function phoneError(e) {
-  return e && (e.code === '23505' || /phone/i.test(e.message || '')) ? 'That phone number is already used by another Cutz account.' : (e?.message || 'Something went wrong. Please try again.');
-}
 
-function stepOtp(el) {
+// 3. Details: name, phone, email. One button.
+function summary() {
+  if (S.intent !== 'book' || !S.date || !S.time) return '';
+  const d = fromKey(S.date);
+  return `<div class="bk-sum"><div><b>${esc(S.service.name)}</b><span>${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} at ${esc(S.time)} · ${dur(S.service)} min</span></div><b>${kr(S.service.price)}</b></div>`;
+}
+const CTA = () => ({ book: 'Book now', waitlist: 'Join the waitlist', queue: 'Join the queue', review: 'Continue' })[S.intent];
+async function stepDetails(el) {
+  if (S.user) {
+    if (userType(S.user) !== 'customer') {
+      el.innerHTML = `<div class="step">${backBtn(back())}<h3>Use a customer account</h3><p class="hint">You're signed in with a ${esc(userType(S.user))} account. Sign out to book as a customer.</p><button class="btn btn-ghost btn-lg btn-block" id="out">Sign out</button></div>`;
+      wireBack(el);
+      el.querySelector('#out').onclick = signOut;
+      return;
+    }
+    if (S.customer === null) S.customer = await loadCustomer(S.user) || undefined;
+    if (S.step !== 'details') return;
+  }
+  const c = S.customer || S.pending || {};
+  el.innerHTML = `<form class="step" id="df" novalidate>${backBtn(back())}<h3>${S.user ? 'Your details' : 'Almost done'}</h3><p class="hint">${S.user ? 'Your barber uses these to reach you.' : 'No password needed. We email you a code to confirm.'}</p>
+    ${summary()}
+    ${S.user ? `<div class="who-card"><div><b>${esc(S.user.email)}</b><span>Signed in</span></div><button type="button" id="out">Not you?</button></div>` : ''}
+    <div class="field"><label for="f-name">Name</label><input id="f-name" autocomplete="name" value="${esc(c.name && c.name !== 'New customer' ? c.name : '')}" placeholder="First and last name"></div>
+    ${phoneField(c.phone)}
+    ${S.user ? '' : `<div class="field"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(c.email || '')}" placeholder="you@example.com"></div>`}
+    <button class="btn btn-green btn-lg btn-block" id="next" type="submit">${CTA()}</button>
+    ${S.user ? '' : '<p class="note">By continuing you agree to the <a href="terms.html" target="_blank">Terms</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</p>'}</form>`;
+  wireBack(el);
+  el.querySelector('#out')?.addEventListener('click', signOut);
+  el.querySelector('#df').onsubmit = async e => {
+    e.preventDefault();
+    const btn = el.querySelector('#next');
+    const name = el.querySelector('#f-name').value.trim(), phone = readPhone(el);
+    if (name.length < 2) return showErr(el, 'Please enter your name.');
+    if (!phone) return showErr(el, 'Please enter your phone number.');
+    if (S.user) {
+      busy(btn, true, 'One moment…');
+      try { S.customer = await saveCustomer(S.user, S.customer, { name, phone }); } catch (err) { busy(btn, false, CTA()); return showErr(el, err.message); }
+      return finish(el, btn);
+    }
+    const email = el.querySelector('#f-email').value.trim().toLowerCase();
+    if (!validEmail(email)) return showErr(el, 'Please enter a valid email address.');
+    S.pending = { name, phone, email };
+    busy(btn, true, 'Sending code…');
+    try {
+      const r = await startEmailSignIn(email);
+      S.pending.isNew = !!r.isNew;
+      go(r.mode === 'code' ? 'code' : 'password');
+    } catch (err) { busy(btn, false, CTA()); showErr(el, err.message); }
+  };
+}
+async function signOut() { await sb.auth.signOut(); S.user = null; S.customer = null; go('details'); }
+
+// 4a. Code from the email.
+function stepCode(el) {
   const email = S.pending?.email || '';
-  el.innerHTML = `<div class="step">${backBtn('details')}<h3>Check your email</h3><p class="hint">Enter the 6-digit code we sent to <b style="color:#fff">${esc(email)}</b>.</p>
-    <div class="otp">${[0,1,2,3,4,5].map(i => `<input inputmode="numeric" autocomplete="${i ? 'off' : 'one-time-code'}" maxlength="6" aria-label="Digit ${i + 1}">`).join('')}</div>
-    <button class="btn btn-green btn-lg btn-block" id="next">Verify</button><p class="note"><button class="back" id="resend" style="margin:0">Send a new code</button></p></div>`;
+  el.innerHTML = `<div class="step">${backBtn('details')}<h3>Check your email</h3><p class="hint">We sent a 6-digit code to <b style="color:#fff">${esc(email)}</b>. It can take a minute, so check spam too.</p>
+    ${otpBoxes()}<button class="btn btn-green btn-lg btn-block" id="next">${CTA()}</button>
+    <p class="note"><button class="back" id="resend" style="margin:0">Send a new code</button></p></div>`;
   wireBack(el);
-  const ins = [...el.querySelectorAll('.otp input')];
-  ins[0].focus();
-  ins.forEach((inp, i) => {
-    inp.oninput = () => {
-      const v = inp.value.replace(/\D/g, '');
-      if (v.length > 1) { v.slice(0, 6).split('').forEach((c, j) => { if (ins[j]) ins[j].value = c; }); ins[Math.min(v.length, 6) - 1].focus(); if (v.length >= 6) el.querySelector('#next').click(); return; }
-      inp.value = v; if (v && ins[i + 1]) ins[i + 1].focus();
-    };
-    inp.onkeydown = e => { if (e.key === 'Backspace' && !inp.value && ins[i - 1]) ins[i - 1].focus(); };
-  });
-  el.querySelector('#resend').onclick = async () => { await sb.auth.resend({ type: 'signup', email }).catch(() => {}); showErr(el, 'A new code is on its way.'); };
-  el.querySelector('#next').onclick = async () => {
-    const code = ins.map(i => i.value).join('');
+  const btn = el.querySelector('#next');
+  const submit = async code => {
     if (code.length < 6) return showErr(el, 'Please enter all 6 digits.');
-    const btn = el.querySelector('#next'); btn.disabled = true;
-    const { data, error } = await sb.auth.verifyOtp({ email, token: code, type: 'signup' });
-    if (error) { btn.disabled = false; return showErr(el, 'That code is incorrect or has expired.'); }
-    S.user = data.user;
-    const existing = await loadCustomer();
-    if (!existing && S.pending?.name) {
-      const { error: e2 } = await sb.from('customers').insert({ id: S.user.id, name: S.pending.name, email, phone: S.pending.phone, gdpr_accepted_at: new Date().toISOString() });
-      if (!e2) S.customer = { name: S.pending.name, phone: S.pending.phone, email };
-    }
-    try { await sb.rpc('mark_customer_email_verified'); } catch (_) {}
-    go(S.customer?.phone ? afterDetails() : 'details');
+    busy(btn, true, 'Checking…');
+    try { S.user = await verifyEmailCode(email, code, S.pending.isNew); }
+    catch (err) { busy(btn, false, CTA()); return showErr(el, err.message); }
+    afterSignIn(el, btn);
+  };
+  const read = wireOtp(el, submit);
+  btn.onclick = () => submit(read());
+  el.querySelector('#resend').onclick = async () => {
+    try { await resendCode(email, S.pending.isNew); showErr(el, 'A new code is on its way.', true); } catch (err) { showErr(el, err.message); }
   };
 }
-
-function stepConfirm(el) {
-  const d = fromKey(S.date), c = S.customer || {};
-  el.innerHTML = `<div class="step">${backBtn('details')}<h3>Confirm booking</h3><p class="hint">Check everything looks right.</p>
-    <div class="sum">
-      <div><span>Barber</span><b>${esc(S.barber.name)}</b></div>
-      <div><span>Service</span><b>${esc(S.service.name)}</b></div>
-      <div><span>When</span><b>${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} · ${esc(S.time)}</b></div>
-      <div><span>Duration</span><b>${dur(S.service)} min</b></div>
-      <div><span>Name</span><b>${esc(c.name || '')}</b></div>
-      <div><span>Phone</span><b>${esc(c.phone || '')}</b></div>
-      <div class="tot"><span>Pay at the shop</span><b>${kr(S.service.price)}</b></div>
-    </div>
-    <button class="btn btn-green btn-lg btn-block" id="next">Confirm booking</button>
-    <p class="note">Free cancellation up to 24 hours before. <a href="terms.html#conduct" style="text-decoration:underline">No-show policy</a></p></div>`;
+// 4b. Returning customers sign in with their password until the sign-in email carries a code.
+function stepPassword(el) {
+  const email = S.pending?.email || '';
+  el.innerHTML = `<form class="step" id="pf" novalidate>${backBtn('details')}<h3>Welcome back</h3><p class="hint"><b style="color:#fff">${esc(email)}</b> already has a Cutz account. Enter its password to continue.</p>
+    <div class="field"><label for="f-pw">Password</label><input id="f-pw" type="password" autocomplete="current-password"></div>
+    <button class="btn btn-green btn-lg btn-block" id="next" type="submit">${CTA()}</button>
+    <p class="note">Booked on the website before, or forgot it? <a href="reset-password.html?email=${encodeURIComponent(email)}" style="text-decoration:underline">Set a password</a></p></form>`;
   wireBack(el);
-  el.querySelector('#next').onclick = async () => {
-    const btn = el.querySelector('#next'); btn.disabled = true; btn.textContent = 'Booking…';
-    const fail = msg => { btn.disabled = false; btn.textContent = 'Confirm booking'; showErr(el, msg); };
-    // Same pre-checks as the app's BookingScreen; the server triggers stay the authority.
-    if (S.customer?.cooldown_until && new Date(S.customer.cooldown_until) > new Date()) return fail(`Your account can't make new bookings until ${new Date(S.customer.cooldown_until).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} because of recent no-shows.`);
-    const { data: blocked } = await sb.rpc('am_i_blocked_by', { p_barber_id: S.barber.id });
-    if (blocked === true) return fail("You can't book with this barber.");
-    const [h, m] = S.time.split(':').map(Number);
-    const at = fromKey(S.date); at.setHours(h, m, 0, 0);
-    const { data, error } = await sb.from('bookings').insert({
-      barber_id: S.barber.id, customer_id: S.user.id,
-      customer_name: c.name || '', customer_phone: c.phone || '',
-      service: S.service, date_key: S.date,
-      date_label: `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`,
-      time: S.time, date_time_iso: at.toISOString(),
-    }).select('id, status').maybeSingle();
-    if (error) {
-      btn.disabled = false; btn.textContent = 'Confirm booking';
-      if (error.code === '23505') { S.time = null; showErr(el, 'Someone just booked that time. Please pick another one.'); setTimeout(() => go('time'), 1600); return; }
-      return showErr(el, bookingError(error));
-    }
-    S.result = data || {};
-    go('done');
+  el.querySelector('#f-pw').focus();
+  el.querySelector('#pf').onsubmit = async e => {
+    e.preventDefault();
+    const btn = el.querySelector('#next');
+    busy(btn, true, 'Signing in…');
+    try { S.user = await signInWithPassword(email, el.querySelector('#f-pw').value); }
+    catch (err) { busy(btn, false, CTA()); return showErr(el, err.message); }
+    afterSignIn(el, btn);
   };
+}
+async function afterSignIn(el, btn) {
+  if (userType(S.user) !== 'customer') { S.step = 'details'; return renderStep(); }
+  try {
+    const existing = await loadCustomer(S.user);
+    S.customer = await saveCustomer(S.user, existing, { name: S.pending.name || existing?.name || '', phone: S.pending.phone || existing?.phone || '' });
+  } catch (err) { busy(btn, false, CTA()); return showErr(el, err.message); }
+  finish(el, btn);
+}
+
+// 5. Do the thing the customer came for.
+async function finish(el, btn) {
+  busy(btn, true, { book: 'Booking…', waitlist: 'Joining…', queue: 'Joining…', review: 'One moment…' }[S.intent]);
+  const fail = msg => { busy(btn, false, CTA()); showErr(el, msg); };
+  try {
+    if (S.intent === 'review') return go('review');
+    if (S.intent === 'queue') return await joinQueue(fail);
+    if (S.intent === 'waitlist') return await joinWaitlist(fail);
+    return await createBooking(fail);
+  } catch (err) { fail(err.message || 'Something went wrong. Please try again.'); }
+}
+async function createBooking(fail) {
+  const c = S.customer || {};
+  // Same pre-checks as the app's BookingScreen; the server triggers stay the authority.
+  if (c.cooldown_until && new Date(c.cooldown_until) > new Date()) return fail(`Your account can't make new bookings until ${new Date(c.cooldown_until).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} because of recent no-shows.`);
+  const { data: blocked } = await sb.rpc('am_i_blocked_by', { p_barber_id: S.barber.id });
+  if (blocked === true) return fail("You can't book with this barber.");
+  const d = fromKey(S.date), [h, m] = S.time.split(':').map(Number);
+  const at = fromKey(S.date); at.setHours(h, m, 0, 0);
+  const { data, error } = await sb.from('bookings').insert({
+    barber_id: S.barber.id, customer_id: S.user.id,
+    customer_name: c.name || '', customer_phone: c.phone || '',
+    service: S.service, date_key: S.date,
+    date_label: `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`,
+    time: S.time, date_time_iso: at.toISOString(),
+  }).select('id, status').maybeSingle();
+  if (error) {
+    if (error.code === '23505' || /overlap|taken/i.test(error.message || '')) {
+      delete busyCache[S.date]; S.time = null;
+      fail('Someone just booked that time. Pick another one.');
+      return setTimeout(() => go('when'), 1500);
+    }
+    return fail(bookingError(error));
+  }
+  S.result = data || {};
+  delete busyCache[S.date];
+  go('done');
 }
 function bookingError(e) {
   const m = e.message || '';
@@ -874,54 +868,71 @@ function bookingError(e) {
   if (/strike|cooldown|no-show/i.test(m)) return "Your account can't make new bookings right now because of recent no-shows.";
   return m || 'Something went wrong. Please try again.';
 }
-
 function stepDone(el) {
   const d = fromKey(S.date), pending = S.result?.status === 'pending';
-  el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>${pending ? 'Booking requested' : "You're booked"}</h3>
+  el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>${pending ? 'Booking sent' : "You're booked"}</h3>
     <p>${esc(S.service.name)} with ${esc(S.barber.name)}<br><b style="color:#fff">${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} at ${esc(S.time)}</b>${pending ? '<br>The barber will confirm it shortly.' : ''}</p>
     <button class="btn btn-green btn-lg btn-block" id="ics">Add to calendar</button>
-    <a class="btn btn-ghost btn-lg btn-block" href="${APP_STORE}">Get the Cutz app</a>
+    <a class="btn btn-ghost btn-lg btn-block" href="mybookings.html">See my bookings</a>
     <button class="btn btn-lg btn-block" id="again" style="background:none;color:var(--dim)">Book another</button></div>`;
-  document.querySelectorAll('#progress i').forEach(i => i.classList.add('on'));
   el.querySelector('#ics').onclick = downloadIcs;
-  el.querySelector('#again').onclick = () => { S.service = S.date = S.time = null; go('service'); };
+  el.querySelector('#again').onclick = () => { S.service = S.date = S.time = null; startIntent('book'); };
 }
+
+async function joinWaitlist(fail) {
+  const { data: mine } = await sb.from('waitlist_entries').select('id').eq('customer_id', S.user.id).eq('barber_id', S.barber.id).eq('date_key', S.date).eq('status', 'waiting').limit(1);
+  if (!(mine && mine.length)) {
+    const { error } = await sb.from('waitlist_entries').insert({
+      barber_id: S.barber.id, customer_id: S.user.id, customer_name: S.customer?.name || '',
+      date_key: S.date, preferred_start: S.wl.from, preferred_end: S.wl.to,
+    });
+    if (error) return fail(error.message || 'Something went wrong. Please try again.');
+  }
+  go('waitlisted');
+}
+function stepWaitlisted(el) {
+  const d = fromKey(S.date);
+  el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>You're on the waitlist</h3>
+    <p>${esc(S.barber.name)} · ${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]}<br><b style="color:#fff">${esc(S.wl.from)} – ${esc(S.wl.to)}</b><br>We'll email ${esc(S.user?.email || 'you')} the moment a time opens up.</p>
+    <a class="btn btn-ghost btn-lg btn-block" href="mybookings.html">See my bookings</a>
+    <button class="btn btn-lg btn-block" id="again" style="background:none;color:var(--dim)">Pick another day</button></div>`;
+  el.querySelector('#again').onclick = () => { S.time = null; startIntent('book'); };
+}
+
 // ---------------------------------------------------------------------------
 // Walk-in queue: same insert as the app (walk_ins, RLS: own customer_id). The
-// on_walk_in_insert trigger bumps queue_size and notifies the barber or salon.
+// on_walk_in_insert trigger bumps queue_size and notifies the barber or salon,
+// and a unique index stops the same customer joining one queue twice.
 // ---------------------------------------------------------------------------
 function queueTarget() { return S.queueSalon || S.barber; }
-async function stepQueue(el) {
+function stepQueue(el) {
   const t = queueTarget(), salon = !!S.queueSalon, ahead = t.queue_size || 0;
-  const info = `<div class="sum"><div><span>${salon ? 'Salon' : 'Barber'}</span><b>${esc(t.name)}</b></div><div><span>People ahead of you</span><b>${ahead}</b></div>${t.wait_time ? `<div><span>Estimated wait</span><b>~${esc(t.wait_time)} min</b></div>` : ''}</div>`;
   if (!queueOpen(t)) { el.innerHTML = `<div class="step"><h3>Queue closed</h3><p class="hint">${esc(t.name)} isn't taking walk-ins right now. You can book a time instead.</p><button class="btn btn-green btn-lg btn-block" id="bookInstead">Book a time</button></div>`; el.querySelector('#bookInstead').onclick = () => startIntent('book'); return; }
-  if (!S.user) {
-    el.innerHTML = `<div class="step"><h3>Join the walk-in queue</h3><p class="hint">${salon ? 'The next free barber at the salon will take you.' : 'Skip waiting in the shop.'} You'll need a free Cutz account.</p>${info}<button class="btn btn-green btn-lg btn-block" id="next">Continue</button></div>`;
-    el.querySelector('#next').onclick = () => go('details');
-    return;
-  }
-  if (!S.customer) await loadCustomer();
-  if (S.step !== 'queue') return;
-  if (!S.customer?.phone) return go('details');
-  el.innerHTML = `<div class="step"><h3>Join the walk-in queue</h3><p class="hint">Head to the shop when it's nearly your turn.</p>${info}<button class="btn btn-green btn-lg btn-block" id="next">Join the queue</button></div>`;
-  el.querySelector('#next').onclick = async () => {
-    const btn = el.querySelector('#next'); btn.disabled = true; btn.textContent = 'Joining…';
-    const col = salon ? 'salon_id' : 'barber_id';
-    // The server doesn't stop duplicate joins, so check for an open spot first.
-    const { data: mine } = await sb.from('walk_ins').select('id').eq('customer_id', S.user.id).eq(col, t.id).eq('status', 'waiting').limit(1);
-    if (mine && mine.length) { S.queuedAhead = null; return go('queued'); }
-    const { error } = await sb.from('walk_ins').insert({ barber_id: salon ? null : t.id, salon_id: salon ? t.id : null, customer_id: S.user.id });
-    if (error) { btn.disabled = false; btn.textContent = 'Join the queue'; return showErr(el, error.message || 'Something went wrong. Please try again.'); }
-    S.queuedAhead = ahead; t.queue_size = ahead + 1;
-    go('queued');
+  el.innerHTML = `<div class="step"><h3>Skip the wait in the shop</h3><p class="hint">${salon ? 'The next free barber takes you.' : 'Join the line from here and head over when it\'s nearly your turn.'}</p>
+    <div class="sum"><div><span>${salon ? 'Salon' : 'Barber'}</span><b>${esc(t.name)}</b></div><div><span>Ahead of you</span><b>${ahead}</b></div>${t.wait_time ? `<div><span>Estimated wait</span><b>~${esc(t.wait_time)} min</b></div>` : ''}</div>
+    <button class="btn btn-green btn-lg btn-block" id="next">Join the queue</button></div>`;
+  const btn = el.querySelector('#next');
+  btn.onclick = async () => {
+    if (!S.user) return go('details');
+    if (S.customer === null) S.customer = await loadCustomer(S.user) || undefined;
+    if (!S.customer?.phone) return go('details');
+    finish(el, btn);
   };
+}
+async function joinQueue(fail) {
+  const t = queueTarget(), salon = !!S.queueSalon, ahead = t.queue_size || 0;
+  const { error } = await sb.from('walk_ins').insert({ barber_id: salon ? null : t.id, salon_id: salon ? t.id : null, customer_id: S.user.id });
+  if (error && error.code !== '23505') return fail(error.message || 'Something went wrong. Please try again.');
+  S.queuedAhead = error ? null : ahead;
+  if (!error) t.queue_size = ahead + 1;
+  go('queued');
 }
 function stepQueued(el) {
   const t = queueTarget(), again = S.queuedAhead == null;
   el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>${again ? "You're already in the queue" : "You're in the queue"}</h3>
     <p>${esc(t.name)}${again ? '' : `<br><b style="color:#fff">${S.queuedAhead ? `${S.queuedAhead} ${S.queuedAhead === 1 ? 'person' : 'people'} ahead of you` : "You're next"}</b>${t.wait_time ? `<br>Estimated wait ~${esc(t.wait_time)} min` : ''}`}</p>
-    ${t.address ? `<div class="btns" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">${mapLinks(t)}</div>` : ''}
-    <a class="btn btn-ghost btn-lg btn-block" href="${APP_STORE}">Get the Cutz app</a></div>`;
+    ${t.address ? `<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">${mapLinks(t)}</div>` : ''}
+    <a class="btn btn-ghost btn-lg btn-block" href="${APP_STORE}" data-store>Get the Cutz app</a></div>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -931,26 +942,27 @@ function stepQueued(el) {
 async function stepReview(el) {
   const first = esc(S.barber.name.split(' ')[0]);
   if (!S.user) {
-    el.innerHTML = `<div class="step"><h3>Review ${first}</h3><p class="hint">Reviews come from customers after a completed booking. Sign in with the Cutz account you booked with.</p><button class="btn btn-green btn-lg btn-block" id="next">Sign in</button></div>`;
-    el.querySelector('#next').onclick = () => { S.authMode = 'signin'; go('details'); };
+    el.innerHTML = `<div class="step"><h3>Review ${first}</h3><p class="hint">Reviews come from customers after a completed booking. Confirm your email to continue.</p><button class="btn btn-green btn-lg btn-block" id="next">Continue</button></div>`;
+    el.querySelector('#next').onclick = () => go('details');
     return;
   }
   el.innerHTML = `<div class="step"><h3>Review ${first}</h3><div class="spinner" style="margin:30px auto"></div></div>`;
-  const [, done, prev] = await Promise.all([
-    S.customer ? null : loadCustomer(),
+  const [cust, done, prev] = await Promise.all([
+    S.customer ? S.customer : loadCustomer(S.user),
     sb.from('bookings').select('id').eq('customer_id', S.user.id).eq('barber_id', S.barber.id).eq('status', 'completed').limit(1),
     sb.from('reviews').select('stars, description, created_at').eq('customer_id', S.user.id).eq('barber_id', S.barber.id).maybeSingle(),
   ]);
+  S.customer = cust || S.customer;
   if (S.step !== 'review') return;
   const old = prev.data;
   if (!(done.data || []).length) { el.innerHTML = `<div class="step"><h3>Review ${first}</h3><p class="hint">You can leave a review after a completed booking with ${first}.</p><button class="btn btn-green btn-lg btn-block" id="bk2">Book ${first}</button></div>`; el.querySelector('#bk2').onclick = () => startIntent('book'); return; }
   if (old && Date.now() - new Date(old.created_at) > 7 * 864e5) { el.innerHTML = `<div class="step"><h3>Thanks for your review</h3><p class="hint">You reviewed ${first} on ${new Date(old.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}. Reviews can be edited for 7 days.</p></div>`; return; }
   let stars = old?.stars || 0;
   el.innerHTML = `<div class="step"><h3>${old ? 'Edit your review' : `Review ${first}`}</h3><p class="hint">How was your cut?</p>
-    <div class="star-in" role="radiogroup" aria-label="Rating">${[1,2,3,4,5].map(n => `<button type="button" role="radio" data-n="${n}" aria-label="${n} star${n > 1 ? 's' : ''}">★</button>`).join('')}</div>
+    <div class="star-in" role="radiogroup" aria-label="Rating">${[1, 2, 3, 4, 5].map(n => `<button type="button" role="radio" data-n="${n}" aria-label="${n} star${n > 1 ? 's' : ''}">★</button>`).join('')}</div>
     <div class="field"><label for="f-rv">Tell others about it (optional)</label><textarea id="f-rv" class="f-txt" maxlength="500">${esc(old?.description || '')}</textarea></div>
     <button class="btn btn-green btn-lg btn-block" id="next" ${stars ? '' : 'disabled'}>${old ? 'Update review' : 'Post review'}</button></div>`;
-  const paint = () => el.querySelectorAll('.star-in button').forEach(b => { const on = +b.dataset.n <= stars; b.classList.toggle('on', on); b.setAttribute('aria-checked', +b.dataset.n === stars); });
+  const paint = () => el.querySelectorAll('.star-in button').forEach(b => { b.classList.toggle('on', +b.dataset.n <= stars); b.setAttribute('aria-checked', +b.dataset.n === stars); });
   paint();
   el.querySelectorAll('.star-in button').forEach(b => b.onclick = () => { stars = +b.dataset.n; paint(); el.querySelector('#next').disabled = false; });
   el.querySelector('#next').onclick = async () => {
@@ -974,7 +986,7 @@ function downloadIcs() {
   const end = new Date(start.getTime() + dur(S.service) * 60000);
   const f = x => x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const clean = s => String(s || '').replace(/[,;\\]/g, ' ').replace(/\n/g, ' ');
-  const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Cutz//Booking//EN','BEGIN:VEVENT',`UID:${S.result?.id || Date.now()}@cutzapp.one`,`DTSTAMP:${f(new Date())}`,`DTSTART:${f(start)}`,`DTEND:${f(end)}`,`SUMMARY:${clean(S.service.name)} with ${clean(S.barber.name)}`,`LOCATION:${clean(S.barber.address)}`,`URL:${location.origin}/barber.html?id=${S.barber.id}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Cutz//Booking//EN', 'BEGIN:VEVENT', `UID:${S.result?.id || Date.now()}@cutzapp.one`, `DTSTAMP:${f(new Date())}`, `DTSTART:${f(start)}`, `DTEND:${f(end)}`, `SUMMARY:${clean(S.service.name)} with ${clean(S.barber.name)}`, `LOCATION:${clean(S.barber.address)}`, `URL:${location.origin}/barber.html?id=${S.barber.id}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
   a.download = 'cutz-booking.ics'; a.click();

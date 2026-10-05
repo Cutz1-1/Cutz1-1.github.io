@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="assets/appstore.js"></script>
 <title>Salon — Book on Cutz</title>
 <meta name="description" content="See the team, services and location, and book a barber at this salon on Cutz.">
 <meta name="theme-color" content="#000000">
@@ -232,6 +233,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
       <a href="faq.html">FAQ</a>
+      <a href="mybookings.html">My bookings</a>
       <a href="download.html" class="btn btn-green">Get the app</a>
     </nav>
   </div>
@@ -259,7 +261,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
         </ul>
       </div>
       <div>
@@ -355,7 +357,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
         (s.address?'<section class="block"><h2>Location</h2><div class="loc"><p>'+esc(s.address)+'</p><div class="btns"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://maps.apple.com/?'+(ll?'daddr='+ll+'&':'')+'q='+q+'">Apple Maps</a><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+(ll||q)+'">Google Maps</a></div></div></section>':'')+
       '</div><aside class="side">'+
         '<div class="box"><h3>Book at '+esc(s.name)+'</h3><p>Choose a barber and pick a time. It takes about a minute.</p><div class="stat-row"><div><b>'+team.length+'</b><small>Barbers</small></div><div><b>'+svcs.length+'</b><small>Services</small></div><div><b>'+(avg?avg.toFixed(1):'–')+'</b><small>Rating</small></div></div><a class="btn btn-green btn-lg btn-block" href="#team">Choose a barber</a>'+(qOpen?'<a class="btn btn-ghost btn-lg btn-block" style="margin-top:8px" href="'+qHref+'">Join the walk-in queue</a>':'')+'</div>'+
-        '<div class="box"><h3>Get the Cutz app</h3><p>Reminders and managing bookings on the go. Coming soon to the App Store.</p><a class="btn btn-ghost btn-block" href="'+APP_STORE+'">Get the app</a><a class="btn btn-block" style="margin-top:8px;color:var(--dim)" href="cutz://salon/'+encodeURIComponent(s.id)+'">Open in app</a></div>'+
+        '<div class="box"><h3>Get the Cutz app</h3><p>Reminders and managing bookings on the go. Coming soon to the App Store.</p><a class="btn btn-ghost btn-block" data-store href="'+APP_STORE+'">Get the app</a><a class="btn btn-block" style="margin-top:8px;color:var(--dim)" href="cutz://salon/'+encodeURIComponent(s.id)+'">Open in app</a></div>'+
       '</aside></div></div>';
 
     document.querySelectorAll('[data-photo]').forEach(function(el){el.addEventListener('click',function(){openLb(photos,+el.dataset.photo)})});

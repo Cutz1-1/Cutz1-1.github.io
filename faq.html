@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="assets/appstore.js"></script>
 <title>FAQ — Cutz help centre</title>
 <meta name="description" content="Answers about booking barbers, walk-in queues, cancellations, no-shows, pricing for barbers and salons, and the LAUNCH code.">
 <meta name="theme-color" content="#000000">
@@ -132,7 +133,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
 .search input::-webkit-search-cancel-button{-webkit-appearance:none}
 .clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:#1a1a1a;color:var(--mute);cursor:pointer;display:none;font-size:16px}
 .clear.on{display:block}
-@media (max-width:640px){.tools{flex-direction:column;align-items:stretch}.tabs{overflow-x:auto;justify-content:space-between}.tab{flex:1;padding:0 10px}.search{max-width:none;min-width:0}}
+@media (max-width:640px){.tools{flex-direction:column;align-items:stretch}.tabs{overflow-x:auto;justify-content:space-between;min-width:0;max-width:100%}.tab{flex:1 1 auto;min-width:0;padding:0 10px}.search{max-width:none;min-width:0}}
 
 .layout{display:grid;grid-template-columns:1fr 300px;gap:clamp(40px,6vw,88px);align-items:start}
 @media (max-width:960px){.layout{grid-template-columns:1fr}}
@@ -195,6 +196,7 @@ mark{background:rgba(0,220,100,.28);color:#fff;border-radius:3px;padding:0 2px}
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
       <a href="faq.html" aria-current="page">FAQ</a>
+      <a href="mybookings.html">My bookings</a>
       <a href="download.html" class="btn btn-green">Get the app</a>
     </nav>
   </div>
@@ -286,7 +288,7 @@ mark{background:rgba(0,220,100,.28);color:#fff;border-radius:3px;padding:0 2px}
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
         </ul>
       </div>
       <div>

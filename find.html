@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="assets/appstore.js"></script>
 <title>Find a barber — Cutz</title>
 <meta name="description" content="Search barbers and barbershops on Cutz. Filter by area, service and who's open now, compare prices and ratings, and book online.">
 <meta name="theme-color" content="#000000">
@@ -178,6 +179,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
       <a href="faq.html">FAQ</a>
+      <a href="mybookings.html">My bookings</a>
       <a href="download.html" class="btn btn-green">Get the app</a>
     </nav>
   </div>
@@ -237,7 +239,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="find.html" aria-current="page">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+          <li><a href="find.html" aria-current="page">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
         </ul>
       </div>
       <div>
@@ -393,7 +395,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     var grid=document.getElementById('grid'),filtered=S.q||S.open||S.walkin||S.rated||S.area||S.svc;
     document.getElementById('resCount').textContent=S.barbers.length?list.length+' of '+S.barbers.length+' barber'+(S.barbers.length===1?'':'s'):'';
     if(!S.barbers.length){
-      grid.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>Barbers are joining now</h3><p>Cutz has only just launched, so the first barbers are setting up their profiles. Get the app to see them on the map as soon as they go live.</p><div class="row"><a class="btn btn-green btn-lg" href="download.html">Get the app</a><a class="btn btn-ghost btn-lg" href="barbers.html">I\'m a barber</a></div></div>';
+      grid.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>Barbers are joining now</h3><p>Cutz has only just launched, so the first barbers are setting up their profiles. Get the app to see them on the map as soon as they go live.</p><div class="row"><a class="btn btn-green btn-lg" data-store href="download.html">Get the app</a><a class="btn btn-ghost btn-lg" href="barbers.html">I\'m a barber</a></div></div>';
     }else if(!list.length){
       grid.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>No matches</h3><p>No barbers match '+(S.q?'“'+esc(S.q)+'” with ':'')+'these filters. Try widening your search.</p><div class="row"><button class="btn btn-ghost btn-lg" id="reset">Clear all filters</button></div></div>';
       document.getElementById('reset').onclick=resetAll;

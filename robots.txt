@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /404.html
+Disallow: /mybookings.html
+Disallow: /reset-password.html
 
 Sitemap: https://cutzapp.one/sitemap.xml

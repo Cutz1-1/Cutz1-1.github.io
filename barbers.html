@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="assets/appstore.js"></script>
 <title>Cutz for Barbers — Fill your chair, not your DMs</title>
 <meta name="description" content="Get found by clients nearby, manage bookings and walk-ins in one place, and pay 0% commission. Use code LAUNCH for 3 months free.">
 <meta name="theme-color" content="#000000">
@@ -248,6 +249,43 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   .rv{opacity:1;transform:none}
   .steps li::before{width:100%}
 }
+
+/* Join as a barber (early access) */
+.jm{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.jm.open{display:flex}
+.jm-scrim{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:jmFade .25s ease}
+.jm-box{position:relative;width:min(460px,100%);max-height:calc(100dvh - 40px);overflow:auto;background:#0b0b0b;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 40px 120px -20px rgba(0,220,100,.25);animation:jmUp .35s var(--ease)}
+@keyframes jmFade{from{opacity:0}}
+@keyframes jmUp{from{opacity:0;transform:translateY(16px)}}
+.jm-x{position:absolute;right:14px;top:14px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center;font-size:16px}
+.jm-x:hover{color:var(--fg);border-color:rgba(255,255,255,.3)}
+.jm h2{margin:0;font-size:26px;letter-spacing:-.03em;line-height:1.15;padding-right:44px}
+.jm .jm-sub{margin:8px 0 22px;color:var(--mute);font-size:15px}
+.jm-f{display:block;margin-bottom:14px}
+.jm-f span{display:block;font-size:13px;font-weight:600;color:var(--mute);margin-bottom:6px}
+.jm-f span em{font-style:normal;font-weight:400;color:var(--dim)}
+.jm input,.jm select{width:100%;height:52px;border-radius:14px;border:1px solid var(--line);background:#141414;color:var(--fg);font:inherit;font-size:16px;padding:0 14px;outline:none;transition:border-color .2s}
+.jm input:focus,.jm select:focus{border-color:var(--green)}
+.jm .ph{display:grid;grid-template-columns:104px 1fr;gap:8px}
+.jm input.code{text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+.jm-err{display:none;margin:0 0 14px;padding:10px 12px;border-radius:12px;background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.25);color:#ff8a8a;font-size:14px}
+.jm-err.on{display:block}
+.jm .btn-block{width:100%;height:56px;font-size:16px;margin-top:6px;justify-content:center}
+.jm-fine{margin:12px 0 0;font-size:12.5px;color:var(--dim);text-align:center}
+.jm-fine a{text-decoration:underline}
+.jm-ok{width:64px;height:64px;border-radius:50%;background:var(--green);color:#000;display:grid;place-items:center;margin:4px 0 18px}
+.jm-list{list-style:none;margin:18px 0 22px;padding:0;display:grid;gap:4px}
+.jm-list li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--mute)}
+.jm-list li:last-child{border-bottom:0}
+.jm-list i{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #333;display:grid;place-items:center;margin-top:-1px}
+.jm-list li.done{color:var(--fg)}
+.jm-list li.done i{background:var(--green);border-color:var(--green);color:#000}
+@media (max-width:600px){
+  .jm{align-items:flex-end;padding:0}
+  .jm-box{width:100%;border-radius:24px 24px 0 0;max-height:92dvh;padding:26px 20px calc(22px + env(safe-area-inset-bottom));animation:jmSheet .35s var(--ease)}
+  @keyframes jmSheet{from{transform:translateY(100%)}}
+}
+body.jm-lock{overflow:hidden}
 </style>
 <!-- og -->
 <meta property="og:site_name" content="Cutz">
@@ -280,6 +318,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <a href="barbers.html" aria-current="page">For barbers</a>
       <a href="salons.html">For salons</a>
       <a href="faq.html">FAQ</a>
+      <a href="mybookings.html">My bookings</a>
       <a href="download.html" class="btn btn-green">Get the app</a>
     </nav>
   </div>
@@ -295,7 +334,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
         <h1 class="h-xl rv" style="--d:.08s">Fill your chair.<br><span class="g">Not your DMs.</span></h1>
         <p class="lead rv" style="--d:.16s">Clients nearby find you on the map, see your prices and book straight into your calendar. You cut, and Cutz takes care of the scheduling.</p>
         <div class="hero-cta rv" style="--d:.24s">
-          <a class="btn btn-green btn-lg" href="download.html">Download and sign up <span class="arrow">→</span></a>
+          <button class="btn btn-green btn-lg" type="button" data-join>Join as a barber <span class="arrow">→</span></button>
           <a class="btn btn-ghost btn-lg" href="#pricing">See pricing</a>
         </div>
       </div>
@@ -394,8 +433,8 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
         <h2 class="h-lg rv" style="--d:.08s">Live in under 10 minutes.</h2>
       </div>
       <ol class="steps">
-        <li class="rv"><span class="n">01</span><h3>Download Cutz</h3><p>It's coming soon to the App Store, free to download. Then choose to sign up as a barber.</p></li>
-        <li class="rv" style="--d:.12s"><span class="n">02</span><h3>Enter <code>LAUNCH</code></h3><p>Add the code at sign-up to unlock 3 months free.</p></li>
+        <li class="rv"><span class="n">01</span><h3>Join in a minute</h3><p>Tap Join as a barber and leave your name, email and phone. That's it for now.</p></li>
+        <li class="rv" style="--d:.12s"><span class="n">02</span><h3>Add <code>LAUNCH</code></h3><p>Put the code on your sign-up and we'll make sure you get 3 months free.</p></li>
         <li class="rv" style="--d:.24s"><span class="n">03</span><h3>Build your profile</h3><p>Add photos, services, prices and opening hours.</p></li>
         <li class="rv" style="--d:.36s"><span class="n">04</span><h3>Go live</h3><p>You appear on the map, and bookings start coming in.</p></li>
       </ol>
@@ -423,7 +462,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
             <li>No-show protection</li>
             <li>Opening hours, time off and services</li>
           </ul>
-          <a class="btn btn-green btn-lg" href="download.html">Get started <span class="arrow">→</span></a>
+          <button class="btn btn-green btn-lg" type="button" data-join>Join as a barber <span class="arrow">→</span></button>
         </article>
         <article class="plan rv" style="--d:.1s">
           <div class="plan-top"><div><h3>Salon</h3><div class="for">For shops with a team</div></div></div>
@@ -442,7 +481,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
             <li>Staff invites and time-off management</li>
             <li>One bill for the whole shop</li>
           </ul>
-          <a class="btn btn-ghost btn-lg" href="download.html">Set up your salon <span class="arrow">→</span></a>
+          <a class="btn btn-ghost btn-lg" data-store href="download.html">Set up your salon <span class="arrow">→</span></a>
         </article>
       </div>
       <div class="compare rv">
@@ -461,7 +500,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
         <h2 class="h-lg rv" style="--d:.08s">Questions, answered.</h2>
       </div>
       <div class="faq rv">
-        <details><summary>How does the LAUNCH code work?</summary><p class="a">Enter <b>LAUNCH</b> when you sign up as a barber and your first 3 months are free. Only the first 10 barbers to redeem it get the offer, and each account can use it once. When the 3 months end your subscription continues at 300 kr/month unless you cancel first.</p></details>
+        <details><summary>How does the LAUNCH code work?</summary><p class="a">Add <b>LAUNCH</b> when you join as a barber (on this page now, or in the app once it is out) and your first 3 months are free. Only the first 10 barbers to redeem it get the offer, and each account can use it once. When the 3 months end your subscription continues at 300 kr/month unless you cancel first.</p></details>
         <details><summary>Do you take a commission on my bookings?</summary><p class="a">No. You pay a flat monthly subscription and that's it. Clients pay you directly for their cut, however they already do.</p></details>
         <details><summary>Can I cancel any time?</summary><p class="a">Yes. You can cancel from your profile in the app. You keep access until the end of the period you've paid for and won't be charged again.</p></details>
         <details><summary>What happens when a client doesn't show up?</summary><p class="a">Mark them as a no-show from the booking. Strikes expire after 2 months, but a client with 3 active strikes can't book anyone on Cutz for 6 months. Clients also can't cancel inside the 24 hours before their appointment.</p></details>
@@ -479,9 +518,9 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <h2 class="h-xl rv">Your chair.<br><span class="g">Always booked.</span></h2>
       <p class="lead rv" style="--d:.08s">Only 10 barbers get LAUNCH, so claim your 3 free months while spots are still open.</p>
       <div class="final-cta rv" style="--d:.16s">
-        <a class="store" href="download.html" aria-label="Cutz is coming soon to the App Store">
+        <a class="store" data-store href="download.html" aria-label="Cutz is coming soon to the App Store">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
-          <span><small>Coming soon to the</small><b>App Store</b></span>
+          <span><small><span data-soon-only>Coming soon to the</span><span data-live-only>Download on the</span></small><b>App Store</b></span>
         </a>
         <button class="btn btn-ghost btn-lg" data-copy="LAUNCH" style="height:60px">Copy LAUNCH</button>
       </div>
@@ -492,7 +531,26 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
 
 <div class="sticky" id="sticky" aria-hidden="true">
   <span><small>3 months free with</small><b>LAUNCH</b></span>
-  <a class="btn btn-green" href="download.html" tabindex="-1">Join Cutz</a>
+  <button class="btn btn-green" type="button" tabindex="-1" data-join>Join Cutz</button>
+</div>
+
+<div class="jm" id="join" role="dialog" aria-modal="true" aria-labelledby="jm-title" hidden>
+  <div class="jm-scrim" data-jm-close></div>
+  <div class="jm-box">
+    <button class="jm-x" type="button" data-jm-close aria-label="Close">✕</button>
+    <form id="jmForm" novalidate>
+      <h2 id="jm-title">Join Cutz as a barber</h2>
+      <p class="jm-sub">Takes a minute. The app is in review with Apple, so we'll put you on the early-access list and email you the day it's out.</p>
+      <div class="jm-err" id="jmErr" role="alert"></div>
+      <label class="jm-f"><span>Your name</span><input id="jmName" autocomplete="name" required maxlength="80"></label>
+      <label class="jm-f"><span>Email</span><input id="jmEmail" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" required maxlength="200"></label>
+      <div class="jm-f"><span id="jmPhoneL">Phone</span><div class="ph"><select id="jmCc" aria-label="Country code"><option value="45">🇩🇰 +45</option><option value="46">🇸🇪 +46</option><option value="47">🇳🇴 +47</option><option value="49">🇩🇪 +49</option><option value="44">🇬🇧 +44</option><option value="31">🇳🇱 +31</option><option value="358">🇫🇮 +358</option><option value="354">🇮🇸 +354</option><option value="48">🇵🇱 +48</option><option value="1">🇺🇸 +1</option></select><input id="jmPhone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="12 34 56 78" aria-labelledby="jmPhoneL"></div></div>
+      <label class="jm-f"><span>Referral code <em>(optional)</em></span><input id="jmCode" class="code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30"></label>
+      <button class="btn btn-green btn-block" id="jmGo" type="submit">Join Cutz</button>
+      <p class="jm-fine">By joining you agree to our <a href="terms.html" target="_blank">Terms</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>. No payment now.</p>
+    </form>
+    <div id="jmDone" hidden></div>
+  </div>
 </div>
 
 <footer>
@@ -505,7 +563,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
       <div>
         <h4>Product</h4>
         <ul>
-          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
+          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
         </ul>
       </div>
       <div>
@@ -580,12 +638,57 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   // Live LAUNCH availability
   fetch(SB_URL+'/rest/v1/rpc/check_referral_code',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_code:'LAUNCH'})})
     .then(function(r){return r.json()}).then(function(d){
+      // Pre-fill the join form's referral code while LAUNCH still has spots.
+      var jc=document.getElementById('jmCode');if(d&&d.valid&&jc&&!jc.value)jc.value='LAUNCH';
       document.querySelectorAll('[data-launch-status]').forEach(function(el){
         el.hidden=false;
         if(d&&d.valid)el.querySelector('.txt').textContent='Live: still available';
         else{el.classList.add('off');el.querySelector('.txt').textContent='All 10 spots have been claimed'}
       });
     }).catch(function(){});
+
+  // Join as a barber: early-access list while the app is in App Store review.
+  // join_barber_early_access stores the sign-up and emails support; no account yet.
+  var jm=document.getElementById('join'),jf=document.getElementById('jmForm'),jdone=document.getElementById('jmDone'),jerr=document.getElementById('jmErr'),jgo=document.getElementById('jmGo'),jLast=null;
+  function jmFocusables(){return [].filter.call(jm.querySelectorAll('button,input,select,a[href]'),function(e){return e.offsetParent!==null&&!e.disabled})}
+  function jmOpen(){jLast=document.activeElement;jm.hidden=false;jm.classList.add('open');document.body.classList.add('jm-lock');setTimeout(function(){(jf.hidden?jm.querySelector('.jm-x'):document.getElementById('jmName')).focus()},30)}
+  function jmClose(){jm.classList.remove('open');jm.hidden=true;document.body.classList.remove('jm-lock');if(jLast&&jLast.focus)jLast.focus()}
+  document.querySelectorAll('[data-join]').forEach(function(b){b.addEventListener('click',jmOpen)});
+  jm.querySelectorAll('[data-jm-close]').forEach(function(b){b.addEventListener('click',jmClose)});
+  jm.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){e.preventDefault();jmClose();return}
+    if(e.key!=='Tab')return;
+    var f=jmFocusables(),a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}
+  });
+  function jmErr(m){jerr.textContent=m;jerr.classList.add('on')}
+  jf.addEventListener('submit',function(e){
+    e.preventDefault();jerr.classList.remove('on');
+    var name=document.getElementById('jmName').value.trim(),email=document.getElementById('jmEmail').value.trim(),
+        num=document.getElementById('jmPhone').value.replace(/[^\d]/g,''),code=document.getElementById('jmCode').value.trim().toUpperCase();
+    if(name.length<2)return jmErr('Please enter your name.');
+    if(!/^\S+@\S+\.\S+$/.test(email))return jmErr('Please enter a valid email address.');
+    if(num.length<6)return jmErr('Please enter a valid phone number.');
+    var phone='+'+document.getElementById('jmCc').value+' '+num;
+    jgo.disabled=true;jgo.textContent='Joining…';
+    fetch(SB_URL+'/rest/v1/rpc/join_barber_early_access',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_name:name,p_email:email,p_phone:phone,p_referral_code:code})})
+      .then(function(r){return r.json().catch(function(){return null}).then(function(d){if(!r.ok)throw new Error(d&&d.message||'Something went wrong. Please try again.');return d})})
+      .then(function(d){showDone(name,email,code,d&&d.already)})
+      .catch(function(err){jmErr(err&&err.message&&!/fetch|network/i.test(err.message)?err.message:'Couldn\'t reach Cutz. Check your connection and try again.')})
+      .then(function(){jgo.disabled=false;jgo.textContent='Join Cutz'});
+  });
+  function showDone(name,email,code,already){
+    var tick=function(n){return'<svg width="'+n+'" height="'+n+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'};
+    var esc=function(x){return String(x).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+    var steps=[[true,'You\'re on the early-access list'+(code?' with <b>'+esc(code)+'</b> added':'')],[false,'We email <b>'+esc(email)+'</b> the day Cutz is on the App Store'],[false,'Download Cutz and sign up with this email'],[false,'Add your services and prices'],[false,'Set your location and opening hours'],[false,'Go live and start taking bookings']];
+    jdone.innerHTML='<div class="jm-ok">'+tick(28)+'</div><h2 id="jm-done-title" tabindex="-1">'+(already?'You\'re already on the list':'You\'re on the list, '+esc(name.split(' ')[0])+'!')+'</h2>'+
+      '<p class="jm-sub" style="margin-bottom:0">'+(already?'We\'ve updated your details. Here\'s what happens next.':'Here\'s what happens next. It only takes a few minutes once the app is out.')+'</p>'+
+      '<ul class="jm-list">'+steps.map(function(x){return'<li class="'+(x[0]?'done':'')+'"><i>'+(x[0]?tick(13):'')+'</i><span>'+x[1]+'</span></li>'}).join('')+'</ul>'+
+      '<button class="btn btn-green btn-block" type="button" id="jmDoneBtn">Done</button>';
+    jf.hidden=true;jdone.hidden=false;jm.setAttribute('aria-labelledby','jm-done-title');
+    document.getElementById('jmDoneBtn').addEventListener('click',jmClose);
+    document.getElementById('jm-done-title').focus();
+  }
 })();
 </script>
 </body>

@@ -7,12 +7,16 @@ Marketing site and web booking for the Cutz app, served at https://cutzapp.one v
 | `index.html` | Homepage |
 | `find.html` | Search and filter live barbers and salons |
 | `map.html` | Leaflet/OpenStreetMap map of live barbers |
-| `barber.html?id=` | Barber profile with the web booking flow |
+| `barber.html?id=` | Barber profile: book (service → time → details → email code), walk-in queue, waitlist, reviews |
 | `salon.html?id=` | Salon profile and team |
-| `barbers.html`, `salons.html` | For barbers / for salons, pricing, LAUNCH code |
-| `download.html` | App Store download with QR code |
+| `barbers.html`, `salons.html` | For barbers / for salons, pricing, LAUNCH code; barbers.html has the early-access "Join as a barber" form |
+| `mybookings.html` | Customer bookings: upcoming, past, waitlist; cancel and change time |
+| `reset-password.html` | Request a reset email and set a new password |
+| `download.html` | App Store download page ("in review" until Apple approves the app) |
 | `about.html`, `blog.html`, `faq.html`, `contact.html` | Company pages |
 | `privacy.html`, `terms.html` | Legal |
+| `assets/appstore.js` | App Store auto-switch, loaded in every page's `<head>` |
+| `assets/cutz-auth.js` | Shared customer sign-in (email + 6-digit code, no password) for barber, mybookings and reset pages |
 | `404.html` | Not-found page; also forwards the app's `/b/<id>` and `/s/<id>` share links |
 
 Plain HTML/CSS/JS, no build step. Live data comes from Supabase public views (`barbers_public`, `salons_public`,
@@ -21,3 +25,19 @@ customer account is required. The App Store review account is hidden from listin
 
 Social images and icons are in `assets/`. `sitemap.xml` and `robots.txt` are for search engines.
 Deployed automatically by `.github/workflows/deploy.yml` on every push to `main`. `CNAME` points Pages at cutzapp.one.
+
+**App Store switch.** While the app is in review, store buttons say "Coming soon" and point to `download.html`.
+`assets/appstore.js` asks Apple's public lookup API (`itunes.apple.com/lookup?id=6811618000`, JSONP) whether the
+app is live and caches the answer in the visitor's browser (6 hours while not live, 7 days once live). When Apple
+approves the app the site switches by itself: `<a data-store>` links go to the App Store, `[data-live-only]` text
+shows and `[data-soon-only]` text hides. Nothing needs to change in the code on launch day.
+
+## Customer sign-in
+
+Customers never choose a password on the website. `assets/cutz-auth.js` emails a 6-digit code: new accounts get the
+"Confirm signup" email, returning customers the "Magic Link" email. Until that Magic Link template contains
+`{{ .Token }}`, `RETURNING_GETS_CODE` stays `false` and returning customers sign in with a password (or set one on
+`reset-password.html`). `supabase/apply-auth-config.sh` in the app repo installs the templates; then flip the flag.
+
+Free and taken times come from the `get_barber_busy_slots` RPC (times only, no customer data). Waitlist and barber
+early-access emails are sent by the `site-hook` edge function (app repo, `supabase/functions/site-hook`).
