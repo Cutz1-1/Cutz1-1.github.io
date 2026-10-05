@@ -309,7 +309,9 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     get('barbers_public?select=*&is_discoverable=eq.true&id=neq.'+DEMO_ID),
     get('salons_public?select=*').catch(function(){return[]})
   ]).then(function(r){
-    S.barbers=r[0]||[];S.salons=r[1]||[];
+    S.barbers=r[0]||[];
+    // Same rule as the app: a salon is listed only while online with at least one bookable barber.
+    S.salons=(r[1]||[]).filter(function(s){return s.is_online&&S.barbers.some(function(b){return b.salon_id===s.id})});
     var n=S.barbers.length;
     document.getElementById('liveLine').textContent=n>=10?n+' barbers taking bookings now':'Live from Cutz';
     buildFilters();render();
@@ -391,7 +393,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     var grid=document.getElementById('grid'),filtered=S.q||S.open||S.walkin||S.rated||S.area||S.svc;
     document.getElementById('resCount').textContent=S.barbers.length?list.length+' of '+S.barbers.length+' barber'+(S.barbers.length===1?'':'s'):'';
     if(!S.barbers.length){
-      grid.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>Barbers are joining now</h3><p>Cutz has only just launched, so the first barbers are setting up their profiles. Get the app to see them on the map as soon as they go live.</p><div class="row"><a class="btn btn-green btn-lg" href="https://apps.apple.com/app/cutz/id6811618000" target="_blank" rel="noopener">Get the app</a><a class="btn btn-ghost btn-lg" href="barbers.html">I\'m a barber</a></div></div>';
+      grid.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>Barbers are joining now</h3><p>Cutz has only just launched, so the first barbers are setting up their profiles. Get the app to see them on the map as soon as they go live.</p><div class="row"><a class="btn btn-green btn-lg" href="download.html">Get the app</a><a class="btn btn-ghost btn-lg" href="barbers.html">I\'m a barber</a></div></div>';
     }else if(!list.length){
       grid.innerHTML='<div class="empty" style="grid-column:1/-1"><h3>No matches</h3><p>No barbers match '+(S.q?'“'+esc(S.q)+'” with ':'')+'these filters. Try widening your search.</p><div class="row"><button class="btn btn-ghost btn-lg" id="reset">Clear all filters</button></div></div>';
       document.getElementById('reset').onclick=resetAll;

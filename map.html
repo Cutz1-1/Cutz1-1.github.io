@@ -271,7 +271,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
   // App Store review account, never shown on the public site.
   var DEMO_ID='98cc2e6f-1395-488f-bee4-fd91b164b4ac';
-  var APP_STORE='https://apps.apple.com/app/cutz/id6811618000';
+  var APP_STORE='download.html';
   var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
   var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');
@@ -300,8 +300,10 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     get('salons_public?select=*').catch(function(){return[]})
   ]).then(function(r){
     document.getElementById('loading').remove();
-    var salons=(r[1]||[]).map(function(s){s._salon=true;return s});
-    S.items=(r[0]||[]).concat(salons).filter(function(x){return x.lat!=null&&x.lng!=null&&!isNaN(+x.lat)&&!isNaN(+x.lng)});
+    var barbers=r[0]||[];
+    // Same rule as the app: a salon is listed only while online with at least one bookable barber.
+    var salons=(r[1]||[]).filter(function(s){return s.is_online&&barbers.some(function(b){return b.salon_id===s.id})}).map(function(s){s._salon=true;return s});
+    S.items=barbers.concat(salons).filter(function(x){return x.lat!=null&&x.lng!=null&&!isNaN(+x.lat)&&!isNaN(+x.lng)});
     S.items.forEach(function(x){x._lat=+x.lat;x._lng=+x.lng;x._marker=L.marker([x._lat,x._lng],{icon:icon(x),keyboard:true,title:x.name}).on('click',function(){select(x,false)})});
     if(!S.items.length)showEmpty();
     else{var b=L.latLngBounds(S.items.map(function(x){return[x._lat,x._lng]}));map.fitBounds(b,{padding:[60,60],maxZoom:14})}
@@ -319,17 +321,17 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   }
   function showEmpty(){
     ov.hidden=false;
-    ov.innerHTML='<button class="x" id="ovx" aria-label="Dismiss">✕</button><h2>Barbers are joining now</h2><p>Cutz has only just launched. The first barbers are setting up and will appear on this map as soon as they go live.</p><div class="r"><a class="btn btn-green" href="'+APP_STORE+'" target="_blank" rel="noopener">Get the app</a><a class="btn btn-ghost" href="barbers.html">I\'m a barber</a></div>';
+    ov.innerHTML='<button class="x" id="ovx" aria-label="Dismiss">✕</button><h2>Barbers are joining now</h2><p>Cutz has only just launched. The first barbers are setting up and will appear on this map as soon as they go live.</p><div class="r"><a class="btn btn-green" href="'+APP_STORE+'">Get the app</a><a class="btn btn-ghost" href="barbers.html">I\'m a barber</a></div>';
     document.getElementById('ovx').onclick=function(){ov.hidden=true};
   }
 
   function pass(x){
     if(S.open&&openNow(x)!==true)return false;
-    if(S.walkin&&!x.walk_in_available)return false;
+    if(S.walkin&&!(x.is_online&&x.walk_in_available))return false;
     if(S.rated&&!((+x.rating||0)>=4))return false;
     if(S.dist&&S.me&&km(S.me,{lat:x._lat,lng:x._lng})>+S.dist)return false;
-    // Barber-only filters hide salons (they have no hours/queue/rating of their own).
-    if(x._salon&&(S.open||S.walkin||S.rated))return false;
+    // Hours and ratings are per barber, so those filters hide salons. Salons have their own walk-in queue.
+    if(x._salon&&(S.open||S.rated))return false;
     return true;
   }
   function render(){
@@ -354,7 +356,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   function showCard(x){
     var op=openNow(x),mp=minPrice(x),cover=(x.photos||[])[0],href=(x._salon?'salon.html':'barber.html')+'?id='+encodeURIComponent(x.id);
     var tags=[];
-    if(x._salon){tags.push('<span>Salon</span>')}else{
+    if(x._salon){tags.push('<span>Salon</span>');if(x.walk_in_available)tags.push('<span>Walk-ins · '+(x.queue_size||0)+' in queue</span>')}else{
       tags.push(op===true?'<span class="g">Open now</span>':op===false?'<span>Closed now</span>':'');
       tags.push(+x.rating?'<span>★ '+(+x.rating).toFixed(1)+' ('+(x.review_count||0)+')</span>':'<span>New on Cutz</span>');
       if(x.walk_in_available)tags.push('<span>Walk-ins · '+(x.queue_size||0)+' in queue</span>');

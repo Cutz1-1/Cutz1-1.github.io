@@ -203,6 +203,16 @@ svg{display:block}
 .who-card b{display:block}
 .who-card span{color:var(--dim);font-size:13px}
 .who-card button{margin-left:auto;background:none;border:0;color:var(--dim);cursor:pointer;font-size:13px;text-decoration:underline}
+.badge-btn{cursor:pointer;background:none;font:inherit;font-size:13px;font-weight:600}
+.badge-btn:hover{border-color:rgba(255,255,255,.35);color:var(--fg)}
+.rv-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.rv-head h2{margin:0}
+.star-in{display:flex;gap:6px;margin:4px 0 16px}
+.star-in button{font-size:34px;line-height:1;background:none;border:0;cursor:pointer;color:#333;padding:0 2px;transition:transform .15s}
+.star-in button.on{color:var(--green)}
+.star-in button:hover{transform:scale(1.12)}
+textarea.f-txt{width:100%;min-height:110px;resize:vertical;border-radius:14px;border:1px solid var(--line);background:#0d0d0d;color:var(--fg);font:inherit;font-size:15px;padding:12px 14px}
+.since{color:var(--dim);font-size:14px;margin:14px 0 0}
 .otp{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px}
 .otp input{height:56px;text-align:center;font-size:22px;font-weight:800;border-radius:12px;border:1px solid var(--line);background:#141414;outline:none}
 .otp input:focus{border-color:var(--green)}
@@ -353,7 +363,7 @@ const SUPABASE_URL = 'https://ukoovhgmbqfocalykhyx.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
 
-const APP_STORE = 'https://apps.apple.com/app/cutz/id6811618000';
+const APP_STORE = 'download.html';
 // Slot rules mirror the app (src/utils/slots.js, BookingScreen.js): 30-minute
 // grid inside opening hours, the fixed 9:00–17:30 list when no hours are set,
 // bookable from tomorrow up to 21 days out. The server triggers
@@ -424,7 +434,9 @@ function stateScreen(title, text) {
 // ---------------------------------------------------------------------------
 // Profile
 // ---------------------------------------------------------------------------
-const S = { barber: null, reviews: [], salon: null, step: 'service', service: null, date: null, time: null, month: null, user: null, customer: null, mine: [], authMode: 'signup', pending: null };
+// intent: 'book' (default flow), 'queue' (join the walk-in queue) or 'review'.
+// All three share the details/OTP account steps, then branch.
+const S = { intent: 'book', queueSalon: null, barber: null, reviews: [], salon: null, step: 'service', service: null, date: null, time: null, month: null, user: null, customer: null, mine: [], authMode: 'signup', pending: null };
 
 async function boot() {
   const id = idFromUrl();
@@ -434,7 +446,7 @@ async function boot() {
   S.barber = barber;
   const [rv, salon, sess] = await Promise.all([
     sb.from('reviews').select('stars, description, customer_name, created_at').eq('barber_id', id).order('created_at', { ascending: false }).limit(50),
-    barber.salon_id ? sb.from('salons_public').select('id, name').eq('id', barber.salon_id).maybeSingle() : Promise.resolve({ data: null }),
+    barber.salon_id ? sb.from('salons_public').select('*').eq('id', barber.salon_id).maybeSingle() : Promise.resolve({ data: null }),
     sb.auth.getSession(),
   ]);
   S.reviews = rv.data || [];
@@ -444,8 +456,12 @@ async function boot() {
   const md = document.querySelector('meta[name=description]');
   md.content = `Book ${barber.name}${barber.salon ? ` at ${barber.salon}` : ''} on Cutz. Services, prices, opening hours and reviews.`;
   renderProfile();
-  const pre = new URLSearchParams(location.search).get('service');
+  const params = new URLSearchParams(location.search);
+  const pre = params.get('service');
   if (pre) { const s = (barber.services || []).find(x => String(x.id) === pre); if (s) { S.service = s; S.step = 'date'; } }
+  // salon.html sends signed-out customers here to join the salon's shared queue.
+  if (params.get('queue') === 'salon' && S.salon && queueOpen(S.salon)) { S.queueSalon = S.salon; S.intent = 'queue'; S.step = 'queue'; }
+  else if (params.get('queue') && queueOpen(barber)) { S.intent = 'queue'; S.step = 'queue'; }
   renderStep();
   // Links from find/salon pages land here with #booker; the panel only exists after render.
   if (location.hash === '#booker') openSheet(true);
@@ -474,20 +490,20 @@ function renderProfile() {
       ${rating ? `<span class="badge">★ ${rating.toFixed(1)} · ${count} review${count === 1 ? '' : 's'}</span>` : '<span class="badge">New on Cutz</span>'}
       ${status ? `<span class="badge ${status.open ? 'g' : ''}"><span class="dot"></span>${esc(status.label)}</span>` : ''}
       ${b.is_online ? `<span class="badge g"><span class="dot"></span>Taking bookings</span>` : '<span class="badge r"><span class="dot"></span>Offline right now</span>'}
-      ${b.walk_in_available ? `<span class="badge">Walk-ins · ${b.queue_size || 0} in queue${b.wait_time ? ` · ~${b.wait_time} min` : ''}</span>` : ''}
+      ${queueOpen(b) ? `<button class="badge badge-btn" id="joinQueue">Walk-ins · ${b.queue_size || 0} in queue${b.wait_time ? ` · ~${b.wait_time} min` : ''} · Join →</button>` : ''}
       ${minPrice !== null ? `<span class="badge">From ${kr(minPrice)}</span>` : ''}
     </div>
     ${offer && offer.label ? `<div class="offer"><b>Offer:</b> ${esc(offer.label)}</div>` : ''}
     <div class="layout">
       <div>
-        ${b.bio ? `<section class="block"><h2>About</h2><p class="bio">${esc(b.bio)}</p></section>` : ''}
+        ${b.bio || b.created_at ? `<section class="block"><h2>About</h2>${b.bio ? `<p class="bio">${esc(b.bio)}</p>` : ''}${b.created_at ? `<p class="since">On Cutz since ${MONTHS_LONG[new Date(b.created_at).getMonth()]} ${new Date(b.created_at).getFullYear()}</p>` : ''}</section>` : ''}
         <section class="block" id="services"><h2>Services</h2>
           ${services.length ? services.map(s => `<div class="svc"><div><div class="nm">${esc(s.name)}</div>${s.duration ? `<div class="du">${esc(s.duration)} min</div>` : ''}</div><div class="pr">${kr(s.price)}</div><button class="btn btn-ghost" data-book="${esc(s.id)}">Book</button></div>`).join('') : '<p class="empty">No services listed yet.</p>'}
         </section>
         ${hasHours(b.hours) ? `<section class="block"><h2>Opening hours</h2><div class="hours">${WEEK.map(d => `<div class="${DAYS[new Date().getDay()] === d ? 'today' : ''}"><span>${d}</span><span>${esc(b.hours[d] || 'Closed')}</span></div>`).join('')}</div></section>` : ''}
-        <section class="block"><h2>Reviews</h2>${renderReviews()}</section>
-        ${b.address ? `<section class="block"><h2>Location</h2><div class="loc"><p>${esc(b.address)}</p><div class="btns">${mapLinks(b)}</div></div></section>` : ''}
-        <section class="block"><div class="app-cta"><div><h3>Get the Cutz app</h3><p>Join the walk-in queue, get reminders and manage your bookings.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-green" href="${APP_STORE}" target="_blank" rel="noopener">Download</a><a class="btn btn-ghost" href="cutz://barber/${encodeURIComponent(b.id)}">Open in app</a></div></div></section>
+        <section class="block"><div class="rv-head"><h2>Reviews</h2><button class="btn btn-ghost" id="writeReview">Write a review</button></div>${renderReviews()}</section>
+        ${b.address || b.phone || b.website ? `<section class="block"><h2>Location and contact</h2><div class="loc"><p>${esc(b.address || '')}</p><div class="btns">${b.address ? mapLinks(b) : ''}${contactLinks(b)}</div></div></section>` : ''}
+        <section class="block"><div class="app-cta"><div><h3>Get the Cutz app</h3><p>Booking reminders, your turn in the queue and managing bookings. Coming soon to the App Store.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-green" href="${APP_STORE}">Get the app</a><a class="btn btn-ghost" href="cutz://barber/${encodeURIComponent(b.id)}">Open in app</a></div></div></section>
       </div>
       <aside class="booker" id="booker" aria-label="Book an appointment">
         <div class="bk-head"><h2>Book ${esc(b.name.split(' ')[0])}</h2><button class="bk-close" id="bkClose" aria-label="Close booking">${ICON.x}</button></div>
@@ -501,15 +517,25 @@ function renderProfile() {
 
   document.querySelectorAll('[data-book]').forEach(el => el.addEventListener('click', () => {
     S.service = services.find(s => String(s.id) === el.dataset.book) || null;
-    S.date = S.time = null;
+    S.date = S.time = null; S.intent = 'book';
     S.step = S.service ? 'date' : 'service';
     renderStep(); openSheet(true);
   }));
   document.querySelectorAll('[data-photo]').forEach(el => el.addEventListener('click', () => openLb(photos, +el.dataset.photo)));
-  document.getElementById('openBook').onclick = () => openSheet(true);
+  document.getElementById('openBook').onclick = () => { if (S.intent !== 'book') startIntent('book'); openSheet(true); };
+  const jq = document.getElementById('joinQueue');
+  if (jq) jq.onclick = () => { S.queueSalon = null; startIntent('queue'); openSheet(true); };
+  document.getElementById('writeReview').onclick = () => { startIntent('review'); openSheet(true); };
   document.getElementById('bkClose').onclick = () => openSheet(false);
   document.getElementById('scrim').onclick = () => openSheet(false);
 }
+
+function contactLinks(b) {
+  const site = String(b.website || '').trim(), url = /^https?:\/\//i.test(site) ? site : `https://${site}`;
+  return `${b.phone ? `<a class="btn btn-ghost" href="tel:${esc(String(b.phone).replace(/[^\d+]/g, ''))}">Call</a>` : ''}${site ? `<a class="btn btn-ghost" target="_blank" rel="noopener nofollow" href="${esc(url)}">Website</a>` : ''}`;
+}
+// Same rule as the app: the queue is joinable only while online with walk-ins on.
+function queueOpen(x) { return !!(x && x.is_online && x.walk_in_available && !(x.max_queue_size > 0 && (x.queue_size || 0) >= x.max_queue_size)); }
 
 function mapLinks(b) {
   const q = encodeURIComponent(b.address || '');
@@ -559,13 +585,28 @@ addEventListener('keydown', e => {
 // ---------------------------------------------------------------------------
 const ORDER = ['service', 'date', 'time', 'details', 'confirm'];
 function go(step) { S.step = step; renderStep(); }
+function startIntent(intent) {
+  S.intent = intent;
+  if (intent === 'book') { S.step = S.service ? 'date' : 'service'; } else S.step = intent;
+  renderStep();
+}
+// Where the shared account steps continue to, and where their Back button returns.
+const afterDetails = () => ({ book: 'confirm', queue: 'queue', review: 'review' })[S.intent];
+const beforeDetails = () => (S.intent === 'book' ? 'time' : S.intent);
 function renderStep() {
   const el = document.getElementById('bk'); if (!el) return;
+  const book = S.intent === 'book';
   const idx = S.step === 'otp' ? 3 : S.step === 'done' ? 5 : ORDER.indexOf(S.step);
-  document.querySelectorAll('#progress i').forEach((i, n) => i.classList.toggle('on', n <= idx));
+  const pr = document.getElementById('progress');
+  pr.hidden = !book;
+  pr.querySelectorAll('i').forEach((i, n) => i.classList.toggle('on', n <= idx));
+  const head = document.querySelector('.bk-head h2'), first = esc(S.barber.name.split(' ')[0]);
+  head.innerHTML = book ? `Book ${first}` : S.intent === 'queue' ? 'Join the queue' : `Review ${first}`;
   const b = S.barber;
-  if (!(b.services || []).length) { el.innerHTML = '<div class="step"><h3>Not bookable yet</h3><p class="hint">This barber hasn\'t added any services. Check back soon.</p></div>'; return; }
-  ({ service: stepService, date: stepDate, time: stepTime, details: stepDetails, otp: stepOtp, confirm: stepConfirm, done: stepDone })[S.step](el);
+  // The app refuses bookings for offline barbers and barbers without services.
+  if (book && S.step !== 'done' && !(b.services || []).length) { el.innerHTML = '<div class="step"><h3>Not bookable yet</h3><p class="hint">This barber hasn\'t added any services. Check back soon.</p></div>'; return; }
+  if (book && S.step !== 'done' && !b.is_online) { el.innerHTML = '<div class="step"><h3>Not taking bookings right now</h3><p class="hint">This barber is offline at the moment. Check back soon, or find another barber nearby.</p><a class="btn btn-green btn-lg btn-block" href="find.html">Find a barber</a></div>'; return; }
+  ({ service: stepService, date: stepDate, time: stepTime, details: stepDetails, otp: stepOtp, confirm: stepConfirm, done: stepDone, queue: stepQueue, queued: stepQueued, review: stepReview, reviewed: stepReviewed })[S.step](el);
 }
 const backBtn = to => `<button type="button" class="back" data-back="${to}">${ICON.left}Back</button>`;
 function wireBack(el) { el.querySelectorAll('[data-back]').forEach(b => b.onclick = () => go(b.dataset.back)); }
@@ -669,27 +710,27 @@ function readPhone(el) {
 }
 async function loadCustomer() {
   if (!S.user) return null;
-  const { data } = await sb.from('customers').select('name, phone, email').eq('id', S.user.id).maybeSingle();
+  const { data } = await sb.from('customers').select('name, phone, email, cooldown_until').eq('id', S.user.id).maybeSingle();
   S.customer = data;
   return data;
 }
 async function stepDetails(el) {
   if (S.user) {
-    el.innerHTML = `<div class="step">${backBtn('time')}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p><div class="spinner" style="margin:30px auto"></div></div>`;
+    el.innerHTML = `<div class="step">${backBtn(beforeDetails())}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p><div class="spinner" style="margin:30px auto"></div></div>`;
     const type = S.user.user_metadata?.userType;
     if (type && type !== 'customer') {
-      el.querySelector('.step').innerHTML = `${backBtn('time')}<h3>Use a customer account</h3><p class="hint">You're signed in with a ${esc(type)} account. Sign out and sign in with a customer account to book.</p><button class="btn btn-ghost btn-lg btn-block" id="out">Sign out</button>`;
+      el.querySelector('.step').innerHTML = `${backBtn(beforeDetails())}<h3>Use a customer account</h3><p class="hint">You're signed in with a ${esc(type)} account. Sign out and sign in with a customer account to book.</p><button class="btn btn-ghost btn-lg btn-block" id="out">Sign out</button>`;
       wireBack(el);
       el.querySelector('#out').onclick = async () => { await sb.auth.signOut(); S.user = null; go('details'); };
       return;
     }
     const c = await loadCustomer() || {};
     if (S.step !== 'details') return;
-    el.querySelector('.step').innerHTML = `${backBtn('time')}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p>
+    el.querySelector('.step').innerHTML = `${backBtn(beforeDetails())}<h3>Your details</h3><p class="hint">Your barber uses these to contact you about the booking.</p>
       <div class="who-card"><div><b>${esc(S.user.email)}</b><span>Signed in to Cutz</span></div><button id="out">Not you?</button></div>
       <div class="field"><label for="f-name">Full name</label><input id="f-name" autocomplete="name" value="${esc(c.name && c.name !== 'New customer' ? c.name : '')}"></div>
       ${phoneField(c.phone)}
-      <button class="btn btn-green btn-lg btn-block" id="next">Review booking</button>`;
+      <button class="btn btn-green btn-lg btn-block" id="next">${S.intent === 'book' ? 'Review booking' : 'Continue'}</button>`;
     wireBack(el);
     el.querySelector('#out').onclick = async () => { await sb.auth.signOut(); S.user = null; S.customer = null; go('details'); };
     el.querySelector('#next').onclick = async () => {
@@ -705,20 +746,20 @@ async function stepDetails(el) {
         if (error) { btn.disabled = false; return showErr(el, phoneError(error)); }
       }
       S.customer = { ...(S.customer || {}), name, phone };
-      go('confirm');
+      go(afterDetails());
     };
     return;
   }
 
   const signup = S.authMode === 'signup', p = S.pending || {};
-  el.innerHTML = `<form class="step" id="authForm" novalidate>${backBtn('time')}<h3>${signup ? 'Your details' : 'Sign in to book'}</h3><p class="hint">${signup ? 'Create a free Cutz account. You can use it in the app too.' : 'Use your Cutz account, the same one as in the app.'}</p>
+  el.innerHTML = `<form class="step" id="authForm" novalidate>${backBtn(beforeDetails())}<h3>${signup ? 'Your details' : S.intent === 'book' ? 'Sign in to book' : 'Sign in'}</h3><p class="hint">${signup ? 'Create a free Cutz account. You can use it in the app too.' : 'Use your Cutz account, the same one as in the app.'}</p>
     <div class="tabs" role="tablist"><button role="tab" data-m="signup" class="${signup ? 'on' : ''}" aria-selected="${signup}">New to Cutz</button><button role="tab" data-m="signin" class="${signup ? '' : 'on'}" aria-selected="${!signup}">I have an account</button></div>
     ${signup ? `<div class="field"><label for="f-name">Full name</label><input id="f-name" autocomplete="name" value="${esc(p.name || '')}"></div>${phoneField(p.phone)}` : ''}
     <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(p.email || '')}"></div>
     <div class="field"><label for="f-pw">Password</label><input id="f-pw" type="password" autocomplete="${signup ? 'new-password' : 'current-password'}" ${signup ? 'minlength="6" placeholder="At least 6 characters"' : ''}></div>
     ${signup ? '<label class="check"><input type="checkbox" id="f-ok"><span>I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</span></label>' : ''}
     <button class="btn btn-green btn-lg btn-block" id="next" type="button">${signup ? 'Continue' : 'Sign in'}</button>
-    ${signup ? '' : '<p class="note">Forgot your password? Reset it in the Cutz app.</p>'}</form>`;
+    ${signup ? '' : '<p class="note">Forgot your password? Email <a href="mailto:cutz.support@gmail.com" style="text-decoration:underline">cutz.support@gmail.com</a> and we\'ll help you reset it.</p>'}</form>`;
   wireBack(el);
   el.querySelector('#authForm').onsubmit = e => { e.preventDefault(); el.querySelector('#next').click(); };
   el.querySelectorAll('.tabs button').forEach(t => { t.type = 'button'; t.onclick = () => { S.authMode = t.dataset.m; renderStep(); }; });
@@ -782,7 +823,7 @@ function stepOtp(el) {
       if (!e2) S.customer = { name: S.pending.name, phone: S.pending.phone, email };
     }
     try { await sb.rpc('mark_customer_email_verified'); } catch (_) {}
-    go(S.customer?.phone ? 'confirm' : 'details');
+    go(S.customer?.phone ? afterDetails() : 'details');
   };
 }
 
@@ -803,6 +844,11 @@ function stepConfirm(el) {
   wireBack(el);
   el.querySelector('#next').onclick = async () => {
     const btn = el.querySelector('#next'); btn.disabled = true; btn.textContent = 'Booking…';
+    const fail = msg => { btn.disabled = false; btn.textContent = 'Confirm booking'; showErr(el, msg); };
+    // Same pre-checks as the app's BookingScreen; the server triggers stay the authority.
+    if (S.customer?.cooldown_until && new Date(S.customer.cooldown_until) > new Date()) return fail(`Your account can't make new bookings until ${new Date(S.customer.cooldown_until).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} because of recent no-shows.`);
+    const { data: blocked } = await sb.rpc('am_i_blocked_by', { p_barber_id: S.barber.id });
+    if (blocked === true) return fail("You can't book with this barber.");
     const [h, m] = S.time.split(':').map(Number);
     const at = fromKey(S.date); at.setHours(h, m, 0, 0);
     const { data, error } = await sb.from('bookings').insert({
@@ -832,14 +878,96 @@ function bookingError(e) {
 function stepDone(el) {
   const d = fromKey(S.date), pending = S.result?.status === 'pending';
   el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>${pending ? 'Booking requested' : "You're booked"}</h3>
-    <p>${esc(S.service.name)} with ${esc(S.barber.name)}<br><b style="color:#fff">${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} at ${esc(S.time)}</b>${pending ? '<br>You\'ll get a confirmation in the Cutz app.' : ''}</p>
+    <p>${esc(S.service.name)} with ${esc(S.barber.name)}<br><b style="color:#fff">${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} at ${esc(S.time)}</b>${pending ? '<br>The barber will confirm it shortly.' : ''}</p>
     <button class="btn btn-green btn-lg btn-block" id="ics">Add to calendar</button>
-    <a class="btn btn-ghost btn-lg btn-block" href="${APP_STORE}" target="_blank" rel="noopener">Manage in the Cutz app</a>
+    <a class="btn btn-ghost btn-lg btn-block" href="${APP_STORE}">Get the Cutz app</a>
     <button class="btn btn-lg btn-block" id="again" style="background:none;color:var(--dim)">Book another</button></div>`;
   document.querySelectorAll('#progress i').forEach(i => i.classList.add('on'));
   el.querySelector('#ics').onclick = downloadIcs;
   el.querySelector('#again').onclick = () => { S.service = S.date = S.time = null; go('service'); };
 }
+// ---------------------------------------------------------------------------
+// Walk-in queue: same insert as the app (walk_ins, RLS: own customer_id). The
+// on_walk_in_insert trigger bumps queue_size and notifies the barber or salon.
+// ---------------------------------------------------------------------------
+function queueTarget() { return S.queueSalon || S.barber; }
+async function stepQueue(el) {
+  const t = queueTarget(), salon = !!S.queueSalon, ahead = t.queue_size || 0;
+  const info = `<div class="sum"><div><span>${salon ? 'Salon' : 'Barber'}</span><b>${esc(t.name)}</b></div><div><span>People ahead of you</span><b>${ahead}</b></div>${t.wait_time ? `<div><span>Estimated wait</span><b>~${esc(t.wait_time)} min</b></div>` : ''}</div>`;
+  if (!queueOpen(t)) { el.innerHTML = `<div class="step"><h3>Queue closed</h3><p class="hint">${esc(t.name)} isn't taking walk-ins right now. You can book a time instead.</p><button class="btn btn-green btn-lg btn-block" id="bookInstead">Book a time</button></div>`; el.querySelector('#bookInstead').onclick = () => startIntent('book'); return; }
+  if (!S.user) {
+    el.innerHTML = `<div class="step"><h3>Join the walk-in queue</h3><p class="hint">${salon ? 'The next free barber at the salon will take you.' : 'Skip waiting in the shop.'} You'll need a free Cutz account.</p>${info}<button class="btn btn-green btn-lg btn-block" id="next">Continue</button></div>`;
+    el.querySelector('#next').onclick = () => go('details');
+    return;
+  }
+  if (!S.customer) await loadCustomer();
+  if (S.step !== 'queue') return;
+  if (!S.customer?.phone) return go('details');
+  el.innerHTML = `<div class="step"><h3>Join the walk-in queue</h3><p class="hint">Head to the shop when it's nearly your turn.</p>${info}<button class="btn btn-green btn-lg btn-block" id="next">Join the queue</button></div>`;
+  el.querySelector('#next').onclick = async () => {
+    const btn = el.querySelector('#next'); btn.disabled = true; btn.textContent = 'Joining…';
+    const col = salon ? 'salon_id' : 'barber_id';
+    // The server doesn't stop duplicate joins, so check for an open spot first.
+    const { data: mine } = await sb.from('walk_ins').select('id').eq('customer_id', S.user.id).eq(col, t.id).eq('status', 'waiting').limit(1);
+    if (mine && mine.length) { S.queuedAhead = null; return go('queued'); }
+    const { error } = await sb.from('walk_ins').insert({ barber_id: salon ? null : t.id, salon_id: salon ? t.id : null, customer_id: S.user.id });
+    if (error) { btn.disabled = false; btn.textContent = 'Join the queue'; return showErr(el, error.message || 'Something went wrong. Please try again.'); }
+    S.queuedAhead = ahead; t.queue_size = ahead + 1;
+    go('queued');
+  };
+}
+function stepQueued(el) {
+  const t = queueTarget(), again = S.queuedAhead == null;
+  el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>${again ? "You're already in the queue" : "You're in the queue"}</h3>
+    <p>${esc(t.name)}${again ? '' : `<br><b style="color:#fff">${S.queuedAhead ? `${S.queuedAhead} ${S.queuedAhead === 1 ? 'person' : 'people'} ahead of you` : "You're next"}</b>${t.wait_time ? `<br>Estimated wait ~${esc(t.wait_time)} min` : ''}`}</p>
+    ${t.address ? `<div class="btns" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">${mapLinks(t)}</div>` : ''}
+    <a class="btn btn-ghost btn-lg btn-block" href="${APP_STORE}">Get the Cutz app</a></div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Reviews: same upsert as the app. RLS allows a new review only after a
+// completed booking with this barber, and edits for 7 days.
+// ---------------------------------------------------------------------------
+async function stepReview(el) {
+  const first = esc(S.barber.name.split(' ')[0]);
+  if (!S.user) {
+    el.innerHTML = `<div class="step"><h3>Review ${first}</h3><p class="hint">Reviews come from customers after a completed booking. Sign in with the Cutz account you booked with.</p><button class="btn btn-green btn-lg btn-block" id="next">Sign in</button></div>`;
+    el.querySelector('#next').onclick = () => { S.authMode = 'signin'; go('details'); };
+    return;
+  }
+  el.innerHTML = `<div class="step"><h3>Review ${first}</h3><div class="spinner" style="margin:30px auto"></div></div>`;
+  const [, done, prev] = await Promise.all([
+    S.customer ? null : loadCustomer(),
+    sb.from('bookings').select('id').eq('customer_id', S.user.id).eq('barber_id', S.barber.id).eq('status', 'completed').limit(1),
+    sb.from('reviews').select('stars, description, created_at').eq('customer_id', S.user.id).eq('barber_id', S.barber.id).maybeSingle(),
+  ]);
+  if (S.step !== 'review') return;
+  const old = prev.data;
+  if (!(done.data || []).length) { el.innerHTML = `<div class="step"><h3>Review ${first}</h3><p class="hint">You can leave a review after a completed booking with ${first}.</p><button class="btn btn-green btn-lg btn-block" id="bk2">Book ${first}</button></div>`; el.querySelector('#bk2').onclick = () => startIntent('book'); return; }
+  if (old && Date.now() - new Date(old.created_at) > 7 * 864e5) { el.innerHTML = `<div class="step"><h3>Thanks for your review</h3><p class="hint">You reviewed ${first} on ${new Date(old.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}. Reviews can be edited for 7 days.</p></div>`; return; }
+  let stars = old?.stars || 0;
+  el.innerHTML = `<div class="step"><h3>${old ? 'Edit your review' : `Review ${first}`}</h3><p class="hint">How was your cut?</p>
+    <div class="star-in" role="radiogroup" aria-label="Rating">${[1,2,3,4,5].map(n => `<button type="button" role="radio" data-n="${n}" aria-label="${n} star${n > 1 ? 's' : ''}">★</button>`).join('')}</div>
+    <div class="field"><label for="f-rv">Tell others about it (optional)</label><textarea id="f-rv" class="f-txt" maxlength="500">${esc(old?.description || '')}</textarea></div>
+    <button class="btn btn-green btn-lg btn-block" id="next" ${stars ? '' : 'disabled'}>${old ? 'Update review' : 'Post review'}</button></div>`;
+  const paint = () => el.querySelectorAll('.star-in button').forEach(b => { const on = +b.dataset.n <= stars; b.classList.toggle('on', on); b.setAttribute('aria-checked', +b.dataset.n === stars); });
+  paint();
+  el.querySelectorAll('.star-in button').forEach(b => b.onclick = () => { stars = +b.dataset.n; paint(); el.querySelector('#next').disabled = false; });
+  el.querySelector('#next').onclick = async () => {
+    const btn = el.querySelector('#next'); btn.disabled = true;
+    const description = el.querySelector('#f-rv').value.trim();
+    const { error } = await sb.from('reviews').upsert({ barber_id: S.barber.id, customer_id: S.user.id, customer_name: S.customer?.name || '', stars, ...(description ? { description } : {}) }, { onConflict: 'barber_id,customer_id' });
+    if (error) { btn.disabled = false; return showErr(el, 'Your review couldn\'t be saved. Please try again.'); }
+    const { data } = await sb.from('reviews').select('stars, description, customer_name, created_at').eq('barber_id', S.barber.id).order('created_at', { ascending: false }).limit(50);
+    S.reviews = data || S.reviews;
+    go('reviewed');
+  };
+}
+function stepReviewed(el) {
+  el.innerHTML = `<div class="step ok"><div class="ok-ic">${ICON.check}</div><h3>Thanks for your review</h3><p>It helps other customers find a great barber.</p><button class="btn btn-ghost btn-lg btn-block" id="close">Done</button></div>`;
+  el.querySelector('#close').onclick = () => { const sc = scrollY; renderProfile(); startIntent('book'); scrollTo(0, sc); };
+}
+
 function downloadIcs() {
   const [h, m] = S.time.split(':').map(Number);
   const start = fromKey(S.date); start.setHours(h, m, 0, 0);

@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>
+// The app shares profiles as /b/<barber-id> and /s/<salon-id>. GitHub Pages has
+// no rewrites, so those paths land here and are forwarded to the real pages.
+(function(){var m=location.pathname.match(/^\/(b|s)\/([^\/?#]+)\/?$/);if(m)location.replace((m[1]==='b'?'/barber.html':'/salon.html')+'?id='+encodeURIComponent(decodeURIComponent(m[2]))+location.hash)})();
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Page not found — Cutz</title>
 <meta name="robots" content="noindex">
@@ -58,7 +64,7 @@ p{color:var(--mute);margin:0 auto 32px;max-width:420px;position:relative}
 <meta name="twitter:title" content="Page not found — Cutz">
 <meta name="twitter:description" content="Book your barber in seconds with Cutz.">
 <meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <!-- /og -->
 </head>
 <body>

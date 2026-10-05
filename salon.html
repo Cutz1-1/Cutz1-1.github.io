@@ -98,6 +98,8 @@ svg{display:block}
 .head .sub a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
 .badges{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
 .badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.badge-btn{cursor:pointer;color:var(--fg)}
+.badge-btn:hover{border-color:rgba(255,255,255,.35)}
 .badge.g{color:var(--green);background:var(--green-dim);border-color:transparent}
 .badge.r{color:#ff8a8a;background:rgba(255,90,90,.1);border-color:transparent}
 .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
@@ -295,7 +297,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   var SB_URL='https://ukoovhgmbqfocalykhyx.supabase.co';
   // Public anon key: only RLS-protected public views are readable.
   var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
-  var APP_STORE='https://apps.apple.com/app/cutz/id6811618000';
+  var APP_STORE='download.html';
   var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var app=document.getElementById('app');
   var H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
@@ -330,7 +332,12 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     var svc={};team.forEach(function(b){(b.services||[]).forEach(function(x){var k=String(x.name).trim().toLowerCase();svc[k]=svc[k]||{name:x.name,min:1e9,max:0,dur:x.duration,who:[]};svc[k].min=Math.min(svc[k].min,+x.price||0);svc[k].max=Math.max(svc[k].max,+x.price||0);svc[k].who.push({b:b,s:x})})});
     var svcs=Object.keys(svc).map(function(k){return svc[k]}).sort(function(a,b){return b.who.length-a.who.length||a.min-b.min});
     var openCount=team.filter(function(b){return openNow(b)===true}).length;
-    var avg=reviews.length?reviews.reduce(function(a,x){return a+x.stars},0)/reviews.length:0;
+    // Same as the app: review-weighted average of the team's ratings, over all their reviews.
+    var rc=team.reduce(function(a,b){return a+(+b.rating?(b.review_count||0):0)},0);
+    var avg=rc?Math.round(team.reduce(function(a,b){return a+(+b.rating||0)*(+b.rating?(b.review_count||0):0)},0)/rc*10)/10:0;
+    var qOpen=s.is_online&&s.walk_in_available&&team.length&&!(s.max_queue_size>0&&(s.queue_size||0)>=s.max_queue_size);
+    // barber.html runs the account steps, then joins this salon's shared queue.
+    var qHref=team.length?'barber.html?id='+encodeURIComponent(team[0].id)+'&queue=salon#booker':'';
     var minP=svcs.length?Math.min.apply(null,svcs.map(function(x){return x.min})):null;
     var nameOf=function(b){return team.filter(function(t){return t.id===b})[0]};
     var ll=s.lat&&s.lng?s.lat+','+s.lng:null,q=encodeURIComponent(s.address||s.name);
@@ -339,7 +346,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     app.innerHTML='<div class="wrap top">'+
       '<nav class="crumbs" aria-label="Breadcrumb"><a href="find.html">Find a barber</a><span>/</span><span>'+esc(s.name)+'</span></nav>'+gallery+
       '<div class="head"><div class="avatar">'+esc(ini(s.name))+'</div><div><h1>'+esc(s.name)+'</h1>'+(s.address?'<div class="sub">'+esc(s.address)+'</div>':'')+'</div></div>'+
-      '<div class="badges"><span class="badge">Salon · '+team.length+' barber'+(team.length===1?'':'s')+'</span>'+(openCount?'<span class="badge g"><span class="dot"></span>'+openCount+' open now</span>':'')+(avg?'<span class="badge">★ '+avg.toFixed(1)+' · '+reviews.length+' review'+(reviews.length===1?'':'s')+'</span>':'')+(minP!=null?'<span class="badge">From '+kr(minP)+'</span>':'')+'</div>'+
+      '<div class="badges"><span class="badge">Salon · '+team.length+' barber'+(team.length===1?'':'s')+'</span>'+(openCount?'<span class="badge g"><span class="dot"></span>'+openCount+' open now</span>':'')+(avg?'<span class="badge">★ '+avg.toFixed(1)+' · '+rc+' review'+(rc===1?'':'s')+'</span>':'')+(s.is_online?'':'<span class="badge r"><span class="dot"></span>Offline right now</span>')+(qOpen?'<a class="badge badge-btn" href="'+qHref+'">Walk-ins · '+(s.queue_size||0)+' in queue'+(s.wait_time?' · ~'+esc(s.wait_time)+' min':'')+' · Join →</a>':'')+(minP!=null?'<span class="badge">From '+kr(minP)+'</span>':'')+'</div>'+
       '<div class="layout"><div>'+
         (s.bio?'<section class="block"><h2>About</h2><p class="bio">'+esc(s.bio)+'</p></section>':'')+
         '<section class="block" id="team"><h2>The team</h2>'+(team.length?'<div class="team-grid">'+team.map(function(b){var o=openNow(b),th=todayHours(b),mp=(b.services||[]).length?Math.min.apply(null,b.services.map(function(x){return+x.price||0})):null;return'<article class="tm"><div class="tm-top"><span class="av">'+(b.avatar_photo?'<img src="'+esc(b.avatar_photo)+'" alt="" loading="lazy">':esc(ini(b.name)))+'</span><span><b>'+esc(b.name)+'</b><small>'+(+b.rating?'★ '+(+b.rating).toFixed(1)+' ('+(b.review_count||0)+')':'New on Cutz')+'</small></span></div><div class="tm-meta">'+(o===true?'<span class="g">Open · until '+esc(th.split(' - ')[1])+'</span>':th?'<span>'+(th==='Closed'?'Off today':'Today '+esc(th))+'</span>':'')+(mp!=null?'<span>From '+kr(mp)+'</span>':'')+(b.walk_in_available?'<span>Walk-ins</span>':'')+'</div><a class="btn btn-green" href="barber.html?id='+encodeURIComponent(b.id)+'#booker">Book '+esc(b.name.split(' ')[0])+'</a></article>'}).join('')+'</div>':'<p class="empty">No one is taking bookings here right now. Check back soon.</p>')+'</section>'+
@@ -347,8 +354,8 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
         '<section class="block"><h2>Reviews</h2>'+(reviews.length?reviews.slice(0,8).map(function(x){var b=nameOf(x.barber_id),p=String(x.customer_name||'Customer').trim().split(/\s+/);return'<div class="review"><div class="who"><b>'+esc(p[0]+(p[1]?' '+p[1][0]+'.':''))+'</b><span>'+(b?'for '+esc(b.name)+' · ':'')+new Date(x.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short'})+'</span></div><div class="stars" aria-label="'+x.stars+' out of 5">'+'★'.repeat(x.stars)+'<span style="color:#333">'+'★'.repeat(5-x.stars)+'</span></div>'+(x.description?'<p>'+esc(x.description)+'</p>':'')+'</div>'}).join(''):'<p class="empty">No reviews yet. Ratings come from customers after a completed booking.</p>')+'</section>'+
         (s.address?'<section class="block"><h2>Location</h2><div class="loc"><p>'+esc(s.address)+'</p><div class="btns"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://maps.apple.com/?'+(ll?'daddr='+ll+'&':'')+'q='+q+'">Apple Maps</a><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+(ll||q)+'">Google Maps</a></div></div></section>':'')+
       '</div><aside class="side">'+
-        '<div class="box"><h3>Book at '+esc(s.name)+'</h3><p>Choose a barber and pick a time. It takes about a minute.</p><div class="stat-row"><div><b>'+team.length+'</b><small>Barbers</small></div><div><b>'+svcs.length+'</b><small>Services</small></div><div><b>'+(avg?avg.toFixed(1):'–')+'</b><small>Rating</small></div></div><a class="btn btn-green btn-lg btn-block" href="#team">Choose a barber</a></div>'+
-        '<div class="box"><h3>Get the Cutz app</h3><p>Join walk-in queues and manage bookings on the go.</p><a class="btn btn-ghost btn-block" href="'+APP_STORE+'" target="_blank" rel="noopener">Download</a><a class="btn btn-block" style="margin-top:8px;color:var(--dim)" href="cutz://salon/'+encodeURIComponent(s.id)+'">Open in app</a></div>'+
+        '<div class="box"><h3>Book at '+esc(s.name)+'</h3><p>Choose a barber and pick a time. It takes about a minute.</p><div class="stat-row"><div><b>'+team.length+'</b><small>Barbers</small></div><div><b>'+svcs.length+'</b><small>Services</small></div><div><b>'+(avg?avg.toFixed(1):'–')+'</b><small>Rating</small></div></div><a class="btn btn-green btn-lg btn-block" href="#team">Choose a barber</a>'+(qOpen?'<a class="btn btn-ghost btn-lg btn-block" style="margin-top:8px" href="'+qHref+'">Join the walk-in queue</a>':'')+'</div>'+
+        '<div class="box"><h3>Get the Cutz app</h3><p>Reminders and managing bookings on the go. Coming soon to the App Store.</p><a class="btn btn-ghost btn-block" href="'+APP_STORE+'">Get the app</a><a class="btn btn-block" style="margin-top:8px;color:var(--dim)" href="cutz://salon/'+encodeURIComponent(s.id)+'">Open in app</a></div>'+
       '</aside></div></div>';
 
     document.querySelectorAll('[data-photo]').forEach(function(el){el.addEventListener('click',function(){openLb(photos,+el.dataset.photo)})});
