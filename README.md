@@ -35,9 +35,9 @@ shows and `[data-soon-only]` text hides. Nothing needs to change in the code on 
 ## Customer sign-in
 
 Customers never choose a password on the website. `assets/cutz-auth.js` emails a 6-digit code: new accounts get the
-"Confirm signup" email, returning customers the "Magic Link" email. Until that Magic Link template contains
-`{{ .Token }}`, `RETURNING_GETS_CODE` stays `false` and returning customers sign in with a password (or set one on
-`reset-password.html`). `supabase/apply-auth-config.sh` in the app repo installs the templates; then flip the flag.
+"Confirm signup" email, returning customers the "Magic Link" email (both templates contain `{{ .Token }}`; sources in
+the app repo's `supabase/email-template*.html`). Customers who prefer a password can still use it, and set or reset it
+on `reset-password.html`.
 
 Free and taken times come from the `get_barber_busy_slots` RPC (times only, no customer data). Waitlist and barber
 early-access emails are sent by the `site-hook` edge function (app repo, `supabase/functions/site-hook`).

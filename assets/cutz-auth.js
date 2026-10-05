@@ -2,17 +2,16 @@
 //
 // Customers never pick a password on the website: they enter their email and
 // type the 6-digit code we send. New accounts get Supabase's "Confirm signup"
-// email, which carries the code. Returning customers get the "Magic Link"
-// email instead; until that template also contains {{ .Token }} (see
-// supabase/auth-templates in the app repo) it only has a link, so returning
-// customers sign in with their password or reset it. Flip RETURNING_GETS_CODE
-// to true once the template is updated.
+// email and returning customers the "Magic Link" email; both templates carry
+// {{ .Token }} (supabase/email-template*.html in the app repo). Setting
+// RETURNING_GETS_CODE to false falls back to password sign-in for returning
+// customers, e.g. if the Magic Link template ever loses the code again.
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 export const SUPABASE_URL = 'https://ukoovhgmbqfocalykhyx.supabase.co';
 // Public anon key, same as the app (src/config.js). Access control is RLS.
 export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
-export const RETURNING_GETS_CODE = false;
+export const RETURNING_GETS_CODE = true;
 export const SITE = 'https://cutzapp.one';
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false } });
