@@ -1,5 +1,5 @@
 /* Shared page behaviour: mobile menu, nav border on scroll, reveal-on-scroll,
- * copy buttons ([data-copy]), footer year ([data-year]) and the LAUNCH code
+ * copy buttons ([data-copy]), footer year ([data-year]) and the LAUNCH3 code
  * status ([data-launch-status]). Loaded with `defer` on every page. */
 (function () {
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -52,7 +52,7 @@
     fetch(SB_URL + '/rest/v1/rpc/check_referral_code', {
       method: 'POST',
       headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_code: 'LAUNCH' })
+      body: JSON.stringify({ p_code: 'LAUNCH3' })
     }).then(function (r) { return r.json(); }).then(function (d) {
       status.forEach(function (el) {
         el.hidden = false;

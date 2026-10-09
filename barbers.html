@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="assets/appstore.js"></script>
 <title>Cutz for Barbers — Fill your chair, not your DMs</title>
-<meta name="description" content="Get found by clients nearby, manage bookings and walk-ins in one place, and pay 0% commission. Use code LAUNCH for 3 months free.">
+<meta name="description" content="Get found by clients nearby, manage bookings and walk-ins in one place, and pay 0% commission.">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://cutzapp.one/barbers.html">
 <meta name="apple-itunes-app" content="app-id=6811618000">
@@ -34,17 +34,16 @@
 .hero-pop b{font-weight:700}
 @media (max-width:960px){.hero-grid{grid-template-columns:1fr}.hero-media{aspect-ratio:4/3.2}}
 
-/* ---------- LAUNCH ---------- */
-.launch{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
-.launch .offer-code{font-size:clamp(56px,8vw,112px)}
-.launch-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
-.launch-side{display:grid;gap:18px;color:rgba(255,255,255,.75);font-size:16px}
-.launch-side p{margin:0}
-.launch-side b{color:#fff}
-.launch-side .fine{font-size:14px;color:rgba(255,255,255,.55)}
-.launch .btn-ghost{color:#fff}
-.launch .btn-ghost:hover{background:rgba(255,255,255,.1)}
-@media (max-width:860px){.launch{grid-template-columns:1fr}}
+/* ---------- LAUNCH3 ---------- */
+.code-row{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(20px,4vw,56px);align-items:center;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.code-name{display:grid;gap:6px}
+.code-name b{font-size:clamp(40px,5vw,56px);font-weight:900;letter-spacing:.03em;line-height:1}
+.code-facts{list-style:none;margin:0;padding:0;display:flex;gap:clamp(20px,4vw,48px);flex-wrap:wrap}
+.code-facts li{display:grid;gap:2px}
+.code-facts b{font-size:18px}
+.code-facts span{color:var(--ink-3);font-size:14px}
+.code-row .status{display:inline-flex;align-items:center;gap:8px}
+@media (max-width:760px){.code-row{grid-template-columns:1fr}.code-row .btn{justify-self:start}}
 
 /* ---------- Why ---------- */
 .why{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px)}
@@ -174,14 +173,14 @@ body.jm-lock{overflow:hidden}
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://cutzapp.one/barbers.html">
 <meta property="og:title" content="Cutz for Barbers — Fill your chair, not your DMs">
-<meta property="og:description" content="Get found by clients nearby, manage bookings and walk-ins in one place, and pay 0% commission. Use code LAUNCH for 3 months free.">
+<meta property="og:description" content="Get found by clients nearby, manage bookings and walk-ins in one place, and pay 0% commission.">
 <meta property="og:image" content="https://cutzapp.one/assets/og-barbers.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cutz: book your barber in seconds">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cutz for Barbers — Fill your chair, not your DMs">
-<meta name="twitter:description" content="Get found by clients nearby, manage bookings and walk-ins in one place, and pay 0% commission. Use code LAUNCH for 3 months free.">
+<meta name="twitter:description" content="Get found by clients nearby, manage bookings and walk-ins in one place, and pay 0% commission.">
 <meta name="twitter:image" content="https://cutzapp.one/assets/og-barbers.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <!-- /og -->
@@ -217,9 +216,6 @@ body.jm-lock{overflow:hidden}
           <button class="btn btn-green btn-lg" type="button" data-join>Join as a barber <span class="arrow">→</span></button>
           <a class="btn btn-outline btn-lg" href="#pricing">See pricing</a>
         </div>
-        <div class="hero-offer rv" style="--d:.2s">
-          <span class="code-pill">LAUNCH</span><span><b>3 months free</b> for the first 10 barbers</span><a href="#launch">Details</a>
-        </div>
       </div>
       <div class="hero-media photo rv" style="--d:.1s">
         <img src="assets/img/cut-shop.jpg" alt="A barber giving a client a haircut in a busy barbershop" width="1800" height="1200" fetchpriority="high">
@@ -231,27 +227,16 @@ body.jm-lock{overflow:hidden}
     </div>
   </section>
 
-  <!-- LAUNCH -->
+  <!-- LAUNCH3: the only place a referral code appears on the site -->
   <section class="sec-tight" style="padding-top:0" id="launch" aria-labelledby="launch-h">
     <div class="wrap">
-      <div class="offer launch rv">
-        <div>
-          <div class="launch-top">
-            <div class="eyebrow">Exclusive launch offer</div>
-            <span class="status" data-launch-status hidden><span class="sdot"></span><span class="txt"></span></span>
-          </div>
-          <div class="offer-code" id="launch-h">LAUNCH</div>
-          <div class="offer-sub">3 months free. 0% commission, always.</div>
-          <div class="offer-actions">
-            <button class="btn btn-green btn-lg" type="button" data-copy="LAUNCH" aria-label="Copy the code LAUNCH">Copy code</button>
-            <button class="btn btn-ghost btn-lg" type="button" data-join>Join as a barber <span class="arrow">→</span></button>
-          </div>
-        </div>
-        <div class="launch-side">
-          <p><b>Reserved for the first 10 barbers</b> to sign up with the code.</p>
-          <p>Full Cutz for barbers, on us, for your first 3 months.</p>
-          <p class="fine">Enter the code when you sign up as a barber. Nothing is charged until the 3 free months end, and you can cancel any time before then without paying anything.</p>
-        </div>
+      <div class="code-row rv">
+        <div class="code-name"><span class="eyebrow">Launch offer</span><b id="launch-h">LAUNCH3</b></div>
+        <ul class="code-facts">
+          <li><b>3 months free</b><span>Nothing to pay for your first 3 months</span></li>
+          <li><b>First 10 barbers only</b><span class="status" data-launch-status hidden><span class="sdot"></span><span class="txt"></span></span></li>
+        </ul>
+        <button class="btn btn-black" type="button" data-copy="LAUNCH3">Copy code</button>
       </div>
     </div>
   </section>
@@ -326,9 +311,8 @@ body.jm-lock{overflow:hidden}
       </div>
       <ol class="steps">
         <li class="rv"><span class="n">01</span><h3>Join in a minute</h3><p>Tap Join as a barber and leave your name, email and phone. That's it for now.</p></li>
-        <li class="rv" style="--d:.05s"><span class="n">02</span><h3>Add <code>LAUNCH</code></h3><p>Put the code on your sign-up and we'll make sure you get 3 months free.</p></li>
-        <li class="rv" style="--d:.1s"><span class="n">03</span><h3>Build your profile</h3><p>Add photos, services, prices and opening hours.</p></li>
-        <li class="rv" style="--d:.15s"><span class="n">04</span><h3>Go live</h3><p>You appear on the map, and bookings start coming in.</p></li>
+        <li class="rv" style="--d:.05s"><span class="n">02</span><h3>Build your profile</h3><p>Add photos, services, prices and opening hours.</p></li>
+        <li class="rv" style="--d:.1s"><span class="n">03</span><h3>Go live</h3><p>You appear on the map, and bookings start coming in.</p></li>
       </ol>
       <div class="rv" style="margin-top:44px"><button class="btn btn-green btn-lg" type="button" data-join>Join as a barber <span class="arrow">→</span></button></div>
     </div>
@@ -344,9 +328,8 @@ body.jm-lock{overflow:hidden}
       </div>
       <div class="plans">
         <article class="plan hi rv">
-          <div class="plan-top"><div><h3>Barber</h3><div class="for">For independent barbers</div></div><span class="badge badge-green">LAUNCH: 3 mo free</span></div>
+          <div class="plan-top"><div><h3>Barber</h3><div class="for">For independent barbers</div></div></div>
           <div class="price"><b>300</b><span>kr / month</span></div>
-          <div class="price-note">0 kr for your first 3 months with LAUNCH</div>
           <ul>
             <li>Public profile on the Cutz map</li>
             <li>Unlimited bookings, no commission</li>
@@ -393,7 +376,6 @@ body.jm-lock{overflow:hidden}
         <h2 class="h-lg rv" style="--d:.05s">Questions, answered.</h2>
       </div>
       <div class="faq rv">
-        <details><summary>How does the LAUNCH code work?</summary><p class="a">Add <b>LAUNCH</b> when you join as a barber (on this page now, or in the app once it is out) and your first 3 months are free. Only the first 10 barbers to redeem it get the offer, and each account can use it once. When the 3 months end your subscription continues at 300 kr/month unless you cancel first.</p></details>
         <details><summary>Do you take a commission on my bookings?</summary><p class="a">No. You pay a flat monthly subscription and that's it. Clients pay you directly for their cut, however they already do.</p></details>
         <details><summary>Can I cancel any time?</summary><p class="a">Yes. You can cancel from your profile in the app. You keep access until the end of the period you've paid for and won't be charged again.</p></details>
         <details><summary>What happens when a client doesn't show up?</summary><p class="a">Mark them as a no-show from the booking. Strikes expire after 2 months, but a client with 3 active strikes can't book anyone on Cutz for 6 months. Clients also can't cancel inside the 24 hours before their appointment.</p></details>
@@ -412,10 +394,9 @@ body.jm-lock{overflow:hidden}
         <div class="photo"><img src="assets/img/cut-shave.jpg" alt="" loading="lazy" width="1600" height="1067"></div>
         <div class="final-in">
           <h2 class="h-lg">Your chair.<br>Always booked.</h2>
-          <p class="lead">Only 10 barbers get LAUNCH, so claim your 3 free months while spots are still open.</p>
+          <p class="lead">Join now and start taking bookings on Cutz.</p>
           <div class="final-cta">
             <button class="btn btn-green btn-lg" type="button" data-join style="height:56px">Join as a barber <span class="arrow">→</span></button>
-            <button class="btn btn-ghost btn-lg" type="button" data-copy="LAUNCH">Copy LAUNCH</button>
           </div>
         </div>
       </div>
@@ -425,7 +406,7 @@ body.jm-lock{overflow:hidden}
 </main>
 
 <div class="sticky" id="sticky" aria-hidden="true">
-  <span><small>3 months free with</small><b>LAUNCH</b></span>
+  <span><small>Flat price, 0% commission</small><b>300 kr / month</b></span>
   <button class="btn btn-green" type="button" tabindex="-1" data-join>Join Cutz</button>
 </div>
 
@@ -504,11 +485,11 @@ body.jm-lock{overflow:hidden}
     });
   });
 
-  // Pre-fill the join form's referral code while LAUNCH still has spots.
-  // (The on-page LAUNCH status badges are filled in by assets/site.js.)
-  fetch(SB_URL+'/rest/v1/rpc/check_referral_code',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_code:'LAUNCH'})})
+  // Pre-fill the join form's referral code while LAUNCH3 still has spots.
+  // (The on-page LAUNCH3 status is filled in by assets/site.js.)
+  fetch(SB_URL+'/rest/v1/rpc/check_referral_code',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_code:'LAUNCH3'})})
     .then(function(r){return r.json()}).then(function(d){
-      var jc=document.getElementById('jmCode');if(d&&d.valid&&jc&&!jc.value)jc.value='LAUNCH';
+      var jc=document.getElementById('jmCode');if(d&&d.valid&&jc&&!jc.value)jc.value='LAUNCH3';
     }).catch(function(){});
 
   // Join as a barber: early-access list while the app is in App Store review.
