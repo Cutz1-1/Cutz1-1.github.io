@@ -18,7 +18,7 @@
 <style>
 /* ---------- Hero ---------- */
 .hero{padding:clamp(32px,5vw,72px) 0 clamp(56px,7vw,96px)}
-.hero-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(36px,5vw,80px);align-items:center}
+.hero-grid{display:grid;grid-template-columns:minmax(0,720px);gap:clamp(36px,5vw,80px);align-items:center}
 .hero h1{margin-top:18px;font-size:clamp(44px,6vw,80px)}
 .hero .lead{margin-top:22px;max-width:500px}
 .dl-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
@@ -29,40 +29,11 @@
 .review .btn{margin-top:16px}
 .pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,220,100,.6);animation:pulse 2s infinite;flex:none}
 @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(0,220,100,0)}100%{box-shadow:0 0 0 0 rgba(0,220,100,0)}}
-.hero-media{position:relative;display:flex;justify-content:center;align-items:center;padding:clamp(28px,4vw,56px) 12px;border-radius:var(--r-xl);overflow:hidden;min-height:520px}
-.hero-media .photo{position:absolute;inset:0;border-radius:0}
-.hero-media .photo img{object-position:50% 30%}
-.hero-media .photo::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.2)}
-.hero-media .device{position:relative;width:min(270px,62vw)}
 @media (max-width:960px){.hero-grid{grid-template-columns:1fr}}
 
 /* ---------- Screens carousel ---------- */
-.car-wrap{position:relative}
-.car{display:flex;gap:clamp(16px,2.4vw,32px);overflow-x:auto;scroll-snap-type:x mandatory;padding:8px max(var(--gutter),calc((100vw - var(--max))/2 + var(--gutter))) 24px;scrollbar-width:none;outline:none}
-.car::-webkit-scrollbar{display:none}
-.shot{flex:none;width:min(280px,72vw);scroll-snap-align:center;margin:0}
-.shot .device{width:100%}
-.shot figcaption{margin-top:22px}
-.shot figcaption b{display:block;font-size:18px;letter-spacing:-.015em}
-.shot figcaption span{display:block;color:var(--ink-2);margin-top:4px;font-size:15px}
-.car-nav{display:flex;gap:10px;justify-content:flex-end;max-width:var(--max);margin:8px auto 0;padding:0 var(--gutter)}
-.car-nav button{width:48px;height:48px;border-radius:50%;border:0;background:var(--surface);cursor:pointer;display:grid;place-items:center;transition:background .15s}
-.car-nav button:hover{background:var(--surface-2)}
 
 /* ---------- Features ---------- */
-.feat{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,24px)}
-.fcol{border-radius:var(--r-xl);padding:clamp(24px,3.4vw,44px);background:var(--surface);display:flex;flex-direction:column}
-.fcol.b{background:var(--fg);color:#fff}
-.fcol h3{font-size:clamp(24px,2.6vw,30px);letter-spacing:-.025em;margin:0}
-.fcol>p{margin:6px 0 0;color:var(--ink-2)}
-.fcol.b>p{color:rgba(255,255,255,.7)}
-.fcol ul{margin:28px 0 32px;flex:1}
-.fcol.b .tick-list li{color:rgba(255,255,255,.72)}
-.fcol.b .tick-list li b{color:#fff}
-.fcol .btn{align-self:flex-start}
-.fcol.b .btn-ghost{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.5)}
-.fcol.b .btn-ghost:hover{background:rgba(255,255,255,.1)}
-@media (max-width:820px){.feat{grid-template-columns:1fr}}
 
 /* ---------- Links ---------- */
 .lrow{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px)}
@@ -102,11 +73,10 @@
     <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
     <nav class="nav-links" id="navLinks" aria-label="Main">
-      <a href="find.html">Find a barber</a>
+      <a href="index.html">Find a barber</a>
       <a href="barbers.html">For barbers</a>
-      <a href="salons.html">For salons</a>
       <a href="mybookings.html">My bookings</a>
-      <a href="download.html" class="btn btn-black btn-sm">Get the app</a>
+      <a href="mybookings.html" class="btn btn-black btn-sm" data-login>Log in</a>
     </nav>
   </div>
 </header>
@@ -126,7 +96,7 @@
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
             <span><small><span data-soon-only>Coming soon to the</span><span data-live-only>Download on the</span></small><b>App Store</b></span>
           </a>
-          <a class="btn btn-green btn-lg" style="height:56px" href="find.html" data-soon-only>Book on the web <span class="arrow">→</span></a>
+          <a class="btn btn-green btn-lg" style="height:56px" href="index.html" data-soon-only>Book on the web <span class="arrow">→</span></a>
         </div>
         <p class="note-sm rv" style="--d:.2s">Free for customers. iPhone only for now, and Android isn't available yet.</p>
         <div class="review rv" style="--d:.25s" data-soon-only>
@@ -139,71 +109,10 @@
           <a class="btn btn-green" data-store href="download.html">Download Cutz</a>
         </div>
       </div>
-      <div class="hero-media rv" style="--d:.1s">
-        <div class="photo"><img src="assets/img/cut-fade.jpg" alt="" width="1001" height="1500" fetchpriority="high"></div>
-        <div class="device"><img src="assets/img/app-home.jpg" alt="Cutz app home screen with trending and nearby barbers" width="508" height="1100"></div>
-      </div>
     </div>
   </section>
 
-  <!-- Screens -->
-  <section class="sec sec-grey" aria-labelledby="shots-h">
-    <div class="wrap"><div class="sec-head"><div class="eyebrow rv">Inside the app</div><h2 class="h-lg rv" id="shots-h" style="--d:.05s">See it before you download.</h2></div></div>
-    <div class="car-wrap">
-      <div class="car" id="car" tabindex="0" aria-label="App screens, scroll sideways">
-        <figure class="shot rv">
-          <div class="device"><img src="assets/img/app-map.jpg" alt="Cutz map with barbers pinned by price and filters for distance, walk-in and availability" loading="lazy" width="508" height="1100"></div>
-          <figcaption><b>Every barber on one map</b><span>See who's near you, what they charge and who's free right now.</span></figcaption>
-        </figure>
-        <figure class="shot rv" style="--d:.05s">
-          <div class="device"><img src="assets/img/app-home.jpg" alt="Cutz home screen with trending and nearby barbers" loading="lazy" width="508" height="1100"></div>
-          <figcaption><b>Find your next cut nearby</b><span>Trending and nearby barbers, with ratings and prices up front.</span></figcaption>
-        </figure>
-        <figure class="shot rv" style="--d:.1s">
-          <div class="device"><img src="assets/img/app-bookings.jpg" alt="Cutz bookings screen with an upcoming booking and options to reschedule or cancel" loading="lazy" width="508" height="1100"></div>
-          <figcaption><b>Your bookings in one place</b><span>See what's coming up, and reschedule or cancel from the app.</span></figcaption>
-        </figure>
-        <figure class="shot rv" style="--d:.15s">
-          <div class="device"><img src="assets/img/app-dashboard.jpg" alt="Cutz barber dashboard with today's cuts, walk-in queue and incoming requests" loading="lazy" width="508" height="1100"></div>
-          <figcaption><b>Barbers run their chair</b><span>Today's bookings, the walk-in queue and new requests in one dashboard.</span></figcaption>
-        </figure>
-      </div>
-      <div class="car-nav"><button id="prev" aria-label="Previous screen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 18-6-6 6-6"/></svg></button><button id="next" aria-label="Next screen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 18 6-6-6-6"/></svg></button></div>
-    </div>
-  </section>
 
-  <!-- Features -->
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-head"><div class="eyebrow rv">Features</div><h2 class="h-lg rv" style="--d:.05s">One app, both sides of the chair.</h2></div>
-    <div class="feat">
-      <div class="fcol rv">
-        <h3>For customers</h3><p>Free to download and free to book.</p>
-        <ul class="tick-list">
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Live map</b> of barbers and shops near you</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Book ahead or same day</b> with instant confirmation</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Walk-in queue</b> with your live position</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Profiles</b> with photos, prices and ratings</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Reminders</b> for bookings and your turn in the queue</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>0 kr.</b> You pay the barber for the cut, nothing else.</span></li>
-        </ul>
-        <a class="btn btn-green btn-lg" data-store href="download.html">Get Cutz</a>
-      </div>
-      <div class="fcol b rv" style="--d:.1s">
-        <h3>For barbers</h3><p>300 kr a month, flat. 0% commission.</p>
-        <ul class="tick-list">
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Dashboard</b> for today's bookings and walk-ins</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Live walk-in queue</b> you can switch on and off</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>No-show protection</b> that blocks repeat offenders</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>0% commission</b>. Every krone from your cuts is yours.</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>300 kr/month</b>, cancel any time</span></li>
-          <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>LAUNCH</b> gives 3 months free to the first 10 barbers</span></li>
-        </ul>
-        <a class="btn btn-ghost btn-lg" href="barbers.html">Cutz for barbers <span class="arrow">→</span></a>
-      </div>
-    </div>
-    </div>
-  </section>
 
   <!-- Links -->
   <section class="sec" style="padding-top:0">
@@ -224,19 +133,15 @@
     <div class="f-grid">
       <div>
         <a href="index.html" class="logo">CUTZ<i></i></a>
-        <p class="f-tag">Your barber. 60 seconds away. Walk in or book ahead.</p>
-        <a class="store" data-store href="download.html" aria-label="Cutz on the App Store">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
-          <span><small><span data-soon-only>Coming soon to the</span><span data-live-only>Download on the</span></small><b>App Store</b></span>
-        </a>
+        <p class="f-tag">Find and book barbers near you. Free for customers.</p>
       </div>
       <div>
         <h4>Customers</h4>
-        <ul><li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="download.html">Download the app</a></li></ul>
+        <ul><li><a href="index.html">Find a barber</a></li><li><a href="index.html?view=map">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="mybookings.html">Log in</a></li></ul>
       </div>
       <div>
         <h4>Business</h4>
-        <ul><li><a href="barbers.html">Join as a barber</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li></ul>
+        <ul><li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li></ul>
       </div>
       <div>
         <h4>Company</h4>
@@ -249,20 +154,11 @@
     </div>
     <div class="f-bot">
       <span>© <span data-year>2026</span> Cutz. All rights reserved.</span>
-      <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>
+      <span><a href="download.html">Cutz for iPhone</a> · <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></span>
     </div>
   </div>
 </footer>
 
 
-<script>
-(function(){
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var car=document.getElementById('car');
-  function step(d){var s=car.querySelector('.shot');car.scrollBy({left:d*(s.offsetWidth+30),behavior:reduce?'auto':'smooth'})}
-  document.getElementById('prev').onclick=function(){step(-1)};
-  document.getElementById('next').onclick=function(){step(1)};
-})();
-</script>
 </body>
 </html>

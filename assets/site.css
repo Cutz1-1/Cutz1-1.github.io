@@ -140,9 +140,6 @@ a:hover>.arrow,button:hover>.arrow{transform:translateX(3px)}
 .split.rev>:first-child{order:2}
 @media (max-width:900px){.split{grid-template-columns:1fr}.split.rev>:first-child{order:0}}
 
-/* Phone frame around a real app screenshot */
-.device{position:relative;width:min(280px,72vw);aspect-ratio:508/1100;border-radius:44px;background:#000;padding:9px;box-shadow:0 0 0 1px #2a2a2a,var(--shadow-lg);flex:none}
-.device img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:36px}
 
 /* ---------- Bits ---------- */
 .chip{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:999px;background:var(--surface);font-size:14px;font-weight:500;color:var(--fg);border:0;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}

@@ -4,9 +4,8 @@ Marketing site and web booking for the Cutz app, served at https://cutzapp.one v
 
 | Page | What it is |
 |---|---|
-| `index.html` | Homepage |
-| `find.html` | Search and filter live barbers and salons |
-| `map.html` | Leaflet/OpenStreetMap map of live barbers |
+| `index.html` | Homepage and booking hub: search, filters, live barber cards from Supabase, list/map toggle (Leaflet, loaded on demand) |
+| `find.html`, `map.html` | Old URLs: forward to `index.html` with the same search (`map.html` opens the map view) |
 | `barber.html?id=` | Barber profile: book (service → time → details → email code), walk-in queue, waitlist, reviews |
 | `salon.html?id=` | Salon profile and team |
 | `barbers.html`, `salons.html` | For barbers / for salons, pricing, LAUNCH code; barbers.html has the early-access "Join as a barber" form |
@@ -16,8 +15,8 @@ Marketing site and web booking for the Cutz app, served at https://cutzapp.one v
 | `about.html`, `blog.html`, `faq.html`, `contact.html` | Company pages |
 | `privacy.html`, `terms.html` | Legal |
 | `assets/site.css` | Shared design system (light theme, Inter, green #00dc64 for key CTAs only): tokens, nav, buttons, forms, cards, footer |
-| `assets/site.js` | Shared behaviour: mobile menu, reveal on scroll, copy buttons, footer year, LAUNCH code status |
-| `assets/img/` | Barbershop photos (Unsplash, free licence) and real app screenshots (`app-*.jpg`) |
+| `assets/site.js` | Shared behaviour: mobile menu, reveal on scroll, copy buttons, footer year, LAUNCH code status, "Log in" → "My account" when signed in |
+| `assets/img/` | Barbershop photos (Unsplash, free licence) |
 | `assets/appstore.js` | App Store auto-switch, loaded in every page's `<head>` |
 | `assets/cutz-auth.js` | Shared customer sign-in (email + 6-digit code, no password) for barber, mybookings and reset pages |
 | `404.html` | Not-found page; also forwards the app's `/b/<id>` and `/s/<id>` share links |

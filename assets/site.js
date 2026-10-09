@@ -35,6 +35,13 @@
     });
   });
 
+  // Signed-in customers (supabase-js keeps the session in localStorage) see
+  // "My account" instead of "Log in"; both go to mybookings.html.
+  try {
+    if (localStorage.getItem('sb-ukoovhgmbqfocalykhyx-auth-token'))
+      document.querySelectorAll('[data-login]').forEach(function (a) { a.textContent = 'My account'; });
+  } catch (e) {}
+
   document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
   var status = document.querySelectorAll('[data-launch-status]');
