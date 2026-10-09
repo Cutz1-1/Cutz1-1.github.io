@@ -12,7 +12,7 @@
 <script src="/assets/appstore.js"></script>
 <title>Page not found — Cutz</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
 <!--
   GitHub Pages serves this file for any path that isn't a real file, which
@@ -30,26 +30,20 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
-:root{--green:#00dc64;--mute:rgba(255,255,255,.64);--line:rgba(255,255,255,.1)}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#000;color:#fff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
-header{padding:22px clamp(16px,4vw,32px)}
-.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
-.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
-main{flex:1;display:grid;place-items:center;text-align:center;padding:40px 16px 80px;position:relative;overflow:hidden}
-main::before{content:"";position:absolute;left:50%;top:45%;width:700px;height:700px;max-width:180vw;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(0,220,100,.14),transparent 60%);pointer-events:none}
-.big{font-size:clamp(120px,26vw,260px);font-weight:900;letter-spacing:-.06em;line-height:.85;margin:0;background:linear-gradient(180deg,#fff 30%,rgba(255,255,255,.15));-webkit-background-clip:text;background-clip:text;color:transparent;position:relative}
-h1{font-size:clamp(26px,4vw,40px);letter-spacing:-.03em;margin:20px 0 10px;position:relative}
-p{color:var(--mute);margin:0 auto 32px;max-width:420px;position:relative}
-.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
-.btn{display:inline-flex;align-items:center;height:54px;padding:0 26px;border-radius:999px;font-weight:600}
-.btn-green{background:var(--green);color:#000}
-.btn-ghost{border:1px solid rgba(255,255,255,.22)}
-.btn-ghost:hover{border-color:#fff}
+body{min-height:100vh;display:flex;flex-direction:column}
+.nf{flex:1;padding:clamp(48px,8vw,112px) 0}
+.nf-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
+.big{font-size:clamp(96px,16vw,200px);font-weight:900;letter-spacing:-.06em;line-height:.85;margin:0 0 20px}
+.big i{font-style:normal;display:inline-block;width:.14em;height:.14em;border-radius:50%;background:var(--green);margin-left:.04em}
+.nf h1{margin:0 0 12px}
+.nf .lead{max-width:440px;margin:0 0 32px}
+.nf .searchbar{max-width:460px;margin-bottom:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.nf .photo{aspect-ratio:4/4.4}
+@media (max-width:860px){.nf-grid{grid-template-columns:1fr}.nf .photo{aspect-ratio:16/10}}
 </style>
 <!-- og -->
 <meta property="og:site_name" content="Cutz">
@@ -67,16 +61,76 @@ p{color:var(--mute);margin:0 auto 32px;max-width:420px;position:relative}
 <meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <!-- /og -->
+<script src="/assets/site.js" defer></script>
 </head>
 <body>
-<header><a href="/" class="logo" aria-label="Cutz home">CUTZ<i></i></a></header>
-<main>
-  <div>
-    <div class="big" aria-hidden="true">404</div>
-    <h1>This page took a day off.</h1>
-    <p>The link you followed doesn't lead anywhere. Try finding a barber, or head back home.</p>
-    <div class="row"><a class="btn btn-green" href="/find.html">Find a barber</a><a class="btn btn-ghost" href="/">Go home</a></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="/" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="/find.html">Find a barber</a>
+      <a href="/barbers.html">For barbers</a>
+      <a href="/salons.html">For salons</a>
+      <a href="/mybookings.html">My bookings</a>
+      <a href="/download.html" class="btn btn-black btn-sm">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="nf">
+  <div class="wrap nf-grid">
+    <div>
+      <div class="big" aria-hidden="true">404<i></i></div>
+      <h1 class="h-lg">This page took a day off.</h1>
+      <p class="lead">The link you followed doesn't lead anywhere. Find a barber near you, or head back home.</p>
+      <form class="searchbar" action="/find.html" method="get" role="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <label class="sr-only" for="nfq">Find a barber near you</label>
+        <input id="nfq" type="search" name="q" placeholder="Find a barber near you" autocomplete="off" enterkeyhint="search">
+        <button class="btn btn-black btn-sm" type="submit">Search</button>
+      </form>
+      <div class="row"><a class="btn btn-green btn-lg" href="/find.html">Find a barber <span class="arrow">→</span></a><a class="btn btn-outline btn-lg" href="/">Go home</a></div>
+    </div>
+    <div class="photo"><img src="/assets/img/shop-interior.jpg" alt="Inside a barbershop with three empty barber chairs" width="1600" height="1062"></div>
   </div>
 </main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a href="/" class="logo">CUTZ<i></i></a>
+        <p class="f-tag">Your barber. 60 seconds away. Walk in or book ahead.</p>
+        <a class="store" data-store href="/download.html" aria-label="Cutz on the App Store">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
+          <span><small><span data-soon-only>Coming soon to the</span><span data-live-only>Download on the</span></small><b>App Store</b></span>
+        </a>
+      </div>
+      <div>
+        <h4>Customers</h4>
+        <ul><li><a href="/find.html">Find a barber</a></li><li><a href="/map.html">Barber map</a></li><li><a href="/mybookings.html">My bookings</a></li><li><a href="/download.html">Download the app</a></li></ul>
+      </div>
+      <div>
+        <h4>Business</h4>
+        <ul><li><a href="/barbers.html">Join as a barber</a></li><li><a href="/salons.html">For salons</a></li><li><a href="/barbers.html#pricing">Pricing</a></li></ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="/about.html">About</a></li><li><a href="/blog.html">Blog</a></li><li><a href="/faq.html">FAQ</a></li><li><a href="/contact.html">Contact</a></li></ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul><li><a href="/privacy.html">Privacy</a></li><li><a href="/terms.html">Terms</a></li></ul>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>© <span data-year>2026</span> Cutz. All rights reserved.</span>
+      <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

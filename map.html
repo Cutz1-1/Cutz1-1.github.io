@@ -6,7 +6,7 @@
 <script src="assets/appstore.js"></script>
 <title>Barber map — Cutz</title>
 <meta name="description" content="See barbers and barbershops on a live map. Filter by distance, walk-ins, rating and who's open now, then book online with Cutz.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://cutzapp.one/map.html">
 <meta name="apple-itunes-app" content="app-id=6811618000">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
@@ -15,159 +15,102 @@
 <link rel="preconnect" href="https://ukoovhgmbqfocalykhyx.supabase.co" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-:root{
-  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);
-  --mute:rgba(255,255,255,.64);--dim:rgba(255,255,255,.42);--faint:rgba(255,255,255,.08);
-  --line:rgba(255,255,255,.1);--card:#0a0a0a;--card-2:#121212;
-  --r:22px;--max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button,input,select{font:inherit;color:inherit}
-svg{display:block}
-::selection{background:var(--green);color:#000}
-:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
-.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
-.skip:focus{left:8px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-
-/* Nav */
-.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
-.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
-.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
-.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
-.nav-links a:not(.btn){transition:color .2s}
-.nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:var(--fg)}
-.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
-.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
-.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
-.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
-@media (max-width:900px){
-  .menu-btn{display:block}
-  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
-  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
-  .nav-links .btn{margin-top:20px;justify-content:center}
-  .nav.open{background:#000}
-  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
-}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s var(--ease),background .2s,border-color .2s;white-space:nowrap;cursor:pointer;border:0}
-.btn:active{transform:scale(.97)}
-.btn-green{background:var(--green);color:#000}
-.btn-green:hover{background:#1bff82}
-.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--fg);background:none}
-.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
-.btn-lg{height:54px;padding:0 26px;font-size:16px}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
-.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,220,100,.7);animation:pulse 2s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(0,220,100,0)}100%{box-shadow:0 0 0 0 rgba(0,220,100,0)}}
-
-
-/* Map page */
+/* Map page: full-height map under the sticky nav, list panel on the left */
 body.map-page{overflow:hidden;height:100vh;height:100dvh}
-.mapwrap{position:fixed;inset:68px 0 0 0;display:grid;grid-template-columns:380px 1fr}
-#map{position:relative;height:100%;background:#0d1110;z-index:1}
-.leaflet-container{background:#0d1110;font-family:inherit}
-.leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9) saturate(.6)}
-.leaflet-control-attribution{background:rgba(0,0,0,.7)!important;color:var(--dim)!important;font-size:10px}
-.leaflet-control-attribution a{color:var(--mute)!important}
-.leaflet-bar{border:1px solid var(--line)!important;box-shadow:none!important}
-.leaflet-bar a{background:#111!important;color:#fff!important;border-bottom-color:var(--line)!important}
-.leaflet-bar a:hover{background:#1c1c1c!important}
+.mapwrap{position:fixed;inset:var(--nav-h) 0 0 0;display:grid;grid-template-columns:380px 1fr;border-top:1px solid var(--line)}
+#map{position:relative;height:100%;background:#f2f2f0;z-index:1}
+.leaflet-container{background:#f2f2f0;font-family:inherit}
+/* Standard OSM tiles, greyed out so the black and green pins carry the colour */
+.leaflet-tile-pane{filter:grayscale(1) brightness(1.04) contrast(.92)}
+.leaflet-control-attribution{background:rgba(255,255,255,.85)!important;color:var(--ink-3)!important;font-size:10px}
+.leaflet-control-attribution a{color:var(--ink-2)!important}
+.leaflet-bar{border:0!important;box-shadow:var(--shadow)!important;border-radius:var(--r)!important;overflow:hidden}
+.leaflet-bar a{background:#fff!important;color:var(--fg)!important;border-bottom-color:var(--line)!important;width:40px!important;height:40px!important;line-height:40px!important}
+.leaflet-bar a:hover{background:var(--surface)!important}
 #map a.btn-green{color:#000}
-#map a.btn-ghost{color:#fff}
+#map a.btn-black{color:#fff}
+#map a.btn-light{color:var(--fg)}
 .pinx{background:none;border:0}
-.pill{display:inline-flex;align-items:center;gap:5px;transform:translate(-50%,-100%);white-space:nowrap;background:#fff;color:#000;font:800 12px/1 Inter,system-ui,sans-serif;padding:7px 10px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.55);cursor:pointer;transition:transform .2s var(--ease)}
-.pill::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;margin-left:-5px;background:inherit;transform:rotate(45deg);border-radius:2px;z-index:-1}
-.pill.open{background:var(--green)}
-.pill.salon{background:#111;color:#fff;border:1.5px solid var(--green)}
-.pill.salon::after{border-right:1.5px solid var(--green);border-bottom:1.5px solid var(--green)}
-.pill.sel{transform:translate(-50%,-100%) scale(1.15);box-shadow:0 0 0 4px rgba(0,220,100,.35),0 8px 22px rgba(0,0,0,.6)}
-.me-dot{width:18px;height:18px;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 10px rgba(59,130,246,.2);transform:translate(-50%,-50%)}
+.pill{display:inline-flex;align-items:center;gap:5px;transform:translate(-50%,-100%);white-space:nowrap;background:var(--fg);color:#fff;font:700 12px/1 Inter,system-ui,sans-serif;padding:8px 11px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;transition:transform .2s var(--ease);position:relative}
+.pill::after{content:"";position:absolute;left:50%;bottom:-4px;width:9px;height:9px;margin-left:-4.5px;background:inherit;transform:rotate(45deg);border-radius:2px;z-index:-1}
+.pill.open{background:var(--green);color:#000}
+.pill.salon{background:#fff;color:var(--fg);box-shadow:inset 0 0 0 2px var(--fg),0 4px 14px rgba(0,0,0,.2)}
+.pill.salon::after{box-shadow:2px 2px 0 0 var(--fg)}
+.pill.sel{transform:translate(-50%,-100%) scale(1.15);box-shadow:0 0 0 3px #fff,0 0 0 5px var(--fg),0 8px 22px rgba(0,0,0,.3)}
+.me-dot{width:18px;height:18px;border-radius:50%;background:#276ef1;border:3px solid #fff;box-shadow:0 0 0 10px rgba(39,110,241,.18),0 2px 6px rgba(0,0,0,.3);transform:translate(-50%,-50%)}
 
 /* Side panel */
-.panel{background:#000;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;z-index:2}
-.p-head{padding:20px 20px 12px}
-.p-head h1{font-size:28px;letter-spacing:-.03em;margin:0;font-weight:800}
-.p-head p{margin:4px 0 0;color:var(--dim);font-size:14px}
-.p-head p a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
-.fl{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 14px;border-bottom:1px solid var(--line)}
-.chip{height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line);background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--mute);transition:all .2s;display:inline-flex;align-items:center;gap:6px}
-.chip:hover{border-color:rgba(255,255,255,.3);color:var(--fg)}
-.chip.on{background:#fff;color:#000;border-color:#fff}
-.chip.loc.on{background:var(--green);border-color:var(--green)}
-.sel-dist{height:34px;border-radius:999px;border:1px solid var(--line);background:#000;padding:0 30px 0 13px;font-size:13px;color:var(--mute);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='3'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
-.sel-dist.on{border-color:#fff;color:var(--fg)}
-.list{flex:1;overflow:auto;padding:8px 12px 20px;min-height:0}
-.row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px;border-radius:16px;border:1px solid transparent;background:none;cursor:pointer;transition:background .2s,border-color .2s}
-.row:hover{background:#0d0d0d}
-.row.sel{border-color:var(--green);background:rgba(0,220,100,.06)}
-.av{width:48px;height:48px;border-radius:14px;flex:none;background:linear-gradient(135deg,#2a2a2a,#151515);display:grid;place-items:center;font-weight:800;overflow:hidden;border:1px solid var(--line)}
+.panel{background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;z-index:2}
+.p-head{padding:24px 20px 14px}
+.p-head h1{font-size:30px;letter-spacing:-.03em;margin:0;font-weight:800}
+.p-head p{margin:4px 0 0;color:var(--ink-3);font-size:14px}
+.p-head p a{color:var(--fg);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.fl{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 16px;border-bottom:1px solid var(--line)}
+.fl .chip{height:34px;font-size:13px;padding:0 13px}
+.chip.loc.on{background:var(--green);color:#000}
+.sel-dist{height:34px;border-radius:999px;border:0;background:var(--surface);padding:0 30px 0 13px;font:inherit;font-size:13px;font-weight:500;color:var(--fg);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.sel-dist:hover{background-color:var(--surface-2)}
+.sel-dist.on{background-color:var(--fg);color:#fff;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E")}
+.list{flex:1;overflow:auto;padding:8px 10px 20px;min-height:0}
+.row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:12px;border-radius:var(--r);border:0;background:none;cursor:pointer;transition:background .15s}
+.row:hover{background:var(--surface)}
+.row.sel{background:var(--surface);box-shadow:inset 3px 0 0 var(--fg)}
+.av{width:48px;height:48px;border-radius:50%;flex:none;background:var(--surface-2);display:grid;place-items:center;font-weight:800;overflow:hidden}
 .av img{width:100%;height:100%;object-fit:cover}
 .row .t{flex:1;min-width:0}
 .row b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row small{display:block;color:var(--dim);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row small{display:block;color:var(--ink-3);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row .pr{font-weight:700;font-size:14px;white-space:nowrap}
-.dotg{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:1px}
-.none{color:var(--dim);font-size:14px;text-align:center;padding:28px 12px}
+.dotg{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:1px}
+.none{color:var(--ink-3);font-size:14px;text-align:center;padding:28px 12px}
 
-/* Card */
-.card{position:absolute;z-index:500;left:20px;bottom:20px;width:340px;max-width:calc(100% - 40px);background:rgba(12,12,12,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6);transform:translateY(calc(100% + 40px));transition:transform .45s var(--ease)}
-.card.show{transform:none}
-.c-cover{height:130px;background:radial-gradient(70% 90% at 70% 10%,rgba(0,220,100,.18),transparent 60%),#111;position:relative;display:grid;place-items:center;font-size:44px;font-weight:900;color:rgba(255,255,255,.14)}
+/* Selected barber card */
+.mcard{position:absolute;z-index:500;left:20px;bottom:20px;width:350px;max-width:calc(100% - 40px);background:#fff;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg);transform:translateY(calc(100% + 40px));transition:transform .4s var(--ease)}
+.mcard.show{transform:none}
+.c-cover{height:140px;background:var(--surface);position:relative;display:grid;place-items:center;font-size:44px;font-weight:900;color:var(--ink-4)}
 .c-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.c-x{font-size:14px;color:#fff;position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:rgba(0,0,0,.7);cursor:pointer;display:grid;place-items:center;z-index:1}
+.c-x{font-size:14px;color:var(--fg);position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:0;background:#fff;box-shadow:var(--shadow);cursor:pointer;display:grid;place-items:center;z-index:1}
 .c-body{padding:16px 18px 18px}
-.c-name{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:0}
-.c-sub{color:var(--dim);font-size:13px;margin-top:2px}
-.c-tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
-.c-tags span{font-size:12px;padding:5px 10px;border-radius:999px;background:#1a1a1a;color:var(--mute)}
-.c-tags span.g{background:var(--green-dim);color:var(--green)}
+.c-name{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0}
+.c-sub{color:var(--ink-3);font-size:14px;margin-top:2px}
+.c-tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 16px}
+.c-tags span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;height:26px;padding:0 10px;border-radius:999px;background:var(--surface);color:var(--fg)}
+.c-tags span:empty{display:none}
+.c-tags span.g{background:var(--green-soft);color:var(--green-ink)}
+.c-tags span.g::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
 .c-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.c-btns .btn{height:44px}
+.c-btns .btn{height:46px;font-size:15px}
 
 /* Overlays */
-.ov{position:absolute;z-index:450;left:50%;top:50%;transform:translate(-50%,-50%);width:min(420px,calc(100% - 32px));background:rgba(8,8,8,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:26px;padding:28px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.ov{position:absolute;z-index:450;left:50%;top:50%;transform:translate(-50%,-50%);width:min(420px,calc(100% - 32px));background:#fff;border-radius:var(--r-lg);padding:32px 28px 28px;text-align:center;box-shadow:var(--shadow-lg)}
 .ov h2{margin:0 0 8px;font-size:26px;letter-spacing:-.03em}
-.ov p{margin:0 0 20px;color:var(--mute);font-size:15px}
+.ov p{margin:0 0 22px;color:var(--ink-2);font-size:15px}
 .ov .r{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.ov .x{font-size:13px;position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;display:grid;place-items:center;color:var(--dim)}
-.loading{position:absolute;z-index:450;left:50%;top:20px;transform:translateX(-50%);background:rgba(10,10,10,.9);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:13px;color:var(--mute);display:flex;align-items:center;gap:8px}
-.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--green);animation:sp .8s linear infinite}
+.ov .x{font-size:13px;position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:50%;border:0;background:var(--surface);cursor:pointer;display:grid;place-items:center;color:var(--ink-2)}
+.loading{position:absolute;z-index:450;left:50%;top:20px;transform:translateX(-50%);background:#fff;box-shadow:var(--shadow);border-radius:999px;padding:9px 16px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px}
+.spin{width:14px;height:14px;border-radius:50%;border:2px solid var(--surface-2);border-top-color:var(--fg);animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .grab{display:none}
 
 @media (max-width:900px){
   .mapwrap{grid-template-columns:1fr}
-  .panel{position:absolute;left:0;right:0;bottom:0;z-index:600;border-right:0;border-top:1px solid var(--line);border-radius:24px 24px 0 0;height:58%;transform:translateY(calc(100% - 132px));transition:transform .4s var(--ease);box-shadow:0 -20px 60px rgba(0,0,0,.5);padding-bottom:env(safe-area-inset-bottom)}
+  .panel{position:absolute;left:0;right:0;bottom:0;z-index:600;border-right:0;border-radius:24px 24px 0 0;height:58%;transform:translateY(calc(100% - 132px));transition:transform .4s var(--ease);box-shadow:0 -12px 40px rgba(0,0,0,.14);padding-bottom:env(safe-area-inset-bottom)}
   .panel.up{transform:none}
   .grab{display:block;width:100%;height:28px;border:0;background:none;cursor:pointer;position:relative;flex:none}
-  .grab::before{content:"";position:absolute;left:50%;top:10px;width:40px;height:4px;margin-left:-20px;border-radius:4px;background:#3a3a3a}
+  .grab::before{content:"";position:absolute;left:50%;top:10px;width:40px;height:4px;margin-left:-20px;border-radius:4px;background:var(--line-2)}
   .p-head{padding:0 16px 10px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-  .p-head h1{font-size:20px}
+  .p-head h1{font-size:22px}
   .p-head p{margin:0;font-size:13px}
   .fl{padding:0 16px 12px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .fl::-webkit-scrollbar{display:none}
   .fl>*{flex:none}
-  .card{left:12px;right:12px;width:auto;max-width:none;bottom:144px}
+  .mcard{left:12px;right:12px;width:auto;max-width:none;bottom:144px}
   .loading{top:12px}
   .ov{top:38%}
 }
-@media (prefers-reduced-motion:reduce){.pill,.card,.panel{transition:none}}
-footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
-.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
-.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
-.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.f-grid a{color:var(--mute);transition:color .2s}
-.f-grid a:hover{color:var(--fg)}
-.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
-.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
-@media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion:reduce){.pill,.mcard,.panel{transition:none}}
 </style>
 <!-- og -->
 <meta property="og:site_name" content="Cutz">
@@ -186,6 +129,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
 <meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <!-- /og -->
+<script src="assets/site.js" defer></script>
 </head>
 <body class="map-page">
 <a class="skip" href="#list">Skip to barber list</a>
@@ -195,13 +139,11 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     <a href="index.html" class="logo" aria-label="Cutz home">CUTZ<i></i></a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
     <nav class="nav-links" id="navLinks" aria-label="Main">
-      <a href="find.html">Find a barber</a>
-      <a href="map.html" aria-current="page">Map</a>
+      <a href="find.html" aria-current="page">Find a barber</a>
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
-      <a href="faq.html">FAQ</a>
       <a href="mybookings.html">My bookings</a>
-      <a href="download.html" class="btn btn-green">Get the app</a>
+      <a href="download.html" class="btn btn-black btn-sm">Get the app</a>
     </nav>
   </div>
 </header>
@@ -214,11 +156,11 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     <div class="p-head"><h1>Barber map</h1><p><span id="count">Loading…</span> · <a href="find.html">List view</a></p></div>
     <div class="fl" role="group" aria-label="Filters">
       <button class="chip loc" id="locate" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/></svg>Locate me</button>
-      <label class="sr" for="dist">Distance</label>
+      <label class="sr-only" for="dist">Distance</label>
       <select class="sel-dist" id="dist"><option value="">Any distance</option><option value="1">Within 1 km</option><option value="2">Within 2 km</option><option value="5">Within 5 km</option><option value="10">Within 10 km</option><option value="25">Within 25 km</option><option value="50">Within 50 km</option></select>
       <button class="chip" data-f="open" aria-pressed="false">Open now</button>
       <button class="chip" data-f="walkin" aria-pressed="false">Walk-ins</button>
-      <label class="sr" for="minRating">Minimum rating</label>
+      <label class="sr-only" for="minRating">Minimum rating</label>
       <select class="sel-dist" id="minRating"><option value="">Any rating</option><option value="3">★ 3+</option><option value="3.5">★ 3.5+</option><option value="4">★ 4+</option><option value="4.5">★ 4.5+</option><option value="5">★ 5</option></select>
     </div>
     <div class="list" id="list" aria-live="polite"></div>
@@ -226,44 +168,43 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   <div id="map" role="application" aria-label="Map of barbers">
     <div class="loading" id="loading"><span class="spin"></span>Loading barbers…</div>
     <div class="ov" id="ov" hidden></div>
-    <article class="card" id="card" aria-live="polite"></article>
+    <article class="mcard" id="card" aria-live="polite"></article>
   </div>
 </div>
 </main>
 
-<footer hidden>
+<footer class="footer" hidden>
   <div class="wrap">
     <div class="f-grid">
       <div>
         <a href="index.html" class="logo">CUTZ<i></i></a>
-        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+        <p class="f-tag">Your barber. 60 seconds away. Walk in or book ahead.</p>
+        <a class="store" data-store href="download.html" aria-label="Cutz on the App Store">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
+          <span><small><span data-soon-only>Coming soon to the</span><span data-live-only>Download on the</span></small><b>App Store</b></span>
+        </a>
       </div>
       <div>
-        <h4>Product</h4>
-        <ul>
-          <li><a href="find.html">Find a barber</a></li><li><a href="map.html" aria-current="page">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
-        </ul>
+        <h4>Customers</h4>
+        <ul><li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="download.html">Download the app</a></li></ul>
       </div>
       <div>
         <h4>Business</h4>
-        <ul>
-          <li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li>
-        </ul>
+        <ul><li><a href="barbers.html">Join as a barber</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li></ul>
       </div>
       <div>
         <h4>Company</h4>
-        <ul>
-          <li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li>
-        </ul>
+        <ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul>
       </div>
       <div>
         <h4>Legal</h4>
-        <ul>
-          <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li>
-        </ul>
+        <ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul>
       </div>
     </div>
-    <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
+    <div class="f-bot">
+      <span>© <span data-year>2026</span> Cutz. All rights reserved.</span>
+      <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>
+    </div>
   </div>
 </footer>
 
@@ -278,8 +219,6 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   var APP_STORE='download.html';
   var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-  var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');
-  mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
 
   var H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY};
   function get(p){return fetch(SB_URL+'/rest/v1/'+p,{headers:H}).then(function(r){if(!r.ok)throw r;return r.json()})}
@@ -315,7 +254,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   }).catch(function(){
     document.getElementById('loading').remove();
     document.getElementById('count').textContent='Couldn\'t load';
-    ov.hidden=false;ov.innerHTML='<h2>Couldn\'t load barbers</h2><p>Check your connection and try again.</p><div class="r"><button class="btn btn-green" onclick="location.reload()">Try again</button></div>';
+    ov.hidden=false;ov.innerHTML='<h2>Couldn\'t load barbers</h2><p>Check your connection and try again.</p><div class="r"><button class="btn btn-black" onclick="location.reload()">Try again</button></div>';
   });
 
   function icon(x){
@@ -325,7 +264,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   }
   function showEmpty(){
     ov.hidden=false;
-    ov.innerHTML='<button class="x" id="ovx" aria-label="Dismiss">✕</button><h2>Barbers are joining now</h2><p>Cutz has only just launched. The first barbers are setting up and will appear on this map as soon as they go live.</p><div class="r"><a class="btn btn-green" data-store href="'+APP_STORE+'">Get the app</a><a class="btn btn-ghost" href="barbers.html">I\'m a barber</a></div>';
+    ov.innerHTML='<button class="x" id="ovx" aria-label="Dismiss">✕</button><h2>Barbers are joining now</h2><p>Cutz has only just launched. The first barbers are setting up and will appear on this map as soon as they go live.</p><div class="r"><a class="btn btn-black" data-store href="'+APP_STORE+'">Get the app</a><a class="btn btn-light" href="barbers.html">Join as a barber</a></div>';
     document.getElementById('ovx').onclick=function(){ov.hidden=true};
   }
 
@@ -369,7 +308,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     if(x._d!=null)tags.push('<span>'+fmtKm(x._d)+' away</span>');
     card.innerHTML='<div class="c-cover">'+(cover?'<img src="'+esc(cover)+'" alt="">':esc(ini(x.name)))+'<button class="c-x" id="cx" aria-label="Close">✕</button></div>'+
       '<div class="c-body"><h2 class="c-name">'+esc(x.name)+'</h2><div class="c-sub">'+esc(x._salon?(x.address||''):[x.salon,x.address].filter(Boolean).join(' · '))+'</div><div class="c-tags">'+tags.join('')+'</div>'+
-      '<div class="c-btns">'+(x._salon?'<a class="btn btn-green" href="'+href+'#team">See the team</a><a class="btn btn-ghost" href="'+href+'">View salon</a>':'<a class="btn btn-green" href="'+href+'#booker">Book now</a><a class="btn btn-ghost" href="'+href+'">View profile</a>')+'</div></div>';
+      '<div class="c-btns">'+(x._salon?'<a class="btn btn-green" href="'+href+'#team">See the team</a><a class="btn btn-light" href="'+href+'">View salon</a>':'<a class="btn btn-green" href="'+href+'#booker">Book now</a><a class="btn btn-light" href="'+href+'">View profile</a>')+'</div></div>';
     card.classList.add('show');
     document.getElementById('cx').onclick=closeCard;
   }

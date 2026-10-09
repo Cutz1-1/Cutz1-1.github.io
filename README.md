@@ -15,11 +15,15 @@ Marketing site and web booking for the Cutz app, served at https://cutzapp.one v
 | `download.html` | App Store download page ("in review" until Apple approves the app) |
 | `about.html`, `blog.html`, `faq.html`, `contact.html` | Company pages |
 | `privacy.html`, `terms.html` | Legal |
+| `assets/site.css` | Shared design system (light theme, Inter, green #00dc64 for key CTAs only): tokens, nav, buttons, forms, cards, footer |
+| `assets/site.js` | Shared behaviour: mobile menu, reveal on scroll, copy buttons, footer year, LAUNCH code status |
+| `assets/img/` | Barbershop photos (Unsplash, free licence) and real app screenshots (`app-*.jpg`) |
 | `assets/appstore.js` | App Store auto-switch, loaded in every page's `<head>` |
 | `assets/cutz-auth.js` | Shared customer sign-in (email + 6-digit code, no password) for barber, mybookings and reset pages |
 | `404.html` | Not-found page; also forwards the app's `/b/<id>` and `/s/<id>` share links |
 
-Plain HTML/CSS/JS, no build step. Live data comes from Supabase public views (`barbers_public`, `salons_public`,
+Plain HTML/CSS/JS, no build step. Every page loads `assets/site.css` and `assets/site.js` and uses the same nav and
+footer markup; page-specific layout stays in that page's own `<style>`. Live data comes from Supabase public views (`barbers_public`, `salons_public`,
 `reviews`) with the public anon key; bookings go through the same RLS-protected `bookings` table as the app, so a
 customer account is required. The App Store review account is hidden from listings.
 

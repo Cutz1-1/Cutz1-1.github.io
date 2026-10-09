@@ -6,7 +6,7 @@
 <script src="assets/appstore.js"></script>
 <title>Contact — Cutz</title>
 <meta name="description" content="Get in touch with Cutz support about bookings, barber and salon accounts, billing or your data.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://cutzapp.one/contact.html">
 <meta name="apple-itunes-app" content="app-id=6811618000">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Ctext x='46' y='70' font-family='Helvetica,Arial,sans-serif' font-size='60' font-weight='900' fill='%23fff' text-anchor='middle'%3EC%3C/text%3E%3Ccircle cx='80' cy='66' r='7' fill='%2300dc64'/%3E%3C/svg%3E">
@@ -14,102 +14,31 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://ukoovhgmbqfocalykhyx.supabase.co" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-:root{
-  --bg:#000;--fg:#fff;--green:#00dc64;--green-dim:rgba(0,220,100,.14);
-  --mute:rgba(255,255,255,.64);--dim:rgba(255,255,255,.42);--faint:rgba(255,255,255,.08);
-  --line:rgba(255,255,255,.1);--card:#0a0a0a;--card-2:#121212;
-  --r:22px;--max:1180px;--gutter:clamp(16px,4vw,32px);--ease:cubic-bezier(.2,.7,.2,1);
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button,input,select{font:inherit;color:inherit}
-svg{display:block}
-::selection{background:var(--green);color:#000}
-:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
-.skip{position:absolute;left:-999px;top:8px;background:var(--green);color:#000;padding:8px 14px;border-radius:8px;font-weight:700;z-index:100}
-.skip:focus{left:8px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-
-/* Nav */
-.nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(18px);-webkit-backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line)}
-.nav-in{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.logo{font-weight:900;font-size:22px;letter-spacing:.14em;display:inline-flex;align-items:baseline}
-.logo i{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-left:3px}
-.nav-links{display:flex;align-items:center;gap:32px;font-size:14px;font-weight:500;color:var(--mute)}
-.nav-links a:not(.btn){transition:color .2s}
-.nav-links a:not(.btn):hover,.nav-links a[aria-current]{color:var(--fg)}
-.menu-btn{display:none;background:none;border:0;color:var(--fg);width:44px;height:44px;margin-right:-10px;cursor:pointer}
-.menu-btn span{display:block;width:20px;height:2px;background:currentColor;margin:5px auto;transition:transform .3s var(--ease)}
-.nav.open .menu-btn span:first-child{transform:translateY(3.5px) rotate(45deg)}
-.nav.open .menu-btn span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
-@media (max-width:900px){
-  .menu-btn{display:block}
-  .nav-links{position:fixed;inset:68px 0 auto;flex-direction:column;align-items:stretch;gap:0;background:#000;border-bottom:1px solid var(--line);padding:8px var(--gutter) 24px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .3s var(--ease)}
-  .nav-links a:not(.btn){padding:16px 0;border-bottom:1px solid var(--line);font-size:18px;color:var(--fg)}
-  .nav-links .btn{margin-top:20px;justify-content:center}
-  .nav.open{background:#000}
-  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
-}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .2s var(--ease),background .2s,border-color .2s;white-space:nowrap;cursor:pointer;border:0}
-.btn:active{transform:scale(.97)}
-.btn-green{background:var(--green);color:#000}
-.btn-green:hover{background:#1bff82}
-.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--fg);background:none}
-.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
-.btn-lg{height:54px;padding:0 26px;font-size:16px}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
-.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(0,220,100,.7);animation:pulse 2s infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(0,220,100,0)}100%{box-shadow:0 0 0 0 rgba(0,220,100,0)}}
-
-
-/* Contact */
-.c-hero{padding:clamp(128px,15vw,170px) 0 48px;position:relative}
-.c-hero::before{content:"";position:absolute;inset:0 0 -40%;background:radial-gradient(40% 60% at 80% 10%,rgba(0,220,100,.13),transparent 70%);pointer-events:none}
-.c-hero h1{font-size:clamp(44px,8vw,96px);line-height:.95;letter-spacing:-.045em;font-weight:900;margin:18px 0 0;position:relative}
-.c-hero h1 span{color:var(--green)}
-.lead{font-size:clamp(17px,1.6vw,20px);color:var(--mute);max-width:560px;margin:24px 0 0;position:relative}
-.c-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:clamp(24px,4vw,48px);padding-bottom:120px;align-items:start}
+.c-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:clamp(24px,4vw,48px);padding-bottom:clamp(72px,9vw,120px);align-items:start}
 @media (max-width:900px){.c-grid{grid-template-columns:1fr}}
-.c-form{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:clamp(22px,4vw,36px);position:relative}
+.c-form{background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);padding:clamp(22px,4vw,40px);position:relative;box-shadow:var(--shadow)}
 .c-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media (max-width:560px){.c-row{grid-template-columns:1fr;gap:0}}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:13px;font-weight:600;color:var(--mute);margin-bottom:7px}
-.field input,.field select,.field textarea{width:100%;padding:0 14px;height:50px;border-radius:14px;border:1px solid var(--line);background:#141414;font-size:16px;outline:none;transition:border-color .2s;font-family:inherit;color:#fff}
-.field textarea{height:auto;padding:14px;resize:vertical;min-height:150px;line-height:1.5}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green)}
-.field .bad{border-color:#ff5a5a}
-.count{text-align:right;font-size:12px;color:var(--dim);margin-top:6px;font-variant-numeric:tabular-nums}
-.err{color:#ff8a8a;background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.25);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:14px}
-.fine{font-size:13px;color:var(--dim);margin:14px 0 0}
-.done{position:absolute;inset:0;background:var(--card);border-radius:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;animation:fade .4s var(--ease)}
-.done[hidden]{display:none}
-.done h2{margin:0 0 8px;font-size:28px;letter-spacing:-.03em}
-.done p{color:var(--mute);max-width:360px;margin:0 0 24px}
+.c-form .field{margin-bottom:16px}
+.field .bad{border-color:var(--red)!important;background:#fff}
+.count{text-align:right;font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.err{padding:12px 14px;border-radius:var(--r);background:var(--red-soft);color:var(--red);font-size:15px;margin-bottom:16px}
+.fine{font-size:14px;color:var(--ink-3);margin:14px 0 0}
+.done{position:absolute;inset:0;background:#fff;border-radius:var(--r-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;animation:fade .4s var(--ease)}
+.done h2{margin:0 0 8px;font-size:30px;letter-spacing:-.03em}
+.done p{color:var(--ink-2);max-width:360px;margin:0 0 24px}
 .ok-ic{width:68px;height:68px;border-radius:50%;background:var(--green);color:#000;display:grid;place-items:center;margin-bottom:20px}
 @keyframes fade{from{opacity:0;transform:scale(.98)}}
 .c-side{display:grid;gap:12px}
-.box{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px}
-.box h3{margin:0 0 8px;font-size:16px}
-.box p{margin:0;color:var(--mute);font-size:15px}
-.mail{color:var(--green);font-weight:600;font-size:17px;word-break:break-all}
+.box{background:var(--surface);border-radius:var(--r-lg);padding:24px}
+.box h3{margin:0 0 8px;font-size:17px}
+.box p{margin:0;color:var(--ink-2);font-size:15px}
+.mail{color:var(--fg);font-weight:700;font-size:17px;word-break:break-all;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--green);text-decoration-thickness:2px}
 .links{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.links a{color:var(--mute);font-size:15px}
-.links a:hover{color:#fff}
-footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
-.f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}
-.f-grid h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 18px;font-weight:600}
-.f-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.f-grid a{color:var(--mute);transition:color .2s}
-.f-grid a:hover{color:var(--fg)}
-.f-tag{color:var(--dim);margin:16px 0 0;max-width:280px}
-.f-bot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:64px;padding-top:28px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
-@media (max-width:860px){.f-grid{grid-template-columns:1fr 1fr}.f-grid>div:first-child{grid-column:1/-1}}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.links a{color:var(--ink-2);font-size:15px;font-weight:500}
+.links a:hover{color:var(--fg)}
 </style>
 <!-- og -->
 <meta property="og:site_name" content="Cutz">
@@ -128,6 +57,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
 <meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <!-- /og -->
+<script src="assets/site.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#form">Skip to form</a>
@@ -138,21 +68,19 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
     <nav class="nav-links" id="navLinks" aria-label="Main">
       <a href="find.html">Find a barber</a>
-      <a href="map.html">Map</a>
       <a href="barbers.html">For barbers</a>
       <a href="salons.html">For salons</a>
-      <a href="faq.html">FAQ</a>
       <a href="mybookings.html">My bookings</a>
-      <a href="download.html" class="btn btn-green">Get the app</a>
+      <a href="download.html" class="btn btn-black btn-sm">Get the app</a>
     </nav>
   </div>
 </header>
 
-<main>
-  <section class="c-hero">
+<main id="main">
+  <section class="page-head">
     <div class="wrap">
-      <div class="eyebrow">Contact</div>
-      <h1>We're here<br><span>to help.</span></h1>
+      <div class="eyebrow"><span class="dot"></span>Contact</div>
+      <h1 class="h-xl">We're here to help.</h1>
       <p class="lead">Questions about a booking, your barber account or anything else? Send us a message and a real person will get back to you.</p>
     </div>
   </section>
@@ -160,11 +88,11 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   <section class="wrap c-grid">
     <form class="c-form" id="form" novalidate>
       <div class="c-row">
-        <div class="field"><label for="name">Name</label><input id="name" autocomplete="name" required></div>
-        <div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" required></div>
+        <div class="field"><label for="name">Name</label><input class="input" id="name" autocomplete="name" required></div>
+        <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="email" autocapitalize="off" spellcheck="false" required></div>
       </div>
       <div class="field"><label for="topic">Topic</label>
-        <select id="topic">
+        <select class="select" id="topic">
           <option>Help with a booking</option>
           <option>Barber or salon account</option>
           <option>Billing and subscription</option>
@@ -174,7 +102,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
           <option>Something else</option>
         </select>
       </div>
-      <div class="field"><label for="msg">Message</label><textarea id="msg" rows="7" maxlength="500" required placeholder="Tell us what's going on. If it's about a booking, include the barber and date."></textarea><div class="count"><span id="cnt">0</span> / 500</div></div>
+      <div class="field"><label for="msg">Message</label><textarea class="textarea" id="msg" rows="7" maxlength="500" required placeholder="Tell us what's going on. If it's about a booking, include the barber and date."></textarea><div class="count"><span id="cnt">0</span> / 500</div></div>
       <div class="err" id="err" role="alert" hidden></div>
       <button class="btn btn-green btn-lg" id="send" type="submit">Send message</button>
       <p class="fine" id="how">This opens your email app with the message ready to send to cutz.support@gmail.com.</p>
@@ -182,7 +110,7 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
         <div class="ok-ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
         <h2 id="doneTitle">Message sent</h2>
         <p id="doneText">Thanks for getting in touch. We'll reply to your email as soon as we can.</p>
-        <button class="btn btn-ghost" type="button" id="again">Send another message</button>
+        <button class="btn btn-outline" type="button" id="again">Send another message</button>
       </div>
     </form>
 
@@ -213,44 +141,40 @@ footer{border-top:1px solid var(--line);padding:72px 0 40px;font-size:14px}
   </section>
 </main>
 
-<footer>
+<footer class="footer">
   <div class="wrap">
     <div class="f-grid">
       <div>
         <a href="index.html" class="logo">CUTZ<i></i></a>
-        <p class="f-tag">Book your barber in seconds. Walk in or book ahead.</p>
+        <p class="f-tag">Your barber. 60 seconds away. Walk in or book ahead.</p>
+        <a class="store" data-store href="download.html" aria-label="Cutz on the App Store">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
+          <span><small><span data-soon-only>Coming soon to the</span><span data-live-only>Download on the</span></small><b>App Store</b></span>
+        </a>
       </div>
       <div>
-        <h4>Product</h4>
-        <ul>
-          <li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="index.html#how">How it works</a></li><li><a href="download.html">Download the app</a></li>
-        </ul>
+        <h4>Customers</h4>
+        <ul><li><a href="find.html">Find a barber</a></li><li><a href="map.html">Barber map</a></li><li><a href="mybookings.html">My bookings</a></li><li><a href="download.html">Download the app</a></li></ul>
       </div>
       <div>
         <h4>Business</h4>
-        <ul>
-          <li><a href="barbers.html">For barbers</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li>
-        </ul>
+        <ul><li><a href="barbers.html">Join as a barber</a></li><li><a href="salons.html">For salons</a></li><li><a href="barbers.html#pricing">Pricing</a></li></ul>
       </div>
       <div>
         <h4>Company</h4>
-        <ul>
-          <li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html" aria-current="page">Contact</a></li>
-        </ul>
+        <ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul>
       </div>
       <div>
         <h4>Legal</h4>
-        <ul>
-          <li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li>
-        </ul>
+        <ul><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul>
       </div>
     </div>
-    <div class="f-bot"><span>© <span data-year>2026</span> Cutz. All rights reserved.</span><a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a></div>
+    <div class="f-bot">
+      <span>© <span data-year>2026</span> Cutz. All rights reserved.</span>
+      <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>
+    </div>
   </div>
 </footer>
-<script>
-(function(){var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear()})})();
-</script>
 <script>
 (function(){
   var SB_URL='https://ukoovhgmbqfocalykhyx.supabase.co';
