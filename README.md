@@ -8,14 +8,14 @@ Marketing site and web booking for the Cutz app, served at https://cutzapp.one v
 | `find.html`, `map.html` | Old URLs: forward to `index.html` with the same search (`map.html` opens the map view) |
 | `barber.html?id=` | Barber profile: book (service → time → details → email code), walk-in queue, waitlist, reviews |
 | `salon.html?id=` | Salon profile and team |
-| `barbers.html`, `salons.html` | For barbers / for salons, pricing, LAUNCH3 code section; barbers.html has the early-access "Join as a barber" form |
+| `barbers.html`, `salons.html` | For barbers / for salons, pricing; barbers.html has the early-access "Join as a barber" form |
 | `mybookings.html` | Customer bookings: upcoming, past, waitlist; cancel and change time |
 | `reset-password.html` | Request a reset email and set a new password |
 | `download.html` | App Store download page ("in review" until Apple approves the app) |
 | `about.html`, `blog.html`, `faq.html`, `contact.html` | Company pages |
 | `privacy.html`, `terms.html` | Legal |
 | `assets/site.css` | Shared design system (light theme, Inter, green #00dc64 for key CTAs only): tokens, nav, buttons, forms, cards, footer |
-| `assets/site.js` | Shared behaviour: mobile menu, reveal on scroll, copy buttons, footer year, LAUNCH3 code status, "Log in" → "My account" when signed in |
+| `assets/site.js` | Shared behaviour: mobile menu, reveal on scroll, copy buttons, footer year, "Log in" → "My account" when signed in |
 | `assets/img/` | Barbershop photos (Unsplash, free licence) |
 | `assets/appstore.js` | App Store auto-switch, loaded in every page's `<head>` |
 | `assets/cutz-auth.js` | Shared customer sign-in (email + 6-digit code, no password) for barber, mybookings and reset pages |

@@ -182,18 +182,6 @@ a:hover>.arrow,button:hover>.arrow{transform:translateX(3px)}
 .searchbar input::placeholder{color:var(--ink-3)}
 .searchbar input::-webkit-search-cancel-button{-webkit-appearance:none}
 
-/* ---------- LAUNCH offer ---------- */
-.offer{background:var(--fg);color:#fff;border-radius:var(--r-xl);padding:clamp(28px,4vw,48px);position:relative;overflow:hidden}
-.offer .eyebrow{color:rgba(255,255,255,.7)}
-.offer-code{font-size:clamp(48px,7vw,88px);font-weight:900;letter-spacing:.04em;line-height:1;margin:18px 0 10px}
-.offer-code::after{content:"";display:inline-block;width:.16em;height:.16em;border-radius:50%;background:var(--green);margin-left:.06em}
-.offer-sub{font-size:22px;font-weight:700}
-.offer-note{color:rgba(255,255,255,.66);font-size:15px;margin-top:6px}
-.offer-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:26px}
-.offer .status{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:rgba(255,255,255,.8)}
-.status .sdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
-.status.off .sdot{background:#ff6b5e}
-
 /* ---------- Footer ---------- */
 .footer{background:var(--fg);color:#fff;padding:72px 0 36px;font-size:15px;margin-top:0}
 .f-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px}

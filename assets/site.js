@@ -1,6 +1,6 @@
 /* Shared page behaviour: mobile menu, nav border on scroll, reveal-on-scroll,
- * copy buttons ([data-copy]), footer year ([data-year]) and the LAUNCH3 code
- * status ([data-launch-status]). Loaded with `defer` on every page. */
+ * copy buttons ([data-copy]), footer year ([data-year]) and the "Log in" label.
+ * Loaded with `defer` on every page. */
 (function () {
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -43,23 +43,4 @@
   } catch (e) {}
 
   document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
-
-  var status = document.querySelectorAll('[data-launch-status]');
-  if (status.length) {
-    var SB_URL = 'https://ukoovhgmbqfocalykhyx.supabase.co';
-    // Public anon key: only reaches RLS-protected public views and RPCs.
-    var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrb292aGdtYnFmb2NhbHlraHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTIxMzksImV4cCI6MjA5NzM4ODEzOX0.sgPaplaU840VLD89UgV1fIlQcfDXMOVonhMXdvjlzl4';
-    fetch(SB_URL + '/rest/v1/rpc/check_referral_code', {
-      method: 'POST',
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_code: 'LAUNCH3' })
-    }).then(function (r) { return r.json(); }).then(function (d) {
-      status.forEach(function (el) {
-        el.hidden = false;
-        var t = el.querySelector('.txt');
-        if (d && d.valid) t.textContent = 'Live: still available';
-        else { el.classList.add('off'); t.textContent = 'All 10 spots have been claimed'; }
-      });
-    }).catch(function () {});
-  }
 })();

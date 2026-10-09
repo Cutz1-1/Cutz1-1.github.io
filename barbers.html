@@ -34,16 +34,6 @@
 .hero-pop b{font-weight:700}
 @media (max-width:960px){.hero-grid{grid-template-columns:1fr}.hero-media{aspect-ratio:4/3.2}}
 
-/* ---------- LAUNCH3 ---------- */
-.code-row{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(20px,4vw,56px);align-items:center;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.code-name{display:grid;gap:6px}
-.code-name b{font-size:clamp(40px,5vw,56px);font-weight:900;letter-spacing:.03em;line-height:1}
-.code-facts{list-style:none;margin:0;padding:0;display:flex;gap:clamp(20px,4vw,48px);flex-wrap:wrap}
-.code-facts li{display:grid;gap:2px}
-.code-facts b{font-size:18px}
-.code-facts span{color:var(--ink-3);font-size:14px}
-.code-row .status{display:inline-flex;align-items:center;gap:8px}
-@media (max-width:760px){.code-row{grid-template-columns:1fr}.code-row .btn{justify-self:start}}
 
 /* ---------- Why ---------- */
 .why{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px)}
@@ -223,20 +213,6 @@ body.jm-lock{overflow:hidden}
           <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>
           <span><b>New booking</b><small>Skin fade · Today 14:30</small></span>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- LAUNCH3: the only place a referral code appears on the site -->
-  <section class="sec-tight" style="padding-top:0" id="launch" aria-labelledby="launch-h">
-    <div class="wrap">
-      <div class="code-row rv">
-        <div class="code-name"><span class="eyebrow">Launch offer</span><b id="launch-h">LAUNCH3</b></div>
-        <ul class="code-facts">
-          <li><b>3 months free</b><span>Nothing to pay for your first 3 months</span></li>
-          <li><b>First 10 barbers only</b><span class="status" data-launch-status hidden><span class="sdot"></span><span class="txt"></span></span></li>
-        </ul>
-        <button class="btn btn-black" type="button" data-copy="LAUNCH3">Copy code</button>
       </div>
     </div>
   </section>
@@ -484,13 +460,6 @@ body.jm-lock{overflow:hidden}
       out.textContent=n;total.textContent=(BASE+PER_STAFF*n).toLocaleString('en');
     });
   });
-
-  // Pre-fill the join form's referral code while LAUNCH3 still has spots.
-  // (The on-page LAUNCH3 status is filled in by assets/site.js.)
-  fetch(SB_URL+'/rest/v1/rpc/check_referral_code',{method:'POST',headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_code:'LAUNCH3'})})
-    .then(function(r){return r.json()}).then(function(d){
-      var jc=document.getElementById('jmCode');if(d&&d.valid&&jc&&!jc.value)jc.value='LAUNCH3';
-    }).catch(function(){});
 
   // Join as a barber: early-access list while the app is in App Store review.
   // join_barber_early_access stores the sign-up and emails support; no account yet.
