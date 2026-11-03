@@ -105,7 +105,7 @@ tr:last-child td{border-bottom:0}
     <div class="wrap">
       <div class="eyebrow">Legal</div>
       <h1>Privacy Policy</h1>
-      <div class="meta"><span>Effective 5 October 2026</span><span>GDPR</span><span>Applies to the Cutz app and cutzapp.one</span></div>
+      <div class="meta"><span>Effective 3 November 2026</span><span>GDPR</span><span>Applies to the Cutz app and cutzapp.one</span></div>
       <div class="summary">
         <div><b>We don't sell your data.</b>We don't sell it or rent it out, and nobody pays us to target you with ads.</div>
         <div><b>You're in control.</b>You can delete your account in the app at any time, and ask us for a copy of your data.</div>
@@ -164,7 +164,7 @@ tr:last-child td{border-bottom:0}
           <li><strong>Technical data:</strong> app version, device type, operating system, language/region settings, IP address and error logs, used to keep the Service secure and working.</li>
         </ul>
         <h3>Payment data (barbers and salons)</h3>
-        <p>Barber and salon subscriptions are processed by <strong>Stripe</strong>. Your full card details go directly to Stripe and are never stored on Cutz servers. We receive and keep your subscription status, plan, billing period, a Stripe customer identifier and payment outcomes.</p>
+        <p>Barber and salon subscriptions are bought through <strong>Apple In-App Purchase</strong> and managed with <strong>RevenueCat</strong>. Apple handles the payment, and your card details are never shared with or stored by Cutz. We receive and keep your subscription status, plan, billing period, a RevenueCat customer identifier (or, for legacy subscribers, a Stripe customer identifier) and payment outcomes. Existing subscribers who signed up before In-App Purchase was introduced continue to be billed by <strong>Stripe</strong>, which handles their card details directly.</p>
         <p><strong>Customers never pay through Cutz</strong>, and we don't collect customer payment details.</p>
       </section>
 
@@ -206,8 +206,9 @@ tr:last-child td{border-bottom:0}
           <thead><tr><th>Provider</th><th>What they do</th></tr></thead>
           <tbody>
             <tr><td>Supabase</td><td>Database, authentication, file storage (photos) and server functions that host the Service</td></tr>
-            <tr><td>Stripe</td><td>Processes barber and salon subscription payments</td></tr>
-            <tr><td>Apple</td><td>App distribution, push notification delivery (APNs), maps and Apple Pay</td></tr>
+            <tr><td>Apple</td><td>App distribution, barber and salon subscription payments (In-App Purchase), push notification delivery (APNs) and maps</td></tr>
+            <tr><td>RevenueCat</td><td>Manages barber and salon subscriptions and verifies purchase status</td></tr>
+            <tr><td>Stripe</td><td>Processes subscription payments for existing subscribers who signed up before In-App Purchase</td></tr>
             <tr><td>Expo</td><td>Delivers push notifications to your device</td></tr>
             <tr><td>Email delivery providers</td><td>Send verification, password reset and account emails</td></tr>
             <tr><td>Google</td><td>Serves the web font on cutzapp.one; opens Google Maps directions if you choose to on a non-Apple device</td></tr>
@@ -272,13 +273,13 @@ tr:last-child td{border-bottom:0}
 
       <section id="website">
         <h2><span class="n">11</span>This website and cookies</h2>
-        <p>cutzapp.one does not set cookies and does not use analytics or advertising trackers. Loading the site fetches its font from Google Fonts and requests public information from our servers, such as barber profiles and whether a referral code is still available. The map page also loads map images from OpenStreetMap and the Leaflet map library from the cdnjs content network (Cloudflare). All of these requests send your IP address to the provider, as happens whenever you load any web page. If you press "Near me" or "Locate me", your browser asks for your location; it is used only on your device to sort barbers by distance and is never sent to us.</p>
+        <p>cutzapp.one does not set cookies and does not use analytics or advertising trackers. Loading the site fetches its font from Google Fonts and requests public information from our servers, such as barber profiles. The map page also loads map images from OpenStreetMap and the Leaflet map library from the cdnjs content network (Cloudflare). All of these requests send your IP address to the provider, as happens whenever you load any web page. If you press "Near me" or "Locate me", your browser asks for your location; it is used only on your device to sort barbers by distance and is never sent to us.</p>
         <p>If you sign in or create an account to book on the website, your login session is kept in your browser's local storage so you stay signed in. This is strictly necessary for the booking to work, so it doesn't need consent. It's removed when you sign out or clear your browser data. Bookings made on the web are handled exactly like bookings made in the app.</p>
       </section>
 
       <section id="security">
         <h2><span class="n">12</span>Security</h2>
-        <p>Data is encrypted in transit (TLS) and at rest. Access is controlled with row-level security, so each user can only reach the data they're allowed to see. Passwords are hashed, and card details are handled only by Stripe. No system is 100% secure, but if a breach affects your data we'll notify you and the relevant authority as the law requires.</p>
+        <p>Data is encrypted in transit (TLS) and at rest. Access is controlled with row-level security, so each user can only reach the data they're allowed to see. Passwords are hashed, and subscription payments are handled by Apple (or Stripe, for existing subscribers), so Cutz never sees your card details. No system is 100% secure, but if a breach affects your data we'll notify you and the relevant authority as the law requires.</p>
       </section>
 
       <section id="children">
