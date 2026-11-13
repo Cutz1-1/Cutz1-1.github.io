@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="assets/appstore.js"></script>
-<title>Cutz — Find and book a barber near you</title>
-<meta name="description" content="Find barbers near you, compare prices and reviews, see who's free right now and book online. Free for customers.">
+<title>Cutz — Book a barber in Copenhagen</title>
+<meta name="description" content="See which barbers in Copenhagen have a chair free, compare prices and reviews, and book in a few taps. Free for customers.">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://cutzapp.one/">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -17,10 +17,14 @@
 <link rel="stylesheet" href="assets/site.css">
 <style>
 /* Hero: big centred search */
-.hero{padding:clamp(40px,7vw,96px) 0 clamp(24px,3vw,36px);text-align:center}
-.hero h1{font-size:clamp(38px,6vw,72px);line-height:1.02;letter-spacing:-.04em;font-weight:800;margin:0}
-.hero .lead{margin:16px auto 0;max-width:560px}
-.search{margin:32px auto 0;max-width:760px;height:68px;padding:0 8px 0 20px;box-shadow:var(--shadow);background:#fff;border:1px solid var(--line)}
+.hero{padding:clamp(32px,5vw,72px) 0 clamp(28px,4vw,48px)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center}
+.hero-photo{aspect-ratio:5/4;border-radius:var(--r-xl)}
+.hero-grid>*{min-width:0}
+@media (max-width:900px){.hero-grid{grid-template-columns:minmax(0,1fr)}.hero-photo{aspect-ratio:16/10;order:2}}
+.hero h1{font-size:clamp(40px,5.6vw,72px);line-height:1;letter-spacing:-.04em;font-weight:800;margin:0}
+.hero .lead{margin:18px 0 0;max-width:520px}
+.search{margin:30px 0 0;max-width:none;height:68px;padding:0 8px 0 20px;box-shadow:var(--shadow);background:#fff;border:1px solid var(--line)}
 .search:focus-within{border-color:var(--fg);box-shadow:0 0 0 1px var(--fg),var(--shadow)}
 .search input{font-size:18px}
 .search .clear{background:none;border:0;color:var(--ink-3);cursor:pointer;padding:8px;display:none;border-radius:50%}
@@ -28,7 +32,7 @@
 .search.has .clear{display:block}
 .search .btn{height:50px}
 .near.on{background:var(--green);color:#000}
-.hero-meta{margin-top:16px;font-size:14px;color:var(--ink-3);display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+.hero-meta{margin-top:16px;font-size:14px;color:var(--ink-3);display:flex;justify-content:flex-start;gap:6px 18px;flex-wrap:wrap}
 .hero-meta span{display:inline-flex;align-items:center;gap:6px}
 @media (max-width:560px){.near span,.go span{display:none}.near,.go{padding:0 14px}.search{height:60px;padding-left:16px}.search input{font-size:16px}}
 
@@ -132,15 +136,15 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://cutzapp.one/">
-<meta property="og:title" content="Cutz — Find and book a barber near you">
-<meta property="og:description" content="Find barbers near you, compare prices and reviews, see who's free right now and book online. Free for customers.">
+<meta property="og:title" content="Cutz — Book a barber in Copenhagen">
+<meta property="og:description" content="See which barbers in Copenhagen have a chair free, compare prices and reviews, and book in a few taps. Free for customers.">
 <meta property="og:image" content="https://cutzapp.one/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Cutz: find and book a barber near you">
+<meta property="og:image:alt" content="Cutz: book a barber in Copenhagen">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cutz — Find and book a barber near you">
-<meta name="twitter:description" content="Find barbers near you, compare prices and reviews, see who's free right now and book online. Free for customers.">
+<meta name="twitter:title" content="Cutz — Book a barber in Copenhagen">
+<meta name="twitter:description" content="See which barbers in Copenhagen have a chair free, compare prices and reviews, and book in a few taps. Free for customers.">
 <meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "name": "Cutz", "url": "https://cutzapp.one/", "logo": "https://cutzapp.one/assets/apple-touch-icon.png", "email": "cutz.support@gmail.com"}, {"@type": "WebSite", "name": "Cutz", "url": "https://cutzapp.one/", "potentialAction": {"@type": "SearchAction", "target": "https://cutzapp.one/?q={search_term_string}", "query-input": "required name=search_term_string"}}]}</script>
@@ -165,10 +169,11 @@
 
 <main id="main">
   <section class="hero">
-    <div class="wrap">
-      <h1>Find a barber near you</h1>
-      <p class="lead">Compare prices and reviews, see who's free right now, and book online in a few taps.</p>
-      <form class="search searchbar" id="searchBox" role="search">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Book a barber<br>in Copenhagen.</h1>
+        <p class="lead">See who has a chair free, pick a time and show up. No DMs, no phone calls, no booking fees.</p>
+        <form class="search searchbar" id="searchBox" role="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <label class="sr-only" for="q">Find a barber near you</label>
         <input id="q" type="search" placeholder="Barber, area or service" autocomplete="off" enterkeyhint="search">
@@ -176,7 +181,9 @@
         <button type="button" class="near btn btn-light" id="near" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/></svg><span>Near me</span></button>
         <button type="submit" class="go btn btn-black"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span></button>
       </form>
-      <div class="hero-meta"><span><span class="dot-green"></span><span id="liveLine">Live availability</span></span><span>Free for customers</span><span>Free cancellation up to 24h before</span></div>
+        <div class="hero-meta"><span><span class="dot-green"></span><span id="liveLine">Live availability</span></span><span>Free for customers</span><span>Cancel free up to 24 h before</span></div>
+      </div>
+      <div class="hero-photo photo"><img src="assets/img/cut-shop.jpg" alt="A barber giving a client a haircut in a busy barbershop" width="1800" height="1200" fetchpriority="high"></div>
     </div>
   </section>
 
@@ -218,23 +225,36 @@
       <div class="steps">
         <article class="step">
           <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
-          <span class="n">1</span><h3>Find</h3><p>Search by area or service and compare barbers by price, rating and who's free right now.</p>
+          <span class="n">1</span><h3>Pick a barber</h3><p>Filter by area, service, price and rating. Walk-in and open now are one tap away.</p>
         </article>
         <article class="step">
           <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 3v3M16 3v3"/></svg></span>
-          <span class="n">2</span><h3>Book</h3><p>Pick a service and a time, confirm with your email, and you're booked. Or join the walk-in queue.</p>
+          <span class="n">2</span><h3>Pick a time</h3><p>See the free slots and book in under a minute. We email you a code to confirm, so there is no password to remember.</p>
         </article>
         <article class="step">
           <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
-          <span class="n">3</span><h3>Show up</h3><p>Turn up at your time and pay your barber in the shop. No booking fees, ever.</p>
+          <span class="n">3</span><h3>Pay in the shop</h3><p>Pay your barber in person. Cutz never charges customers, and you can cancel free up to 24 hours before.</p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-tight">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <h2 class="h-lg">Run a chair in Copenhagen?</h2>
+          <p class="lead" style="margin-top:16px">Get a booking page that is yours: your hours, your prices, your calendar. Clients book you directly, and Cutz takes no commission.</p>
+          <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-black btn-lg" href="barbers.html">How Cutz works for barbers <span class="arrow">→</span></a><a class="btn btn-ghost btn-lg" href="salons.html">Running a salon?</a></div>
+        </div>
+        <div class="photo" style="aspect-ratio:4/3"><img src="assets/img/shop-interior.jpg" alt="Inside a barbershop with three leather barber chairs" loading="lazy" width="1600" height="1062"></div>
       </div>
     </div>
   </section>
 
   <div class="wrap">
     <div class="app-strip">
-      <div><h2>Also on the App Store</h2><p>Book, join queues and get reminders on your iPhone.</p></div>
+      <div><h2>Cutz for iPhone</h2><p>Book, join walk-in queues and get reminders on your phone.</p></div>
       <a class="store" data-store href="download.html" aria-label="Cutz on the App Store">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 1.43c0 1.14-.49 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8C4.97 18.38 3.93 15.57 3.93 12.92c0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>
         <span><small><span data-soon-only>Coming soon to the</span><span data-live-only>Download on the</span></small><b>App Store</b></span>
@@ -398,7 +418,7 @@
     });
     if(!items.length){
       var d=document.createElement('div');d.className='map-empty';d.id='mapEmpty';
-      d.innerHTML=S.barbers.length?'<b>No barbers here</b><span>No barbers match these filters.</span>':'<b>Barbers are joining now</b><span>The first barbers are setting up. They\'ll appear here as soon as they go live.</span>';
+      d.innerHTML=S.barbers.length?'<b>No barbers here</b><span>No barbers match these filters.</span>':'<b>The first barbers are getting set up</b><span>They appear here as soon as they go live.</span>';
       document.getElementById('mapView').appendChild(d);
     }else if(fit||!S.fitted){S.fitted=true;map.fitBounds(L.latLngBounds(items.map(function(x){return[+x.lat,+x.lng]})),{padding:[50,50],maxZoom:14})}
   }
@@ -458,7 +478,7 @@
     document.getElementById('resTitle').textContent=S.q?'Results for “'+S.q+'”':S.area?'Barbers in '+S.area:'Barbers near you';
     document.getElementById('resCount').textContent=S.barbers.length?list.length+' of '+S.barbers.length+' barber'+(S.barbers.length===1?'':'s'):'';
     if(!S.barbers.length){
-      grid.innerHTML='<div class="empty"><h3>Barbers are joining now</h3><p>Cutz has only just launched, so the first barbers are setting up their profiles. They\'ll show up here, ready to book, as soon as they go live.</p><div class="row"><a class="btn btn-black btn-lg" href="barbers.html">Are you a barber? Join Cutz</a></div></div>';
+      grid.innerHTML='<div class="empty"><h3>The first barbers are getting set up</h3><p>Cutz is new in Copenhagen. Barbers appear here, with prices and open times, as soon as they go live.</p><div class="row"><a class="btn btn-black btn-lg" href="barbers.html">Are you a barber? Get on Cutz</a></div></div>';
     }else if(!list.length){
       grid.innerHTML='<div class="empty"><h3>No matches</h3><p>No barbers match '+(S.q?'“'+esc(S.q)+'” with ':'')+'these filters. Try widening your search.</p><div class="row"><button class="btn btn-black btn-lg" id="reset">Clear all filters</button></div></div>';
       document.getElementById('reset').onclick=resetAll;

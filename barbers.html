@@ -284,13 +284,12 @@
         </article>
         <article class="plan rv" style="--d:.05s">
           <div class="plan-top"><div><h3>Salon</h3><div class="for">For shops with a team</div></div></div>
-          <div class="price"><b id="salonTotal">300</b><span>kr / month</span></div>
-          <div class="price-note muted">300 kr base + 50 kr per active staff member</div>
+          <div class="price"><b>350</b><span>kr / month and up</span></div>
+          <div class="price-note muted">Pick a plan by team size. The owner is never counted.</div>
           <div class="calc">
-            <div class="calc-row">
-              <span>Staff members</span>
-              <span class="stepper"><button type="button" data-step="-1" aria-label="Fewer staff">−</button><output id="staffN" aria-live="polite">0</output><button type="button" data-step="1" aria-label="More staff">+</button></span>
-            </div>
+            <div class="calc-row"><span>Starter · up to 2 employees</span><b>350 kr</b></div>
+            <div class="calc-row" style="margin-top:8px"><span>Pro · up to 5 employees</span><b>500 kr</b></div>
+            <div class="calc-row" style="margin-top:8px"><span>Max · up to 10 employees</span><b>700 kr</b></div>
           </div>
           <ul>
             <li>Everything in Barber</li>
@@ -306,7 +305,7 @@
         <div><h4>Typical booking platforms</h4><p>Commission or fees <b>on every booking</b></p><p>Your clients get marketed other barbers</p><p>Price climbs as you grow</p></div>
         <div><h4>Cutz</h4><p><b>0%</b> commission</p><p>Clients book <b>you</b> directly</p><p>Flat <b>300 kr</b> however busy you get</p></div>
       </div>
-      <p class="fine rv">Prices are in Danish kroner (DKK) and billed monthly through Stripe. Customers never pay anything to use Cutz. Payment for a haircut happens between you and your client. See the <a href="terms.html">Terms of Service</a> for full billing details.</p>
+      <p class="fine rv">Prices are in Danish kroner (DKK) and billed monthly through the App Store (Apple In-App Purchase). Customers never pay anything to use Cutz. Payment for a haircut happens between you and your client. See the <a href="terms.html">Terms of Service</a> for full billing details.</p>
     </div>
   </section>
 
@@ -322,7 +321,7 @@
         <details><summary>Can I cancel any time?</summary><p class="a">Yes. You can cancel from your profile in the app. You keep access until the end of the period you've paid for and won't be charged again.</p></details>
         <details><summary>What happens when a client doesn't show up?</summary><p class="a">Mark them as a no-show from the booking. Strikes expire after 2 months, but a client with 3 active strikes can't book anyone on Cutz for 6 months. Clients also can't cancel inside the 24 hours before their appointment.</p></details>
         <details><summary>Can clients walk in without booking?</summary><p class="a">Yes. While you're online, clients can join your live queue from the app, see their position and get notified when they're up.</p></details>
-        <details><summary>I run a salon. Can my whole team join?</summary><p class="a">Yes. Pick the Salon plan, invite your staff, and each barber gets their own calendar and profile under your shop. It costs 300 kr/month plus 50 kr for each active staff member.</p></details>
+        <details><summary>I run a salon. Can my whole team join?</summary><p class="a">Yes. Pick the Salon plan, invite your staff, and each barber gets their own calendar and profile under your shop. Salon plans start at 350 kr/month (Starter, up to 2 employees); Pro is 500 kr (up to 5) and Max is 700 kr (up to 10).</p></details>
         <details><summary>Is Cutz available on Android?</summary><p class="a">Cutz is on iPhone right now. If you'd like to hear when Android launches, email <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>.</p></details>
         <details><summary>I have another question.</summary><p class="a">Email us at <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>. A real person will reply.</p></details>
       </div>
@@ -396,15 +395,6 @@
     sticky.classList.toggle('show',scrollY>innerHeight*.9&&!nearEnd);
   }
   addEventListener('scroll',onScroll,{passive:true});onScroll();
-
-  // Salon price calculator
-  var n=0,out=document.getElementById('staffN'),total=document.getElementById('salonTotal');
-  document.querySelectorAll('[data-step]').forEach(function(b){
-    b.addEventListener('click',function(){
-      n=Math.max(0,Math.min(30,n+ +b.dataset.step));
-      out.textContent=n;total.textContent=(BASE+PER_STAFF*n).toLocaleString('en');
-    });
-  });
 
   // "Join as a barber" buttons scroll to Coming soon and focus the email field.
   var email=document.getElementById('notifyEmail');

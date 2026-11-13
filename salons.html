@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="assets/appstore.js"></script>
 <title>Cutz for Salons — Your whole shop in one app</title>
-<meta name="description" content="List every barber on one salon profile, with calendars, shifts, time off and a walk-in queue. 300 kr/month + 50 kr per staff member, 0% commission.">
+<meta name="description" content="List every barber on one salon profile, with calendars, shifts, time off and a walk-in queue. Plans from 350 kr/month, 0% commission.">
 <meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="https://cutzapp.one/salons.html">
 <meta name="apple-itunes-app" content="app-id=6811618000">
@@ -126,6 +126,17 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .final .store:hover{background:#e8e8e8}
 .final .btn-ghost{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.6);height:56px}
 .final .btn-ghost:hover{background:rgba(255,255,255,.1)}
+.plan-pick{display:grid;gap:10px;margin:6px 0 22px}
+.pp{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:var(--r);background:var(--surface);box-shadow:inset 0 0 0 1.5px transparent;cursor:pointer;color:var(--fg);transition:background .15s,box-shadow .15s}
+.pp:hover{background:var(--surface-2)}
+.pp:has(input:checked){background:#fff;box-shadow:inset 0 0 0 2px var(--fg)}
+.pp:has(input:focus-visible){outline:2px solid var(--fg);outline-offset:2px}
+.pp input{accent-color:var(--green);width:18px;height:18px;flex:none;margin:0}
+.pp span{flex:1;display:grid;gap:2px}
+.pp b{font-size:17px}
+.pp b i{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:var(--green);color:#000;border-radius:6px;padding:2px 7px;margin-left:8px;vertical-align:2px}
+.pp small{color:var(--ink-3);font-size:13px}
+.pp em{font-style:normal;font-weight:800;font-size:17px}
 </style>
 <!-- og -->
 <meta property="og:site_name" content="Cutz">
@@ -133,14 +144,14 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://cutzapp.one/salons.html">
 <meta property="og:title" content="Cutz for Salons — Your whole shop in one app">
-<meta property="og:description" content="List every barber on one salon profile, with calendars, shifts, time off and a walk-in queue. 300 kr/month + 50 kr per staff member, 0% commission.">
+<meta property="og:description" content="List every barber on one salon profile, with calendars, shifts, time off and a walk-in queue. Plans from 350 kr/month, 0% commission.">
 <meta property="og:image" content="https://cutzapp.one/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Cutz: book your barber in seconds">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cutz for Salons — Your whole shop in one app">
-<meta name="twitter:description" content="List every barber on one salon profile, with calendars, shifts, time off and a walk-in queue. 300 kr/month + 50 kr per staff member, 0% commission.">
+<meta name="twitter:description" content="List every barber on one salon profile, with calendars, shifts, time off and a walk-in queue. Plans from 350 kr/month, 0% commission.">
 <meta name="twitter:image" content="https://cutzapp.one/assets/og-image.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <!-- /og -->
@@ -248,23 +259,19 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
       <div class="sec-head">
         <div class="eyebrow rv">Pricing</div>
         <h2 class="h-lg rv" style="--d:.05s">Pay for your team. Not for your success.</h2>
-        <p class="lead rv" style="--d:.1s">300 kr per month for the salon, plus 50 kr for each active staff member. You, the owner, aren't counted as staff.</p>
+        <p class="lead rv" style="--d:.1s">Three plans, sized by team: Starter 350 kr, Pro 500 kr and Max 700 kr per month. You, the owner, aren't counted as an employee.</p>
       </div>
       <div class="calc">
         <div class="panel hi rv">
-          <h3>Your monthly price</h3>
-          <p class="sub">Drag to set the size of your team.</p>
-          <div class="range-row">
-            <div class="range-top"><label for="staff">Staff members</label><output id="staffOut" for="staff">3</output></div>
-            <input type="range" id="staff" min="0" max="30" value="3" aria-describedby="staffHint">
-            <div class="ticks" id="staffHint"><span>0</span><span>10</span><span>20</span><span>30</span></div>
+          <h3>Choose your plan</h3>
+          <p class="sub">The owner is never counted as an employee.</p>
+          <div class="plan-pick" role="radiogroup" aria-label="Salon plan">
+            <label class="pp"><input type="radio" name="plan" value="0"><span><b>Starter</b><small>You plus up to 2 employees</small></span><em>350 kr</em></label>
+            <label class="pp"><input type="radio" name="plan" value="1" checked><span><b>Pro</b><small>You plus up to 5 employees</small></span><em>500 kr</em></label>
+            <label class="pp"><input type="radio" name="plan" value="2"><span><b>Max</b><small>You plus up to 10 employees</small></span><em>700 kr</em></label>
           </div>
-          <div class="breakdown">
-            <div class="bd"><span>Salon base</span><b>300 kr</b></div>
-            <div class="bd"><span id="staffLine">3 staff × 50 kr</span><b id="staffCost">150 kr</b></div>
-          </div>
-          <div class="total"><b id="total">450</b><span>kr / month</span></div>
-          <div class="per" id="per">That's 113 kr per barber, including you</div>
+          <div class="total"><b id="total">500</b><span>kr / month</span></div>
+          <div class="per" id="per"></div>
           <a class="btn btn-green btn-lg" href="barbers.html#join">Start your salon <span class="arrow">→</span></a>
         </div>
         <div class="panel rv" style="--d:.1s">
@@ -311,8 +318,8 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
         <h2 class="h-lg rv" style="--d:.05s">Good questions.</h2>
       </div>
       <div class="faq rv">
-        <details><summary>Who counts as a staff member?</summary><p class="a">Every active barber in your salon apart from you, the owner. The 300 kr base covers the salon and you, and each active staff member adds 50 kr a month.</p></details>
-        <details><summary>What happens to the bill when someone joins or leaves?</summary><p class="a">Your price follows the size of your active team. Add a barber and it goes up by 50 kr a month; remove one and it goes down. You're billed monthly through Stripe.</p></details>
+        <details><summary>Who counts as a staff member?</summary><p class="a">Every active barber in your salon apart from you, the owner. Starter covers you plus up to 2 employees, Pro up to 5 and Max up to 10.</p></details>
+        <details><summary>What happens to the bill when someone joins or leaves?</summary><p class="a">Your plan sets how many employees you can have. If your team outgrows it, upgrade to a bigger plan in the app: upgrades start right away and Apple credits what is left of your current plan, and downgrades start at your next renewal. You are billed monthly through the App Store.</p></details>
         <details><summary>Do you take commission from my barbers?</summary><p class="a">No. Clients pay your barbers directly, and Cutz never takes a percentage of any booking.</p></details>
         <details><summary>Can I cancel?</summary><p class="a">Yes, any time from the app. You keep access until the end of the period you've paid for. Full details are in the <a href="terms.html">Terms of Service</a>.</p></details>
         <details><summary>More questions?</summary><p class="a">See the <a href="faq.html">full FAQ</a> or email <a href="mailto:cutz.support@gmail.com">cutz.support@gmail.com</a>.</p></details>
@@ -373,19 +380,15 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 
 <script>
 (function(){
-  var BASE=300,PER_STAFF=50;
+  var PLANS=[{name:'Starter',price:350,staff:2},{name:'Pro',price:500,staff:5},{name:'Max',price:700,staff:10}];
   var $=function(id){return document.getElementById(id)};
-  var staff=$('staff');
   function num(el,max){var v=parseFloat(el.value);if(isNaN(v)||v<0)v=0;return Math.min(v,max)}
   function kr(n){return Math.round(n).toLocaleString('en').replace(/,/g,'.')+' kr'}
+  function plan(){var r=document.querySelector('input[name="plan"]:checked');return PLANS[r?+r.value:1]}
   function update(){
-    var n=+staff.value,total=BASE+PER_STAFF*n,barbers=n+1;
-    staff.style.setProperty('--p',(n/30*100)+'%');
-    $('staffOut').textContent=n;
-    $('staffLine').textContent=n+' staff × 50 kr';
-    $('staffCost').textContent=kr(PER_STAFF*n);
+    var p=plan(),total=p.price,barbers=p.staff+1;
     $('total').textContent=total.toLocaleString('en').replace(/,/g,'.');
-    $('per').textContent="That's "+kr(total/barbers)+' per barber, including you';
+    $('per').textContent="With a full team that's "+kr(total/barbers)+' per barber, including you';
     var comm=barbers*num($('bookings'),2000)*num($('price'),5000)*num($('rate'),100)/100;
     var max=Math.max(comm,total,1);
     $('commOut').textContent=kr(comm);$('cutzOut').textContent=kr(total);
@@ -394,7 +397,8 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
       ?'In this example, a flat price keeps <b>'+kr(comm-total)+'</b> a month in your shop.'
       :'In this example the flat price costs about the same or more. Cutz stays the same price however busy you get.';
   }
-  ['staff','price','bookings','rate'].forEach(function(id){$(id).addEventListener('input',update)});
+  ['price','bookings','rate'].forEach(function(id){$(id).addEventListener('input',update)});
+  document.querySelectorAll('input[name="plan"]').forEach(function(r){r.addEventListener('change',update)});
   update();
 })();
 </script>
